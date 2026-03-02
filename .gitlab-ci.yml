@@ -1,0 +1,38 @@
+stages:
+  - build
+  - deploy_preview
+  - deploy_prod
+
+build_website:
+  image: node:22-alpine
+  stage: build
+  script:
+    - node --version
+    - npm --version
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - .next/
+
+deploy_preview:
+  image: node:22-alpine
+  stage: deploy_preview
+  rules:
+    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+  before_script:
+    - npm install -g vercel
+  script:
+    - vercel --version
+    - vercel deploy --token $VERCEL_TOKEN
+
+deploy_prod:
+  image: node:22-alpine
+  stage: deploy_prod
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+  before_script:
+    - npm install -g vercel
+  script:
+    - vercel --version
+    - vercel deploy --prod --token $VERCEL_TOKEN
