@@ -1,19 +1,56 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - when: always
+
 stages:
   - build
   - deploy_preview
   - deploy_prod
 
-build_website:
+# ----- BUILD -------------------------
+
+build_preview:
   image: node:22-alpine
   stage: build
+  rules:
+    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+  before_script:
+    - npm install -g vercel
   script:
     - node --version
     - npm --version
-    - npm ci
-    - npm run build
+    - vercel --version
+    - vercel pull --yes --environment=preview --token $VERCEL_TOKEN
+    - vercel build --token $VERCEL_TOKEN
   artifacts:
+    untracked: true
     paths:
-      - .next/
+      - .vercel/output/
+      - node_modules/
+
+build_prod:
+  image: node:22-alpine
+  stage: build
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      variables:
+        VERCEL_ENVIRONMENT: 'production'
+  before_script:
+    - npm install -g vercel
+  script:
+    - node --version
+    - npm --version
+    - vercel --version
+    - vercel pull --yes --environment=production --token $VERCEL_TOKEN
+    - vercel build --prod --token $VERCEL_TOKEN
+  artifacts:
+    untracked: true
+    paths:
+      - .vercel/output/
+      - node_modules/
+
+# ----- DEPLOY -------------------------
 
 deploy_preview:
   image: node:22-alpine
@@ -24,7 +61,7 @@ deploy_preview:
     - npm install -g vercel
   script:
     - vercel --version
-    - vercel deploy --token $VERCEL_TOKEN
+    - vercel deploy --prebuilt --token $VERCEL_TOKEN
 
 deploy_prod:
   image: node:22-alpine
@@ -35,4 +72,4 @@ deploy_prod:
     - npm install -g vercel
   script:
     - vercel --version
-    - vercel deploy --prod --token $VERCEL_TOKEN
+    - vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
