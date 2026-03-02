@@ -1,22 +1,43 @@
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 stages:
   - build
   - deploy_preview
   - deploy_prod
 
+default:
+  before_script:
+    - vercel telemetry disable
+
+# ----- BUILD DOCKER IMAGE -------------------------
+
+build_docker_image:
+  stage: .pre
+  image: docker:27
+  services:
+    - docker:27-dind
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - docker version
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/vercel -f ci/Dockerfile .
+    - docker image ls
+    - docker push $CI_REGISTRY_IMAGE/vercel
+    - exit 1
+
 # ----- BUILD -------------------------
 
 build_preview:
-  image: node:22-alpine
   stage: build
+  image: $CI_REGISTRY_IMAGE/vercel
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
-  before_script:
-    - npm install -g vercel
   script:
     - node --version
     - npm --version
@@ -30,14 +51,14 @@ build_preview:
       - node_modules/
 
 build_prod:
-  image: node:22-alpine
   stage: build
+  image: $CI_REGISTRY_IMAGE/vercel
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
       variables:
         VERCEL_ENVIRONMENT: 'production'
-  before_script:
-    - npm install -g vercel
   script:
     - node --version
     - npm --version
@@ -53,23 +74,23 @@ build_prod:
 # ----- DEPLOY -------------------------
 
 deploy_preview:
-  image: node:22-alpine
   stage: deploy_preview
+  image: $CI_REGISTRY_IMAGE/vercel
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
-  before_script:
-    - npm install -g vercel
   script:
     - vercel --version
     - vercel deploy --prebuilt --token $VERCEL_TOKEN
 
 deploy_prod:
-  image: node:22-alpine
   stage: deploy_prod
+  image: $CI_REGISTRY_IMAGE/vercel
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-  before_script:
-    - npm install -g vercel
   script:
     - vercel --version
     - vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
