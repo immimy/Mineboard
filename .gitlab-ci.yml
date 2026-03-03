@@ -27,7 +27,6 @@ build_docker_image:
     - docker build -t $CI_REGISTRY_IMAGE/vercel -f ci/Dockerfile .
     - docker image ls
     - docker push $CI_REGISTRY_IMAGE/vercel
-    - exit 0
 
 # ----- BUILD -------------------------
 
@@ -76,7 +75,7 @@ deploy_preview:
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
   script:
     - vercel --version
-    - vercel deploy --prebuilt --token $VERCEL_TOKEN
+    - vercel deploy --prebuilt --archive=tgz --token $VERCEL_TOKEN
 
 deploy_prod:
   stage: deploy_prod
@@ -85,4 +84,4 @@ deploy_prod:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
   script:
     - vercel --version
-    - vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
+    - vercel deploy --prebuilt --archive=tgz --prod --token $VERCEL_TOKEN
