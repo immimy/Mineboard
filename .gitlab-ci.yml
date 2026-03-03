@@ -1,18 +1,18 @@
 workflow:
   rules:
+    # Preventing pipeline from MR
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: never
+    # Allow branch and schedule pipeline
+    - if: '$CI_COMMIT_BRANCH'
 
 stages:
   - build
   - deploy_preview
   - deploy_prod
 
-default:
-  before_script:
-    - vercel telemetry disable
-
 # ----- BUILD DOCKER IMAGE -------------------------
+# Only run on schedule pipeline
 
 build_docker_image:
   stage: .pre
@@ -27,7 +27,7 @@ build_docker_image:
     - docker build -t $CI_REGISTRY_IMAGE/vercel -f ci/Dockerfile .
     - docker image ls
     - docker push $CI_REGISTRY_IMAGE/vercel
-    - exit 1
+    - exit 0
 
 # ----- BUILD -------------------------
 
@@ -35,8 +35,6 @@ build_preview:
   stage: build
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
   script:
     - node --version
@@ -54,8 +52,6 @@ build_prod:
   stage: build
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
       variables:
         VERCEL_ENVIRONMENT: 'production'
@@ -77,8 +73,6 @@ deploy_preview:
   stage: deploy_preview
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
   script:
     - vercel --version
@@ -88,8 +82,6 @@ deploy_prod:
   stage: deploy_prod
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: never
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
   script:
     - vercel --version
