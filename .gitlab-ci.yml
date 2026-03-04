@@ -73,15 +73,29 @@ deploy_preview:
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+  environment:
+    name: preview/$CI_COMMIT_REF_SLUG
+    url: $PREVIEW_URL
   script:
     - vercel --version
-    - vercel deploy --prebuilt --archive=tgz --token $VERCEL_TOKEN
+    - PREVIEW_URL=$(vercel deploy --prebuilt --archive=tgz --token $VERCEL_TOKEN)
+    - echo "PREVIEW_URL=$PREVIEW_URL" > deploy.env
+    - cat deploy.env
+    # Provide a bypass token to access the protected deployments (Preview environment)
+    # Only matches HTML elements containing "Mineboard"
+    - curl "$PREVIEW_URL/api/webhook?x-vercel-protection-bypass=$VERCEL_AUTOMATION_BYPASS_SECRET" | grep -oE '<[a-z][a-zA-Z0-9]*[^>]*>[^<]*Mineboard[^<]*</[a-z][a-zA-Z0-9]*>'
+  artifacts:
+    reports:
+      dotenv: deploy.env
 
 deploy_prod:
   stage: deploy_prod
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+  environment: production
   script:
     - vercel --version
-    - vercel deploy --prebuilt --archive=tgz --prod --token $VERCEL_TOKEN
+    - PRODUCTION_URL=$(vercel deploy --prebuilt --archive=tgz --prod --token $VERCEL_TOKEN)
+    # Only matches HTML elements containing "Mineboard"
+    - curl -s $PRODUCTION_URL | grep -oE '<[a-z][a-zA-Z0-9]*[^>]*>[^<]*Mineboard[^<]*</[a-z][a-zA-Z0-9]*>'
