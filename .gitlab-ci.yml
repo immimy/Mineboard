@@ -8,6 +8,7 @@ workflow:
 
 stages:
   - build
+  - test
   - deploy_preview
   - deploy_prod
 
@@ -52,8 +53,6 @@ build_prod:
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-      variables:
-        VERCEL_ENVIRONMENT: 'production'
   script:
     - node --version
     - npm --version
@@ -65,6 +64,19 @@ build_prod:
     paths:
       - .vercel/output/
       - node_modules/
+
+# ----- TEST -------------------------
+
+unit_tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.58.2-noble
+  script:
+    - npm ci
+    - npm test
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit-report.xml
 
 # ----- DEPLOY -------------------------
 

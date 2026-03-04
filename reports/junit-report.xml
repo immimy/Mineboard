@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="0" errors="0" time="0.0273">
+    <testsuite name="app/__tests__/Homepage.test.tsx" timestamp="2026-03-04T19:42:12.279Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.0273">
+        <testcase classname="app/__tests__/Homepage.test.tsx" name="Homepage Rendering &gt; should render Mineboard heading" time="0.011">
+        </testcase>
+        <testcase classname="app/__tests__/Homepage.test.tsx" name="Homepage Rendering &gt; should render paragraph" time="0.0156">
+        </testcase>
+    </testsuite>
+</testsuites>
