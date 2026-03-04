@@ -30,7 +30,7 @@ build_docker_image:
 
 # ----- BUILD -------------------------
 
-.build_preview:
+build_preview:
   stage: build
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
@@ -51,8 +51,7 @@ build_prod:
   stage: build
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    # - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
       variables:
         VERCEL_ENVIRONMENT: 'production'
   script:
@@ -69,7 +68,7 @@ build_prod:
 
 # ----- DEPLOY -------------------------
 
-.deploy_preview:
+deploy_preview:
   stage: deploy_preview
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
@@ -93,8 +92,7 @@ deploy_prod:
   stage: deploy_prod
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
-    # - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
   environment: production
   script:
     - vercel --version
