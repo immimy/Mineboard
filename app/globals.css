@@ -1,26 +1,129 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Custom dark mode variant */
+/* Apply dark scheme whenever dark class added to the html or dark selector is used */
+@custom-variant dark (&:where(.dark, .dark *));
 
+/* Define TailwindCSS class utilities and variants */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-neutral: var(--neutral);
+  --color-neutral-foreground: var(--neutral-foreground);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-successful: var(--successful);
+  --color-warning: var(--warning);
+
+  /* Card palette */
+  --color-card-1: var(--card-1);
+  --color-card-light-1: var(--card-light-1);
+  --color-card-2: var(--card-2);
+  --color-card-light-2: var(--card-light-2);
+  --color-card-3: var(--card-3);
+  --color-card-light-3: var(--card-light-3);
+  --color-card-4: var(--card-4);
+  --color-card-light-4: var(--card-light-4);
+  --color-card-5: var(--card-5);
+  --color-card-light-5: var(--card-light-5);
+  --color-card-6: var(--card-6);
+  --color-card-light-6: var(--card-light-6);
+  --color-card-7: var(--card-7);
+  --color-card-light-7: var(--card-light-7);
+  --color-card-8: var(--card-8);
+  --color-card-light-8: var(--card-light-8);
+  --color-card-9: var(--card-9);
+  --color-card-light-9: var(--card-light-9);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* CSS variables */
+/* Light scheme */
+:root {
+  --background: hsl(220, 30%, 96%);
+  --foreground: hsl(217, 91%, 18%);
+  --muted: hsl(220, 20%, 92%);
+  --muted-foreground: hsl(220, 15%, 46%);
+  --accent: hsl(45, 93%, 58%);
+  --neutral: hsl(0, 0%, 100%);
+  --neutral-foreground: hsl(220, 40%, 13%);
+  --input: hsl(0, 0%, 100%);
+  --border: hsl(220, 20%, 88%);
+  --destructive: hsl(0, 84%, 60%);
+  --successful: hsl(152, 69%, 45%);
+  --warning: hsl(45, 93%, 58%);
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Card palette */
+  --card-1: hsl(217, 91%, 60%); /* Default Blue */
+  --card-light-1: hsl(217, 91%, 95%);
+
+  --card-2: hsl(330, 80%, 65%); /* Pink */
+  --card-light-2: hsl(0, 0%, 100%);
+
+  --card-3: hsl(45, 93%, 58%); /* Yellow */
+  --card-light-3: hsl(220, 40%, 13%);
+
+  --card-4: hsl(0, 78%, 58%); /* Red */
+  --card-light-4: hsl(0, 78%, 93%);
+
+  --card-5: hsl(270, 70%, 60%); /* Purple */
+  --card-light-5: hsl(270, 70%, 93%);
+
+  --card-6: hsl(152, 69%, 45%); /* Green */
+  --card-light-6: hsl(152, 69%, 92%);
+
+  --card-7: hsl(25, 90%, 55%); /* Orange */
+  --card-light-7: hsl(25, 90%, 92%);
+
+  --card-8: hsl(220, 15%, 55%); /* Grey */
+  --card-light-8: hsl(220, 15%, 92%);
+
+  --card-9: hsl(30, 50%, 40%); /* Brown */
+  --card-light-9: hsl(30, 50%, 90%);
+}
+/* Dark scheme */
+.dark {
+  --background: hsl(217, 40%, 10%);
+  --foreground: hsl(220, 20%, 92%);
+  --muted: hsl(220, 20%, 18%);
+  --muted-foreground: hsl(220, 15%, 60%);
+  --accent: hsl(45, 85%, 55%);
+  --neutral: hsl(220, 30%, 8%);
+  --neutral-foreground: hsl(220, 20%, 92%);
+  --input: hsl(220, 25%, 12%);
+  --border: hsl(220, 20%, 92%);
+  --destructive: hsl(0, 70%, 50%);
+  --successful: hsl(152, 60%, 42%);
+  --warning: hsl(45, 85%, 55%);
+
+  /* Card palette */
+  --card-1: hsl(217, 85%, 55%); /* Default Blue */
+  --card-light-1: hsl(217, 50%, 18%);
+
+  --card-2: hsl(330, 75%, 60%); /* Pink */
+  --card-light-2: hsl(330, 40%, 18%);
+
+  --card-3: hsl(45, 85%, 55%); /* Yellow */
+  --card-light-3: hsl(45, 40%, 16%);
+
+  --card-4: hsl(0, 72%, 55%); /* Red */
+  --card-light-4: hsl(0, 40%, 18%);
+
+  --card-5: hsl(270, 65%, 58%); /* Purple */
+  --card-light-5: hsl(270, 35%, 18%);
+
+  --card-6: hsl(152, 60%, 42%); /* Green */
+  --card-light-6: hsl(152, 35%, 16%);
+
+  --card-7: hsl(25, 82%, 52%); /* Orange */
+  --card-light-7: hsl(25, 40%, 17%);
+
+  --card-8: hsl(220, 12%, 50%); /* Grey */
+  --card-light-8: hsl(220, 10%, 18%);
+
+  --card-9: hsl(30, 45%, 38%); /* Brown */
+  --card-light-9: hsl(30, 25%, 16%);
 }

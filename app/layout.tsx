@@ -1,17 +1,10 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Roboto_Serif } from 'next/font/google';
 import './globals.css';
 import Container from '@/components/global/Container';
+import Navbar from '@/components/Navbar/Navbar';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+const robotoSerif = Roboto_Serif({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Mineboard Demo Web',
@@ -25,12 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Container>
-          <main>{children}</main>
-        </Container>
+      <body className={`${robotoSerif.className} antialiased`}>
+        <main className='bg-background min-h-screen'>
+          <Navbar />
+          <Container>{children}</Container>
+        </main>
       </body>
     </html>
   );

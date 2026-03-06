@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="2" failures="0" errors="0" time="0.0273">
-    <testsuite name="app/__tests__/Homepage.test.tsx" timestamp="2026-03-04T19:42:12.279Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.0273">
-        <testcase classname="app/__tests__/Homepage.test.tsx" name="Homepage Rendering &gt; should render Mineboard heading" time="0.011">
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.7119">
+    <testsuite name="components/Navbar/__tests__/Navbar.test.tsx" timestamp="2026-03-06T19:43:53.463Z" hostname="IaM-Desktop" tests="8" failures="0" errors="0" skipped="0" time="0.7119">
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Homepage navigation &gt; renders &quot;Minebord&quot; as a link" time="0.0621">
         </testcase>
-        <testcase classname="app/__tests__/Homepage.test.tsx" name="Homepage Rendering &gt; should render paragraph" time="0.0156">
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle — read localStorage on mount &gt; adds &quot;dark&quot; class to &lt;html&gt; when localStorage is &quot;dark&quot;" time="0.0031">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle — read localStorage on mount &gt; removes &quot;dark&quot; class from &lt;html&gt; when localStorage is &quot;light&quot;" time="0.0019">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme icon — icon rendered correctly &gt; renders MoonIcon when scheme is dark" time="0.0588">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme icon — icon rendered correctly &gt; renders SunIcon when scheme is light" time="0.0635">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles from light → dark" time="0.1534">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles from dark → light" time="0.1333">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles twice: returns to the original theme" time="0.2342">
         </testcase>
     </testsuite>
 </testsuites>
