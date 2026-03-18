@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="0.0279109">
+    <testsuite name="utils/database/__tests__/auth.node.test.ts" timestamp="2026-03-18T07:48:34.840Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.006241">
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignInWithGoogle action &gt; redirects to Google OAuth URL on success" time="0.0037274">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignInWithGoogle action &gt; redirects to the homepage with error when Supabase returns an error" time="0.0006592">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignOutWithGoogle action &gt; redirects to the homepage on success" time="0.0004467">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignOutWithGoogle action &gt; renders error message when Supabase returns an error" time="0.0002565">
+        </testcase>
+    </testsuite>
+    <testsuite name="utils/database/__tests__/proxy.node.test.ts" timestamp="2026-03-18T07:48:34.842Z" hostname="IaM-Desktop" tests="10" failures="0" errors="0" skipped="0" time="0.0134432">
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; redirects to / when accessing a protected route" time="0.0054368">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; redirects to / when accessing a deeply nested protected route" time="0.0017632">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to / (public route)" time="0.0011012">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to /about (public route)" time="0.0006375">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to /about/team (public sub-path)" time="0.0006031">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; redirects to /dashboard when accessing /" time="0.0006254">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; allows access to /dashboard" time="0.0002956">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; allows access to a protected nested route" time="0.0002859">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — route matcher work correctly (/product as public) &gt; redirects to / when accessing /products" time="0.000706">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — route matcher work correctly (/product as public) &gt; redirects to / when accessing /products/about/product-id" time="0.0004617">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/api/auth/__tests__/auth.node.test.ts" timestamp="2026-03-18T07:48:34.847Z" hostname="IaM-Desktop" tests="7" failures="0" errors="0" skipped="0" time="0.0082267">
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; no code in params &gt; redirects to homepage with error" time="0.0037101">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange fails &gt; redirects to homepage with error" time="0.0006842">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange succeeds &gt; redirects to / by default in local env" time="0.000715">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange succeeds &gt; redirects to ?next= path in local env" time="0.0004817">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange succeeds &gt; ignores non-relative next param and redirects to /" time="0.0004434">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange succeeds &gt; uses x-forwarded-host in production" time="0.0005246">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; code exchange succeeds &gt; falls back to origin when no x-forwarded-host in production" time="0.0002358">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -3,6 +3,7 @@ import { Roboto_Serif } from 'next/font/google';
 import './globals.css';
 import Container from '@/components/global/Container';
 import Navbar from '@/components/Navbar/Navbar';
+import { ToastContainer } from 'react-toastify';
 
 const robotoSerif = Roboto_Serif({ subsets: ['latin'] });
 
@@ -19,10 +20,13 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${robotoSerif.className} antialiased`}>
-        <main className='bg-background min-h-screen'>
+        <div className='bg-background min-h-screen'>
           <Navbar />
-          <Container>{children}</Container>
-        </main>
+          <main>
+            <Container>{children}</Container>
+          </main>
+          <ToastContainer position='bottom-right' />
+        </div>
       </body>
     </html>
   );

@@ -1,3 +1,12 @@
+import ErrorToast from '@/components/Homepage/ErrorToast';
+import { Suspense } from 'react';
+
 export default function Home() {
-  return <div>Homepage</div>;
+  return (
+    <>
+      <Suspense>
+        <ErrorToast />
+      </Suspense>
+    </>
+  );
 }

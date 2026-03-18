@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.7119">
-    <testsuite name="components/Navbar/__tests__/Navbar.test.tsx" timestamp="2026-03-06T19:43:53.463Z" hostname="IaM-Desktop" tests="8" failures="0" errors="0" skipped="0" time="0.7119">
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Homepage navigation &gt; renders &quot;Minebord&quot; as a link" time="0.0621">
+<testsuites name="vitest tests" tests="20" failures="0" errors="0" time="1.2298">
+    <testsuite name="components/Homepage/__tests__/ErrorToast.test.tsx" timestamp="2026-03-18T07:48:21.210Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.0097">
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; renders null — no visible DOM element" time="0.002">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle — read localStorage on mount &gt; adds &quot;dark&quot; class to &lt;html&gt; when localStorage is &quot;dark&quot;" time="0.0031">
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; calls toast.error with the error message when error param is present" time="0.0013">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle — read localStorage on mount &gt; removes &quot;dark&quot; class from &lt;html&gt; when localStorage is &quot;light&quot;" time="0.0019">
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; does not call toast.error when no error param is present" time="0.0044">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme icon — icon rendered correctly &gt; renders MoonIcon when scheme is dark" time="0.0588">
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; does not call toast.error when error param is an empty string" time="0.0017">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme icon — icon rendered correctly &gt; renders SunIcon when scheme is light" time="0.0635">
+    </testsuite>
+    <testsuite name="components/Navbar/__tests__/Logo.test.tsx" timestamp="2026-03-18T07:48:21.213Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0594">
+        <testcase classname="components/Navbar/__tests__/Logo.test.tsx" name="&quot;Mineboard&quot; logo &gt; renders &quot;Minebord&quot; as a link" time="0.059">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles from light → dark" time="0.1534">
+    </testsuite>
+    <testsuite name="components/Navbar/__tests__/SignInButton.test.tsx" timestamp="2026-03-18T07:48:21.214Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1003">
+        <testcase classname="components/Navbar/__tests__/SignInButton.test.tsx" name="SignInWithGoogle action is called when log in" time="0.1001">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles from dark → light" time="0.1333">
+    </testsuite>
+    <testsuite name="components/Navbar/__tests__/SignOutButton.test.tsx" timestamp="2026-03-18T07:48:21.215Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0843">
+        <testcase classname="components/Navbar/__tests__/SignOutButton.test.tsx" name="SignOutWithGoogle action is called when log out" time="0.084">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/Navbar.test.tsx" name="Theme toggle interaction &gt; toggles twice: returns to the original theme" time="0.2342">
+    </testsuite>
+    <testsuite name="components/Navbar/__tests__/ThemeToggleButton.test.tsx" timestamp="2026-03-18T07:48:21.216Z" hostname="IaM-Desktop" tests="7" failures="0" errors="0" skipped="0" time="0.6714">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; adds &quot;dark&quot; class to &lt;html&gt; when localStorage is &quot;dark&quot;" time="0.0343">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; removes &quot;dark&quot; class from &lt;html&gt; when localStorage is &quot;light&quot;" time="0.0071">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders MoonIcon when scheme is dark" time="0.0587">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders SunIcon when scheme is light" time="0.0543">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from light → dark" time="0.1667">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from dark → light" time="0.1338">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles twice: returns to the original theme" time="0.2153">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Navbar/__tests__/UserButton.test.tsx" timestamp="2026-03-18T07:48:21.219Z" hostname="IaM-Desktop" tests="6" failures="0" errors="0" skipped="0" time="0.3047">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; renders the user icon button" time="0.0172">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; does not render user avatar image" time="0.004">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; shows SignInButton inside popover panel" time="0.1548">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; renders the user avatar image" time="0.0103">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; does not render user icon" time="0.0048">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; shows SignOutButton inside popover panel" time="0.1133">
         </testcase>
     </testsuite>
 </testsuites>

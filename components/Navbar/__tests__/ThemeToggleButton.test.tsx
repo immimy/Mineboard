@@ -1,5 +1,5 @@
 import { Locator, page, userEvent } from 'vitest/browser';
-import Navbar from '../Navbar';
+import ThemeToggleButton from '../ThemeToggleButton';
 import { render } from 'vitest-browser-react';
 
 const renderElement = async (input: Locator | HTMLElement | SVGElement) =>
@@ -18,33 +18,20 @@ beforeEach(() => {
 });
 
 // ---------------------------------------------------------------------------
-// Rendering homepage link
-// ---------------------------------------------------------------------------
-
-describe('Homepage navigation', () => {
-  it('renders "Minebord" as a link', async () => {
-    render(<Navbar />);
-    await expect
-      .element(page.getByRole('link', { name: /mineboard/i }))
-      .toBeInTheDocument();
-  });
-});
-
-// ---------------------------------------------------------------------------
 // Theme toggle — localStorage takes priority over matchMedia
 // ---------------------------------------------------------------------------
 
 describe('Theme toggle — read localStorage on mount', () => {
   it('adds "dark" class to <html> when localStorage is "dark"', async () => {
     localStorage.setItem('prefers-scheme', 'dark');
-    await render(<Navbar />);
+    await render(<ThemeToggleButton />);
     expect(document.documentElement.classList.contains('dark')).toBe(true);
   });
 
   it('removes "dark" class from <html> when localStorage is "light"', async () => {
     localStorage.setItem('prefers-scheme', 'light');
     document.documentElement.classList.add('dark'); // pre-set dark to confirm removal
-    await render(<Navbar />);
+    await render(<ThemeToggleButton />);
     expect(document.documentElement.classList.contains('dark')).toBe(false);
   });
 });
@@ -56,7 +43,7 @@ describe('Theme toggle — read localStorage on mount', () => {
 describe('Theme icon — icon rendered correctly', () => {
   it('renders MoonIcon when scheme is dark', async () => {
     localStorage.setItem('prefers-scheme', 'dark');
-    render(<Navbar />);
+    render(<ThemeToggleButton />);
     const themeButton = getAllElements().themeToggleButton;
     await renderElement(themeButton);
     await expect
@@ -66,7 +53,7 @@ describe('Theme icon — icon rendered correctly', () => {
 
   it('renders SunIcon when scheme is light', async () => {
     localStorage.setItem('prefers-scheme', 'light');
-    render(<Navbar />);
+    render(<ThemeToggleButton />);
     const themeButton = getAllElements().themeToggleButton;
     await renderElement(themeButton);
     await expect
@@ -82,7 +69,7 @@ describe('Theme icon — icon rendered correctly', () => {
 describe('Theme toggle interaction', () => {
   it('toggles from light → dark', async () => {
     localStorage.setItem('prefers-scheme', 'light');
-    render(<Navbar />);
+    render(<ThemeToggleButton />);
     const themeButton = getAllElements().themeToggleButton;
     await renderElement(themeButton);
     await userEvent.click(themeButton);
@@ -94,7 +81,7 @@ describe('Theme toggle interaction', () => {
 
   it('toggles from dark → light', async () => {
     localStorage.setItem('prefers-scheme', 'dark');
-    render(<Navbar />);
+    render(<ThemeToggleButton />);
     const themeButton = getAllElements().themeToggleButton;
     await renderElement(themeButton);
     await userEvent.click(themeButton);
@@ -106,7 +93,7 @@ describe('Theme toggle interaction', () => {
 
   it('toggles twice: returns to the original theme', async () => {
     localStorage.setItem('prefers-scheme', 'dark');
-    render(<Navbar />);
+    render(<ThemeToggleButton />);
     const themeButton = getAllElements().themeToggleButton;
     await renderElement(themeButton);
     await userEvent.click(themeButton); // dark  → light

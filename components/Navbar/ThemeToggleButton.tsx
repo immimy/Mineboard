@@ -1,9 +1,10 @@
 'use client';
 
-import { LoadingIcon, MoonIcon, SunIcon } from '@/icons/icons';
+import { MoonIcon, SunIcon } from '@/icons/icons';
 import { Theme } from '@/types/types';
 import { Button } from '@headlessui/react';
 import { MouseEventHandler, useEffect, useState } from 'react';
+import { NavbarButton as ButtonSkeleton } from '../Skeleton/Button';
 
 function ThemeToggleButton() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,12 +28,7 @@ function ThemeToggleButton() {
   }, []);
 
   // Loading scheme preference skeleton...
-  if (!isLoaded)
-    return (
-      <Button className='p-1.5 rounded-full shadow shadow-border/70'>
-        <LoadingIcon className='size-4 text-border' />
-      </Button>
-    );
+  if (!isLoaded) return <ButtonSkeleton />;
 
   //  Toggle Theme
   const toggleThemeHandler: MouseEventHandler<HTMLButtonElement> = () => {
@@ -45,13 +41,13 @@ function ThemeToggleButton() {
   return (
     <Button
       aria-label='theme toggle'
-      className='p-1.5 rounded-full shadow shadow-border/70 hover:cursor-pointer'
+      className='size-7 lg:size-8 bg-neutral text-accent rounded-full shadow shadow-border grid place-items-center hover:cursor-pointer'
       onClick={toggleThemeHandler}
     >
       {isDarkTheme ? (
-        <MoonIcon className='size-4 text-accent' />
+        <MoonIcon className='size-4 lg:size-5' />
       ) : (
-        <SunIcon className='size-4 text-accent' />
+        <SunIcon className='size-4 lg:size-5' />
       )}
     </Button>
   );

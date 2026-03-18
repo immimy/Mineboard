@@ -1,5 +1,8 @@
 workflow:
   rules:
+    # Preventing pipeline from push event with commit message that begin or end with "draft"
+    - if: '$CI_COMMIT_MESSAGE =~ /^(.?draft)|(draft.?)$/'
+      when: never
     # Preventing pipeline from MR
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: never
@@ -76,7 +79,7 @@ unit_tests:
   artifacts:
     when: always
     reports:
-      junit: reports/junit-report.xml
+      junit: reports/junit*.xml
 
 # ----- DEPLOY -------------------------
 
@@ -90,7 +93,7 @@ deploy_preview:
     url: $PREVIEW_URL
   script:
     - vercel --version
-    - PREVIEW_URL=$(vercel deploy --prebuilt --archive=tgz --token $VERCEL_TOKEN)
+    - PREVIEW_URL=$(vercel deploy --prebuilt --archive=tgz --regions sin1 --token $VERCEL_TOKEN)
     - echo "PREVIEW_URL=$PREVIEW_URL" > deploy.env
     - cat deploy.env
     # Provide a bypass token to access the protected deployments (Preview environment)
@@ -108,7 +111,7 @@ deploy_prod:
   environment: production
   script:
     - vercel --version
-    - PRODUCTION_URL=$(vercel deploy --prebuilt --archive=tgz --prod --token $VERCEL_TOKEN)
+    - PRODUCTION_URL=$(vercel deploy --prebuilt --archive=tgz --regions sin1 --prod --token $VERCEL_TOKEN)
     - echo $PRODUCTION_URL
     # Provide a bypass token to access the protected deployments (Production environment)
     # Only matches HTML elements containing "Mineboard"
