@@ -85,15 +85,15 @@ create extension if not exists moddatetime schema extensions;
 
 -- This will set the `updated_at` column on every update
 create trigger handle_updated_at before update on public.boards
-  for each row execute procedure moddatetime (updated_at);
+  for each row execute procedure extensions.moddatetime (updated_at);
 create trigger handle_updated_at before update on public.cards
-  for each row execute procedure moddatetime (updated_at);
+  for each row execute procedure extensions.moddatetime (updated_at);
 create trigger handle_updated_at before update on public.lists
-  for each row execute procedure moddatetime (updated_at);
+  for each row execute procedure extensions.moddatetime (updated_at);
 create trigger handle_updated_at before update on public.list_fields
-  for each row execute procedure moddatetime (updated_at);
+  for each row execute procedure extensions.moddatetime (updated_at);
 create trigger handle_updated_at before update on public.list_values
-  for each row execute procedure moddatetime (updated_at);
+  for each row execute procedure extensions.moddatetime (updated_at);
 
 -- ============================================================
 -- ROW LEVEL SECURITY
