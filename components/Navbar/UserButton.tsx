@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/database/serverClient';
 import SignOutButton from './SignOutButton';
-import SignInButton from './SingInButton';
+import SignInButton from './SignInButton';
 import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { UserIcon } from '@/icons/icons';
@@ -20,7 +20,7 @@ async function UserButton() {
         </PopoverButton>
         <PopoverPanel
           anchor='bottom end'
-          className='mt-2.5 px-6 py-2 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
+          className='min-w-30 mt-2.5 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
         >
           <SignInButton />
         </PopoverPanel>
@@ -41,7 +41,7 @@ async function UserButton() {
       </PopoverButton>
       <PopoverPanel
         anchor='bottom end'
-        className='mt-2.5 px-6 py-2 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
+        className='min-w-30 mt-2.5 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
       >
         <SignOutButton />
       </PopoverPanel>

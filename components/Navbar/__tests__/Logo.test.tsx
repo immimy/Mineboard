@@ -6,6 +6,10 @@ import { render } from 'vitest-browser-react';
 vi.mock('@/components/Navbar/UserButton', () => ({
   default: () => <div data-testid='mock-user-button' />,
 }));
+// Stub out DevUserButton so Navbar tests don't depend on async server component
+vi.mock('@/components/Navbar/Mocks/DevUserButton', () => ({
+  default: () => <div data-testid='mock-dev-user-button' />,
+}));
 
 // ---------------------------------------------------------------------------
 // Rendering homepage link

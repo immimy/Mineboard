@@ -122,3 +122,86 @@ export const UserIcon = (props: IconProps) => {
     </svg>
   );
 };
+
+export const CheckmarkIcon = (props: IconProps) => {
+  return (
+    <svg className={cn(props?.className)} viewBox='0 0 14 14' fill='none'>
+      <path
+        d='M3 8L6 11L11 3.5'
+        strokeWidth={2}
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  );
+};
+
+export const PlusIcon = (props: IconProps) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      fill='currentColor'
+      className={cn('bi bi-plus', props?.className)}
+      viewBox='0 0 16 16'
+    >
+      <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4' />
+    </svg>
+  );
+};
+
+export const ImageDownIcon = (props: IconProps) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      className={cn(
+        'lucide lucide-image-down-icon lucide-image-down',
+        props?.className,
+      )}
+    >
+      <path d='M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21' />
+      <path d='m14 19 3 3v-5.5' />
+      <path d='m17 22 3-3' />
+      <circle cx='9' cy='9' r='2' />
+    </svg>
+  );
+};
+
+export const CaretLeftIcon = (props: IconProps) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      fill='currentColor'
+      className={cn('bi bi-caret-left', props?.className)}
+      viewBox='0 0 16 16'
+    >
+      <path d='M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753' />
+    </svg>
+  );
+};
+
+export const CaretRightIcon = (props: IconProps) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
+      fill='currentColor'
+      className={cn('bi bi-caret-right', props?.className)}
+      viewBox='0 0 16 16'
+    >
+      <path d='M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753' />
+    </svg>
+  );
+};

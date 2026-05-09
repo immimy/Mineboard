@@ -1,10 +1,5 @@
-import { Locator } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { Suspense } from 'react';
-
-export const logElement = (locator: Locator) => {
-  console.log(locator.element().outerHTML);
-};
 
 /**
  * Resolves an async Server Component into a React element,

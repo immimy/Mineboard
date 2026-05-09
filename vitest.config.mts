@@ -1,12 +1,11 @@
 /// <reference types="vitest/browser" />
 import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { playwright } from '@vitest/browser-playwright';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [react()],
   test: {
     name: 'browser',
     globals: true,
@@ -20,7 +19,7 @@ export default defineConfig({
       junit: './reports/junit-report.xml',
     },
     clearMocks: true, // clears all history of every call
-    setupFiles: './vitest.setup.ts',
+    setupFiles: ['vitest.setup.ts'],
     exclude: [
       ...configDefaults.exclude,
       '**/node_modules/**',
@@ -29,7 +28,15 @@ export default defineConfig({
       '**/**.node.test.ts',
     ],
   },
+  define: {
+    // Polyfills process.env for browser bundle at build time
+    'process.env': JSON.stringify({
+      // explicitly list only the vars the component uses
+      VERCEL_ENV: process.env.VERCEL_ENV,
+    }),
+  },
   resolve: {
+    tsconfigPaths: true,
     alias: {
       // Replace modules with lightweight browser-safe stubs.
       /**

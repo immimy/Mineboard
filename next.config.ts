@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   images: {
     remotePatterns: [
+      /** MOCK */
+      // Avatar
+      { protocol: 'https', hostname: 'api.dicebear.com' },
+      { protocol: 'https', hostname: 'plus.unsplash.com' },
+      /** */
       {
         // Google's avatar
         protocol: 'https',

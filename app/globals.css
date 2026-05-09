@@ -1,5 +1,48 @@
 @import 'tailwindcss';
 
+/* Custom variants */
+/* Datepicker selector (Icon in the date input) */
+@custom-variant date-picker {
+  &::-webkit-calendar-picker-indicator {
+    @slot;
+  }
+}
+
+/* Custom classes */
+/* Style scrollbar */
+@utility minimal-scrollbar {
+  &::-webkit-scrollbar {
+    @apply bg-border/50 h-1 w-1;
+  }
+  &::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  @variant dark {
+    &::-webkit-scrollbar {
+      @apply bg-muted/50 h-1 w-1;
+    }
+    &::-webkit-scrollbar-thumb {
+      @apply bg-muted rounded-full;
+    }
+  }
+}
+
+/* Enable dynamic values in arbitrary class in tailwindcss by setting safelisting  */
+/** General */
+@source inline("bg-card-{{1..9..1}}");
+@source inline("text-card-light-{{1..9..1}}");
+/** Cards */
+@source inline("border-t-card-{{1..9..1}}");
+@source inline("bg-card-light-{{1..9..1}}/40");
+@source inline("dark:bg-card-light-{{1..9..1}}/80");
+/* Checkbox field */
+@source inline("data-checked:bg-card-{{1..9..1}}");
+@source inline("stroke-card-light-{{1..9..1}}");
+/* Tag field */
+@source inline("bg-card-{{1..9..1}}/80");
+@source inline("dark:bg-card-{{1..9..1}}/90");
+
 /* Custom dark mode variant */
 /* Apply dark scheme whenever dark class added to the html or dark selector is used */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -64,7 +107,7 @@
   --card-light-2: hsl(0, 0%, 100%);
 
   --card-3: hsl(45, 93%, 58%); /* Yellow */
-  --card-light-3: hsl(220, 40%, 13%);
+  --card-light-3: hsl(45, 93%, 92%);
 
   --card-4: hsl(0, 78%, 58%); /* Red */
   --card-light-4: hsl(0, 78%, 93%);

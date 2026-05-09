@@ -5,3 +5,10 @@ export const useSearchParams = vi.fn(() => {
     get: vi.fn(),
   };
 });
+
+export const mockReplace = vi.fn();
+export const useRouter = vi.fn(() => {
+  return {
+    replace: mockReplace,
+  };
+});

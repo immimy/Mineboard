@@ -1,9 +1,8 @@
 import { configDefaults, defineConfig } from 'vitest/config';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  plugins: [],
   test: {
     name: 'node',
     globals: true,
@@ -20,8 +19,17 @@ export default defineConfig({
       '**/dist/**',
       './temp/**',
     ],
+    setupFiles: ['vitest.node.setup.ts'],
+    env: {
+      VERCEL_ENV: process.env.VERCEL_ENV,
+      NEXT_PUBLIC_SUPABASE_PROJECT_URL:
+        process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL,
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    },
   },
   resolve: {
+    tsconfigPaths: true,
     alias: {
       // Replace modules with stubs.
       /**

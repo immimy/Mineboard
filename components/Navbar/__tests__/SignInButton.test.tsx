@@ -1,7 +1,7 @@
 import { signInWithGoogle } from '@/utils/database/auth';
 import { render } from 'vitest-browser-react';
 import { page, userEvent } from 'vitest/browser';
-import SignInButton from '../SingInButton';
+import SignInButton from '../SignInButton';
 
 vi.mock('@/utils/database/auth');
 

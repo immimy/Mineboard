@@ -2,6 +2,10 @@
   "name": "mineboard",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "lodash": "4.18.1",
+    "vite": "8.0.5"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,18 +13,30 @@
     "lint": "eslint",
     "test:browser": "vitest --config vitest.config.mts",
     "test:node": "vitest --config vitest.node.config.mts",
-    "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts"
+    "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts",
+    "codegen": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
+    "@apollo/client": "^4.1.6",
+    "@apollo/client-integration-nextjs": "^0.14.4",
     "@headlessui/react": "^2.2.9",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.98.0",
-    "next": "16.1.6",
+    "cloudinary": "^2.9.0",
+    "dayjs": "^1.11.20",
+    "embla-carousel-react": "^8.6.0",
+    "graphql": "^16.13.2",
+    "next": "^16.2.3",
+    "next-cloudinary": "^6.17.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "rxjs": "^7.8.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^6.2.1",
+    "@parcel/watcher": "^2.5.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -30,8 +46,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "vite-tsconfig-paths": "^6.1.1",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.18",
     "vitest-browser-react": "^2.0.5"
   }

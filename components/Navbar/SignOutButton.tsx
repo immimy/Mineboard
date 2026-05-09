@@ -1,34 +1,30 @@
 'use client';
 
-import { FormState } from '@/types/types';
+import { FormState } from '@/types/app';
 import { signOutWithGoogle } from '@/utils/database/auth';
-import { Button } from '@headlessui/react';
-import { useActionState, useEffect } from 'react';
-import { toast } from 'react-toastify';
-
-const initialState: FormState = { error: null };
+import { useApolloClient } from '@apollo/client/react';
+import { useRouter } from 'next/navigation';
+import FormContainer from '../global/FormContainer';
+import SubmitButton from '../global/SubmitButton';
 
 function SignOutButton() {
-  const [state, formAction, isPending] = useActionState(
-    signOutWithGoogle,
-    initialState,
-  );
+  const client = useApolloClient();
+  const { replace } = useRouter();
 
-  useEffect(() => {
-    if (!state.error) return;
-    toast.error(state.error);
-  }, [state.error]);
+  const signOutAction = async (formState: FormState): Promise<FormState> => {
+    const { error } = await signOutWithGoogle();
+    if (error) return { ...formState, error };
+    client.clearStore();
+    replace('/');
+    return { ...formState };
+  };
 
   return (
-    <form action={formAction}>
-      <Button
-        type='submit'
-        disabled={isPending}
-        className='text-sm font-medium lg:text-base lg:tracking-tight'
-      >
+    <FormContainer action={signOutAction}>
+      <SubmitButton className='px-6 py-2 text-sm font-medium lg:text-base lg:tracking-tight w-full'>
         Sign Out
-      </Button>
-    </form>
+      </SubmitButton>
+    </FormContainer>
   );
 }
 export default SignOutButton;

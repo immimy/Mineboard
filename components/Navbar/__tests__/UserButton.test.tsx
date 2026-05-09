@@ -3,6 +3,14 @@ import UserButton from '../UserButton';
 import { renderAsync } from '@/mocks/browser/helper/helpers';
 import { mockGetUser, mockUser } from '@/mocks/browser/supabase/serverClient';
 
+/** Mock */
+// Apollo
+const mockClearStore = vi.fn();
+vi.mock('@apollo/client/react', () => ({
+  useApolloClient: () => ({ clearStore: mockClearStore }),
+}));
+/** */
+
 const getAllElements = () => {
   return {
     userButton: page.getByRole('button', { name: 'user icon' }),

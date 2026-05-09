@@ -1,7 +1,7 @@
 'use client';
 
 import { MoonIcon, SunIcon } from '@/icons/icons';
-import { Theme } from '@/types/types';
+import { Theme } from '@/types/app';
 import { Button } from '@headlessui/react';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { NavbarButton as ButtonSkeleton } from '../Skeleton/Button';

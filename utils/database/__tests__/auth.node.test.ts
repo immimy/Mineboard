@@ -41,6 +41,9 @@ describe('SignInWithGoogle action', () => {
       provider: 'google',
       options: {
         redirectTo: `${mock.origin}/api/auth?next=/dashboard`,
+        queryParams: {
+          prompt: 'select_account',
+        },
       },
     });
   });
@@ -71,7 +74,7 @@ describe('SignOutWithGoogle action', () => {
     });
 
     // ✅ signOutWithGoogle action throws NEXT_REDIRECT on success
-    await expect(signOutWithGoogle()).rejects.toThrow('NEXT_REDIRECT: /');
+    await expect(signOutWithGoogle()).resolves.toEqual({ error: null });
     // ✅ signOut method have been called one time
     expect(mockSignOut).toHaveBeenCalledTimes(1);
   });

@@ -4,8 +4,10 @@ import ThemeToggleButton from './ThemeToggleButton';
 import UserButton from './UserButton';
 import { Suspense } from 'react';
 import { NavbarButton as ButtonSkeleton } from '../Skeleton/Button';
+import DevUserButton from './Mocks/DevUserButton';
 
 function Navbar() {
+  const isProduction = process.env.VERCEL_ENV === 'production';
   return (
     <nav className='py-2 bg-neutral text-neutral-foreground'>
       <Container className='flex justify-between items-center'>
@@ -20,7 +22,7 @@ function Navbar() {
         <div className='flex items-center gap-x-2 lg:gap-x-3'>
           <ThemeToggleButton />
           <Suspense fallback={<ButtonSkeleton />}>
-            <UserButton />
+            {isProduction ? <UserButton /> : <DevUserButton />}
           </Suspense>
         </div>
       </Container>

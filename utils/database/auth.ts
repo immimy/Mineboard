@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/database/serverClient';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { FormState } from '@/types/types';
+import { FormState } from '@/types/app';
 
 export async function signInWithGoogle(): Promise<FormState> {
   const supabase = await createClient();
@@ -15,6 +15,9 @@ export async function signInWithGoogle(): Promise<FormState> {
       // Define ?next=/dashboard
       // Redirects authenticated user to the dashboard after succeed on exchange for a session
       redirectTo: `${origin}/api/auth?next=/dashboard`,
+      queryParams: {
+        prompt: 'select_account', // forces Google account picker every time
+      },
     },
   });
 
@@ -27,5 +30,5 @@ export async function signOutWithGoogle(): Promise<FormState> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
   if (error) return { error: error?.message || 'Failed to sign out' };
-  redirect('/'); // Redirect to homepage
+  return { error: null };
 }
