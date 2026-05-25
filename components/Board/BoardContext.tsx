@@ -1,6 +1,6 @@
 'use client';
 
-import { FragmentType, graphql, useFragment } from '@/gql/__generated__';
+import { FragmentType, graphql, useFragment as readFragment } from '@/gql/__generated__';
 import { ResultOf } from '@graphql-typed-document-node/core';
 import {
   createContext,
@@ -57,7 +57,7 @@ function BoardContextWrapper({
 }: BoardContextProps) {
   // List Fields retrieved from database
   const dbListFields = useMemo(
-    () => useFragment(ListFieldsCollectionFragment, queryListFields)?.edges,
+    () => readFragment(ListFieldsCollectionFragment, queryListFields)?.edges,
     [queryListFields],
   );
   // AddList dialog

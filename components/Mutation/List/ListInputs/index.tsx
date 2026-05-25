@@ -86,4 +86,5 @@ const RenderListInput = memo(
     }
   },
 );
+RenderListInput.displayName = 'RenderListInput';
 export default RenderListInput;

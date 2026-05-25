@@ -20,9 +20,12 @@ function ThemeToggleButton() {
         ? 'dark'
         : 'light');
     const isPrefersDarkScheme = preferredScheme === 'dark';
-    isPrefersDarkScheme
-      ? document.documentElement.classList.add('dark')
-      : document.documentElement.classList.remove('dark');
+    if (isPrefersDarkScheme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- init-on-mount: reads localStorage/matchMedia once, not a cascading render
     setIsLoaded(true);
     setIsDarkTheme(isPrefersDarkScheme);
   }, []);

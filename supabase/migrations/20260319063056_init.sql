@@ -1,3 +1,6 @@
+-- Enable the "pg_graphql" extension
+create extension if not exists pg_graphql;
+
 -- ============================================================
 -- TABLES
 -- ============================================================

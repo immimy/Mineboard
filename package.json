@@ -11,6 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run lint && npm run typecheck",
     "test:browser": "vitest --config vitest.config.mts",
     "test:node": "vitest --config vitest.node.config.mts",
     "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts",

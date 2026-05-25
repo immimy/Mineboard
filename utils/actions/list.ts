@@ -35,7 +35,7 @@ export const createList = async (
     if (!dbListFields) throw new Error('Empty list fields');
 
     // Customize raw data
-    let rawData: any[] = [];
+    let rawData: { listFieldId: string; fieldType: string; input: unknown }[] = [];
     for (const { node } of dbListFields.edges) {
       rawData = [
         ...rawData,

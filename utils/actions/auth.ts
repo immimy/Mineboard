@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export const authenticateUser = async (
-  supabase: SupabaseClient<any, 'public', 'public', any, any>,
+  supabase: SupabaseClient,
 ) => {
   const {
     data: { user },

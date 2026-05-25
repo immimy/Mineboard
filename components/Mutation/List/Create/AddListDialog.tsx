@@ -33,7 +33,7 @@ import {
 import { createList } from '@/utils/actions/list';
 import { toast } from 'react-toastify';
 import { useApolloClient } from '@apollo/client/react';
-import { useFragment } from '@/gql/__generated__';
+import { useFragment as readFragment } from '@/gql/__generated__';
 
 /** STATE */
 
@@ -118,7 +118,7 @@ function AddListDialog() {
 
     // Apollo cache update
     const createdListEdge = data?.listsCollection?.edges[0].node;
-    const createdList = useFragment(CreatedListFragmentDoc, createdListEdge!);
+    const createdList = readFragment(CreatedListFragmentDoc, createdListEdge!);
 
     // 1. Write Fragment
     const listRef = client.cache.writeFragment({

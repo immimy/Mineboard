@@ -38,6 +38,7 @@ function Carousel({
   useEffect(() => {
     if (!emblaApi) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- init-on-mount: sets embla snap state once when api is ready
     setupSnaps(emblaApi);
     setActiveSnap(emblaApi);
 

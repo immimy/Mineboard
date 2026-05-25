@@ -21,7 +21,7 @@ describe('toast function is invoked correctly', () => {
   it('calls toast.error with the error message when error param is present', async () => {
     vi.mocked(useSearchParams).mockReturnValue({
       get: vi.fn().mockReturnValue('Auth callback failed'),
-    } as any);
+    } as unknown as ReturnType<typeof useSearchParams>);
 
     await render(<ErrorToast />);
 
@@ -32,7 +32,7 @@ describe('toast function is invoked correctly', () => {
   it('does not call toast.error when no error param is present', async () => {
     vi.mocked(useSearchParams).mockReturnValue({
       get: vi.fn().mockReturnValue(null),
-    } as any);
+    } as unknown as ReturnType<typeof useSearchParams>);
 
     await render(<ErrorToast />);
 

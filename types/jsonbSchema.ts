@@ -57,7 +57,7 @@ export type ImageSchema = JsonbSchemaBase<ImageConfig, string[]>;
 
 /** Checkbox */
 type CheckboxValue = { checked: boolean; title: string };
-export type CheckboxSchema = JsonbSchemaBase<{}, CheckboxValue>;
+export type CheckboxSchema = JsonbSchemaBase<Record<string, never>, CheckboxValue>;
 
 /** Tag */
 type TagValue = { tag: string; color?: ColorPalette };

@@ -33,9 +33,9 @@ export const mockListFields = {
   __typename: 'list_fieldsConnection',
   edges: [
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_CHECKBOX_ID,
         name: 'checkbox_1',
         type: Field_Type.Checkbox,
@@ -44,9 +44,9 @@ export const mockListFields = {
       },
     },
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_DATE_ID,
         name: 'date_1',
         type: Field_Type.Date,
@@ -55,9 +55,9 @@ export const mockListFields = {
       },
     },
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_TEXT_ID,
         name: 'text_1',
         type: Field_Type.Text,
@@ -66,9 +66,9 @@ export const mockListFields = {
       },
     },
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_TAG_ID,
         name: 'tag_1',
         type: Field_Type.Tag,
@@ -77,9 +77,9 @@ export const mockListFields = {
       },
     },
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_IMAGE_ID,
         name: 'image_1',
         type: Field_Type.Image,
@@ -88,9 +88,9 @@ export const mockListFields = {
       },
     },
     {
-      __typename: 'list_fieldsEdge' as 'list_fieldsEdge',
+      __typename: 'list_fieldsEdge' as const,
       node: {
-        __typename: 'list_fields' as 'list_fields',
+        __typename: 'list_fields' as const,
         id: FIELD_NUMBER_ID,
         name: 'number_1',
         type: Field_Type.Number,
