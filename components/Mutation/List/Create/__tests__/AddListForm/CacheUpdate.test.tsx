@@ -3,6 +3,7 @@ import { mockedUseBoardContext, CREATE_LIST_SUCCESS } from '../testMocks';
 import { getAllElements, renderAddListDialog } from '../testUtils';
 import * as listActions from '@/utils/actions/list';
 import { InMemoryCache } from '@apollo/client-integration-nextjs';
+import { userEvent } from 'vitest/browser';
 
 // ───────────────────────────────────────────────────────────
 // Mocks
@@ -33,7 +34,12 @@ describe('AddListDialog form submission', () => {
     const mockCache = vi.mockObject(new InMemoryCache(), { spy: true });
     await renderAddListDialog(mockCache);
 
-    const { saveButton } = getAllElements();
+    // Fill out a field and submit form
+    const { saveButton, dateList, textList } = getAllElements();
+    const dateInput = dateList.getByLabelText(/deadline/i);
+    await userEvent.type(dateInput, '12242026');
+    const textInput = textList.getByLabelText(/note/i);
+    await textInput.fill('Decorate Christmas tree');
     await saveButton.click();
 
     // Expected new created list
@@ -42,7 +48,7 @@ describe('AddListDialog form submission', () => {
     // Writes the new list to Apollo cache
     expect(mockCache.writeFragment).toHaveBeenCalledWith(
       expect.objectContaining({
-        fragmentName: 'createdList',
+        fragmentName: 'CreatedList',
         data: newCreatedList,
       }),
     );

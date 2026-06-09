@@ -45,9 +45,9 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockTextId]: {
+        [mockTextId]: expect.objectContaining({
           value: "Thank god, it' Friday",
-        },
+        }),
       }),
     );
   });

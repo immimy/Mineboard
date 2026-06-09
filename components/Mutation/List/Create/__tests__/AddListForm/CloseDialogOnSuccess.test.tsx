@@ -34,7 +34,10 @@ describe('AddListDialog form submission', () => {
   it('closes the dialog after successful submission', async () => {
     await renderAddListDialog();
 
-    const { saveButton } = getAllElements();
+    // Fill out a field and submit form
+    const { saveButton, textList } = getAllElements();
+    const textInput = textList.getByLabelText(/note/i);
+    await textInput.fill('My note');
     await saveButton.click();
 
     expect(mockCloseAddList).toHaveBeenCalled();

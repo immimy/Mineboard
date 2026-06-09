@@ -9,7 +9,7 @@ import DevUserButton from './Mocks/DevUserButton';
 function Navbar() {
   const isProduction = process.env.VERCEL_ENV === 'production';
   return (
-    <nav className='py-2 bg-neutral text-neutral-foreground'>
+    <nav className='py-2 bg-neutral text-neutral-foreground sticky top-0 z-10'>
       <Container className='flex justify-between items-center'>
         {/* LEFT */}
         <Link

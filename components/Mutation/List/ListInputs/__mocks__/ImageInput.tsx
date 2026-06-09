@@ -1,14 +1,8 @@
-import { Field_Type } from '@/gql/__generated__/graphql';
-import { getFieldTitle } from '../index';
+import { getFieldTitle, ListFieldInputProps } from '../index';
 import { mockPublicId } from '@/components/Board/__tests__/singleBoardQuery.mock';
 
 type ImageInputProps = {
-  field: {
-    id: string;
-    config: { title: string };
-    type: Field_Type.Image;
-    position: number;
-  };
+  field: ListFieldInputProps['field'];
   form: object;
   handleFieldChange: (id: string, v: object) => void;
 };

@@ -45,12 +45,12 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockCheckboxId]: {
+        [mockCheckboxId]: expect.objectContaining({
           value: {
             checked: false,
             title: 'Morning coffee',
           },
-        },
+        }),
       }),
     );
   });

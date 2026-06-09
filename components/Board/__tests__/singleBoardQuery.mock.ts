@@ -1,7 +1,6 @@
 import { MockLink } from '@apollo/client/testing';
-import { SingleBoardDocumentQuery } from '../BoardContainer';
 import { GraphQLError } from 'graphql/error';
-import { Field_Type } from '@/gql/__generated__/graphql';
+import { Field_Type, SingleBoardDocument } from '@/gql/__generated__/graphql';
 
 // ─── IDs ──────────────────────────────────────────────────────────────────────
 
@@ -108,7 +107,7 @@ export const mockListFields = {
 export const successMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocumentQuery,
+    query: SingleBoardDocument,
     variables: { boardId: BOARD_ID },
   },
   result: {
@@ -286,7 +285,7 @@ export const successMock: MockLink.MockedResponse = {
 export const noDataMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocumentQuery,
+    query: SingleBoardDocument,
     variables: { boardId: BOARD_ID },
   },
   result: {
@@ -317,7 +316,7 @@ export const noDataMock: MockLink.MockedResponse = {
 export const networkErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocumentQuery,
+    query: SingleBoardDocument,
     variables: { boardId: BOARD_ID },
   },
   error: new Error('Network failure'),
@@ -326,7 +325,7 @@ export const networkErrorMock: MockLink.MockedResponse = {
 export const graphqlErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocumentQuery,
+    query: SingleBoardDocument,
     variables: { boardId: BOARD_ID },
   },
   result: {

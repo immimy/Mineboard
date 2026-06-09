@@ -18,12 +18,13 @@ export function validateWithZodSchema<T>(schema: ZodType<T>, data: unknown): T {
 // ─── List_Value schemas ────────────────────────────────────────────
 
 const textValueSchema = z.object({
-  value: z.string(),
+  value: z.string().trim(),
 });
 
 const numberValueSchema = z.object({
   value: z
     .string()
+    .trim()
     .refine((value) => value === '' || !Number.isNaN(value))
     .transform((value) => {
       if (value === '') return value;
@@ -35,6 +36,7 @@ const dateValueSchema = z
   .object({
     value: z
       .string()
+      .trim()
       .refine(
         (value) => value.length === 0 || !Number.isNaN(Date.parse(value)),
         'Invalid date value',
@@ -47,20 +49,22 @@ const dateValueSchema = z
   });
 
 const imageValueSchema = z.object({
-  value: z.array(z.string().optional()).max(5, 'You can upload up to 5 images'),
+  value: z
+    .array(z.string().trim().optional())
+    .max(5, 'You can upload up to 5 images'),
 });
 
 const checkboxValueSchema = z.object({
   value: z.object({
     checked: z.boolean(),
-    title: z.string(),
+    title: z.string().trim(),
   }),
 });
 
 const tagValueSchema = z.object({
   value: z.array(
     z.object({
-      tag: z.string(),
+      tag: z.string().trim(),
       color: z
         .enum(ColorPalette, 'Color must be a valid palette value')
         .optional(),
@@ -105,4 +109,21 @@ export type ListValueInput = z.infer<typeof listValueInputSchema>;
 export const createListSchema = z.object({
   cardId: z.uuid(),
   fieldValues: z.array(listValueInputSchema),
+});
+
+export const createCardSchema = z.object({
+  boardId: z.uuid(),
+  title: z
+    .string()
+    .trim()
+    .min(1, 'Card title is required')
+    .max(30, 'Title must not exceed 30 characters'),
+  color: z.preprocess(
+    (value) => {
+      const output = Number(value);
+      if (typeof output === 'number' && !Number.isNaN(output)) return output;
+      return value;
+    },
+    z.enum(ColorPalette, 'Color must be a valid palette value'),
+  ),
 });

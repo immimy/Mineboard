@@ -1,33 +1,36 @@
-import { Field_Type } from '@/gql/__generated__/graphql';
+import {
+  Field_Type,
+  ListFieldsCollectionFragmentDoc,
+} from '@/gql/__generated__/graphql';
+import { ResultOf } from '@graphql-typed-document-node/core';
 import CheckboxInput from './CheckboxInput';
 import DateInput from './DateInput';
 import ImageInput from './ImageInput';
 import NumberInput from './NumberInput';
 import TagInput from './TagInput';
 import TextInput from './TextInput';
-import { ListFieldData, QueryListField } from '@/types/app';
 import {
-  CheckboxSchema,
-  DateInputSchema,
-  ImageSchema,
-  ListField,
-  NumberSchema,
-  TagSchema,
-  TextSchema,
+  CheckboxInput as CheckboxForm,
+  DateInput as DateForm,
+  ImageInput as ImageForm,
+  NumberInput as NumberForm,
+  TagInput as TagForm,
+  TextInput as TextForm,
+  ListFieldInput,
 } from '@/types/jsonbSchema';
 import { memo } from 'react';
 
-export function getFieldTitle<
-  TData extends Extract<ListField, { config: { title: string } }>,
->(field: QueryListField) {
-  const config = field.config as TData['config'];
-  return config.title;
-}
+type ListFieldQuery = ResultOf<
+  typeof ListFieldsCollectionFragmentDoc
+>['edges'][0]['node'];
+
+export const getFieldTitle = (field: ListFieldQuery) =>
+  field.config?.title as string;
 
 export type ListFieldInputProps = {
-  field: QueryListField;
-  form: ListFieldData<ListField>;
-  handleFieldChange: (fieldId: string, value: ListFieldData) => void;
+  field: ListFieldQuery;
+  form: ListFieldInput;
+  handleFieldChange: (fieldId: string, value: ListFieldInput) => void;
 };
 
 const RenderListInput = memo(
@@ -37,7 +40,7 @@ const RenderListInput = memo(
         return (
           <CheckboxInput
             field={field}
-            form={form as ListFieldData<CheckboxSchema>}
+            form={form as CheckboxForm}
             handleFieldChange={handleFieldChange}
           />
         );
@@ -45,7 +48,7 @@ const RenderListInput = memo(
         return (
           <DateInput
             field={field}
-            form={form as ListFieldData<DateInputSchema>}
+            form={form as DateForm}
             handleFieldChange={handleFieldChange}
           />
         );
@@ -53,7 +56,7 @@ const RenderListInput = memo(
         return (
           <ImageInput
             field={field}
-            form={form as ListFieldData<ImageSchema>}
+            form={form as ImageForm}
             handleFieldChange={handleFieldChange}
           />
         );
@@ -61,7 +64,7 @@ const RenderListInput = memo(
         return (
           <NumberInput
             field={field}
-            form={form as ListFieldData<NumberSchema>}
+            form={form as NumberForm}
             handleFieldChange={handleFieldChange}
           />
         );
@@ -69,7 +72,7 @@ const RenderListInput = memo(
         return (
           <TagInput
             field={field}
-            form={form as ListFieldData<TagSchema>}
+            form={form as TagForm}
             handleFieldChange={handleFieldChange}
           />
         );
@@ -77,7 +80,7 @@ const RenderListInput = memo(
         return (
           <TextInput
             field={field}
-            form={form as ListFieldData<TextSchema>}
+            form={form as TextForm}
             handleFieldChange={handleFieldChange}
           />
         );

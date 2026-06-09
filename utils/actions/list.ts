@@ -1,6 +1,6 @@
 'use server';
 
-import { ListFieldForm } from '@/types/app';
+import { ListForm } from '@/types/app';
 import { authenticateUser } from './auth';
 import { createClient } from '../database/serverClient';
 import {
@@ -9,16 +9,16 @@ import {
 } from '../validation/validator';
 import { formatToRpcCreateListValues } from '../validation/helper';
 import {
-  BoardListFieldsDocumentQuery,
+  BoardListFieldsQuery,
   customQuery,
-  ListWithValuesDocumentQuery,
+  ListWithValuesQuery,
 } from './graphql';
 import { renderError } from './helper';
 
 export const createList = async (
   boardId: string,
   cardId: string,
-  forms: ListFieldForm,
+  forms: ListForm,
 ) => {
   try {
     const supabase = await createClient();
@@ -28,14 +28,15 @@ export const createList = async (
 
     // Get list fields from the database
     const listFieldsQuery = await customQuery({
-      query: BoardListFieldsDocumentQuery,
+      query: BoardListFieldsQuery,
       variables: { boardId },
     });
     const dbListFields = listFieldsQuery?.list_fieldsCollection;
     if (!dbListFields) throw new Error('Empty list fields');
 
     // Customize raw data
-    let rawData: { listFieldId: string; fieldType: string; input: unknown }[] = [];
+    let rawData: { listFieldId: string; fieldType: string; input: unknown }[] =
+      [];
     for (const { node } of dbListFields.edges) {
       rawData = [
         ...rawData,
@@ -65,7 +66,7 @@ export const createList = async (
 
     // Query new created list with values for cache update
     const ListWithValuesDocument = await customQuery({
-      query: ListWithValuesDocumentQuery,
+      query: ListWithValuesQuery,
       variables: { listId },
     });
     if (!ListWithValuesDocument?.listsCollection)

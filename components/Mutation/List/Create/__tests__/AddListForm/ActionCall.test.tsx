@@ -53,10 +53,10 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockTagId]: { value: [{ tag: 'routine' }] },
-        [mockCheckboxId]: {
+        [mockTagId]: expect.objectContaining({ value: [{ tag: 'routine' }] }),
+        [mockCheckboxId]: expect.objectContaining({
           value: { checked: false, title: 'write daily journal' },
-        },
+        }),
       }),
     );
   });

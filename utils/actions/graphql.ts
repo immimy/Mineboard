@@ -15,8 +15,8 @@ export const customQuery = async <
   return data;
 };
 
-export const BoardListFieldsDocumentQuery = graphql(/* GraphQL */ `
-  query BoardListFieldsDocument($boardId: UUID!) {
+export const BoardListFieldsQuery = graphql(/* GraphQL */ `
+  query BoardListFields($boardId: UUID!) {
     list_fieldsCollection(filter: { board_id: { eq: $boardId } }) {
       edges {
         node {
@@ -28,12 +28,12 @@ export const BoardListFieldsDocumentQuery = graphql(/* GraphQL */ `
   }
 `);
 
-export const ListWithValuesDocumentQuery = graphql(/* GraphQL */ `
-  query ListWithValuesDocument($listId: UUID!) {
+export const ListWithValuesQuery = graphql(/* GraphQL */ `
+  query ListWithValues($listId: UUID!) {
     listsCollection(filter: { id: { eq: $listId } }) {
       edges {
         node {
-          ...createdList
+          ...CreatedList
         }
       }
     }
@@ -41,11 +41,35 @@ export const ListWithValuesDocumentQuery = graphql(/* GraphQL */ `
 `);
 
 export const CreatedListFragment = graphql(/* GraphQL */ `
-  fragment createdList on lists {
+  fragment CreatedList on lists {
     id
     position
     list_valuesCollection {
       ...ListValuesCollection @unmask
+    }
+  }
+`);
+
+export const CardQuery = graphql(/* GraphQL */ `
+  query Card($cardId: UUID!) {
+    cardsCollection(filter: { id: { eq: $cardId } }) {
+      edges {
+        node {
+          ...CreatedCard
+        }
+      }
+    }
+  }
+`);
+
+export const CreatedCardFragment = graphql(/* GraphQL */ `
+  fragment CreatedCard on cards {
+    id
+    title
+    position
+    color
+    listsCollection(orderBy: [{ position: AscNullsLast }]) {
+      ...ListsCollection @unmask
     }
   }
 `);

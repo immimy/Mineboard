@@ -1,6 +1,5 @@
-import { ImageSchema } from '@/types/jsonbSchema';
+import { ImageInput as ImageForm } from '@/types/jsonbSchema';
 import { getFieldTitle, ListFieldInputProps } from '.';
-import { ListFieldData } from '@/types/app';
 import { Button } from '@headlessui/react';
 import {
   CldImage,
@@ -14,6 +13,7 @@ import { ImageDownIcon } from '@/icons/icons';
 import { useRef } from 'react';
 import clsx from 'clsx';
 import CarouselSlide from '@/components/Slider/CarouselSlide';
+import { useFormStatus } from 'react-dom';
 
 const maxFiles = 5;
 const tags =
@@ -25,7 +25,8 @@ function ImageInput({
   field,
   form,
   handleFieldChange,
-}: Omit<ListFieldInputProps, 'form'> & { form: ListFieldData<ImageSchema> }) {
+}: Omit<ListFieldInputProps, 'form'> & { form: ImageForm }) {
+  const { pending } = useFormStatus();
   const imagesRef = useRef<string[]>([]);
 
   // Total current files and the remaining quota left for uploads
@@ -98,7 +99,7 @@ function ImageInput({
                 </span>
               </div>
               <Button
-                disabled={numOfFiles >= maxFiles}
+                disabled={numOfFiles >= maxFiles || pending}
                 onClick={() => {
                   if (available <= 0) return hide();
                   open();

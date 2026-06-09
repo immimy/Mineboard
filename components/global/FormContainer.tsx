@@ -27,7 +27,7 @@ function FormContainer({
   useEffect(() => {
     if (!state.error) return;
     toast.error(state.error);
-  }, [state.error]);
+  }, [state]);
   return (
     <form id={id} action={formAction} onChange={onChange} className={className}>
       {children}

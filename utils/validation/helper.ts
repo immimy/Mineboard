@@ -1,5 +1,36 @@
 import { Field_Type } from '@/gql/__generated__/graphql';
 import { ListValueInput } from './validator';
+import { ListForm } from '@/types/app';
+
+/**
+ * List form contains at least one field value
+ * (client form validation)
+ */
+export const isListFormEmpty = (form: ListForm): boolean => {
+  const inputs = Object.values(form);
+  return (
+    inputs.filter((fv) => {
+      const { type, value } = fv;
+      switch (type) {
+        case Field_Type.Text:
+          return value.trim() !== '';
+        case Field_Type.Number:
+          return value !== '';
+        case Field_Type.Date:
+          return value !== '';
+        case Field_Type.Image:
+          return Boolean(value.length);
+        case Field_Type.Checkbox:
+          return value.title.trim() !== '';
+        case Field_Type.Tag:
+          return Boolean(value.length);
+
+        default:
+          throw new Error(`${type} is not supported.`);
+      }
+    }).length < 1
+  );
+};
 
 /**
  * Returns true when a field value is considered "empty" and should NOT

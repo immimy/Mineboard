@@ -24,7 +24,7 @@ export default function RootLayout({
         <div className='bg-background min-h-screen'>
           <ApolloWrapper>
             <Navbar />
-            <main>
+            <main className='pb-8 md:pb-16'>
               <Container>{children}</Container>
             </main>
           </ApolloWrapper>

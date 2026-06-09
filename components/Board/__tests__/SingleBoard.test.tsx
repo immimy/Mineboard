@@ -11,6 +11,9 @@ import { getAllElements, renderSingleBoard } from './testUtils';
 vi.mock('@/components/Mutation/List/Create/AddListDialog', () => ({
   default: () => <div data-testid='mock-add-list-dialog' />,
 }));
+vi.mock('@/components/Mutation/Card/Create/AddCardDialog', () => ({
+  default: () => <div data-testid='mock-add-card-dialog' />,
+}));
 
 // ---------------------------------------------------------------------------
 // Single Board Page

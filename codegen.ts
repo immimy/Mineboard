@@ -20,6 +20,7 @@ const config: CodegenConfig = {
       documentTransforms: [addTypenameSelectionDocumentTransform],
       plugins: [],
       config: {
+        customDirectives: { apolloUnmask: true },
         scalars: {
           UUID: 'string',
           Date: 'string',
@@ -32,6 +33,9 @@ const config: CodegenConfig = {
         },
       },
     },
+  },
+  hooks: {
+    afterOneFileWrite: ['npx prettier --write'],
   },
 };
 

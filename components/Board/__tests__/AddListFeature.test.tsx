@@ -11,7 +11,7 @@ import { userEvent } from 'vitest/browser';
 import BoardContainer from '@/components/Board/BoardContainer';
 import { getAllElements } from './testUtils';
 import * as listActions from '@/utils/actions/list';
-import { CREATE_LIST_SUCCESS } from './testMocks';
+import { CREATE_LIST_SUCCESS } from '@/components/Mutation/List/Create/__tests__/testMocks';
 import { formatDate } from '@/utils/formatter/helper';
 
 // ───────────────────────────────────────────────────────────
@@ -20,6 +20,9 @@ import { formatDate } from '@/utils/formatter/helper';
 
 vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
+vi.mock('@/components/Mutation/Card/Create/AddCardDialog', () => ({
+  default: () => <div data-testid='mock-add-card-dialog' />,
+}));
 
 // ───────────────────────────────────────────────────────────
 // Setup
@@ -70,13 +73,15 @@ describe('Add list feature', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockDateId]: {
+        [mockDateId]: expect.objectContaining({
           meta: {
             tzOffset: new Date().getTimezoneOffset(),
           },
           value: '2026-12-24',
-        },
-        [mockTextId]: { value: 'Decorate Christmas tree' },
+        }),
+        [mockTextId]: expect.objectContaining({
+          value: 'Decorate Christmas tree',
+        }),
       }),
     );
 

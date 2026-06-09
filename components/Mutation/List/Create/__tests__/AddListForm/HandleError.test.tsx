@@ -35,7 +35,10 @@ describe('AddListDialog form submission', () => {
   it('shows an error toast and keeps dialog open when createList fails', async () => {
     await renderAddListDialog();
 
-    const { saveButton } = getAllElements();
+    // Fill out a field and submit form
+    const { saveButton, textList } = getAllElements();
+    const textInput = textList.getByLabelText(/note/i);
+    await textInput.fill('My note');
     await saveButton.click();
 
     expect(toast.error).toHaveBeenCalledWith('Failed to add list');

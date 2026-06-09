@@ -44,7 +44,7 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockImageId]: { value: [mockPublicId] },
+        [mockImageId]: expect.objectContaining({ value: [mockPublicId] }),
       }),
     );
   });

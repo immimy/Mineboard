@@ -54,9 +54,9 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockTagId]: {
+        [mockTagId]: expect.objectContaining({
           value: [{ tag: 'shopping', color: 2 }],
-        },
+        }),
       }),
     );
   });

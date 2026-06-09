@@ -1,18 +1,19 @@
-import { NumberSchema } from '@/types/jsonbSchema';
+import { NumberInput as NumberForm, NumberSchema } from '@/types/jsonbSchema';
 import { getFieldTitle, ListFieldInputProps } from '.';
 import { Field, Fieldset, Input, Label } from '@headlessui/react';
-import { ListFieldData } from '@/types/app';
+import { useFormStatus } from 'react-dom';
 
 function NumberInput({
   field,
   form,
   handleFieldChange,
-}: Omit<ListFieldInputProps, 'form'> & { form: ListFieldData<NumberSchema> }) {
+}: Omit<ListFieldInputProps, 'form'> & { form: NumberForm }) {
+  const { pending } = useFormStatus();
   const config = field.config as NumberSchema['config'];
 
   return (
     <li style={{ order: field.position }}>
-      <Fieldset>
+      <Fieldset disabled={pending}>
         <Field className='flex items-center gap-2'>
           {/* LABEL */}
           <Label className='text-sm font-semibold'>

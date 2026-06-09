@@ -1,5 +1,5 @@
+import { AllBoardsDocument } from '@/gql/__generated__/graphql';
 import { MockLink } from '@apollo/client/testing';
-import { AllBoardsDocumentQuery } from '../BoardsContainer';
 import { GraphQLError } from 'graphql/error';
 
 const USER_ID = 'userId1';
@@ -9,7 +9,7 @@ const BOARD_ID_2 = 'boardId2';
 export const successMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocumentQuery,
+    query: AllBoardsDocument,
     variables: { userId: USER_ID },
   },
   result: {
@@ -43,7 +43,7 @@ export const successMock: MockLink.MockedResponse = {
 export const noDataMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocumentQuery,
+    query: AllBoardsDocument,
     variables: { userId: USER_ID },
   },
   result: {
@@ -60,7 +60,7 @@ export const noDataMock: MockLink.MockedResponse = {
 export const networkErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocumentQuery,
+    query: AllBoardsDocument,
     variables: { userId: USER_ID },
   },
   error: new Error('Network failure'),
@@ -69,7 +69,7 @@ export const networkErrorMock: MockLink.MockedResponse = {
 export const graphqlErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocumentQuery,
+    query: AllBoardsDocument,
     variables: { userId: USER_ID },
   },
   result: {

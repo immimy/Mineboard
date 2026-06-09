@@ -1,6 +1,10 @@
 'use client';
 
-import { FragmentType, graphql, useFragment as readFragment } from '@/gql/__generated__';
+import {
+  FragmentType,
+  graphql,
+  useFragment as readFragment,
+} from '@/gql/__generated__';
 import { ResultOf } from '@graphql-typed-document-node/core';
 import {
   createContext,
@@ -29,6 +33,9 @@ const ListFieldsCollectionFragment = graphql(/* GraphQL */ `
 type ContextType = {
   boardId: string;
   dbListFields?: ResultOf<typeof ListFieldsCollectionFragment>['edges'];
+  isAddCardOpen: boolean;
+  openAddCard: () => void;
+  closeAddCard: () => void;
   isAddListOpen: boolean;
   addListCardId?: string;
   openAddList: (cardId: string) => void;
@@ -55,6 +62,19 @@ function BoardContextWrapper({
   boardId,
   queryListFields,
 }: BoardContextProps) {
+  /** Card: add feature */
+  // AddCard dialog
+  const [isAddCardOpen, setIsAddCardOpen] = useState(false);
+
+  const openAddCard = useCallback(() => {
+    setIsAddCardOpen(true);
+  }, []);
+
+  const closeAddCard = useCallback(() => {
+    setIsAddCardOpen(false);
+  }, []);
+
+  /** List: add feature */
   // List Fields retrieved from database
   const dbListFields = useMemo(
     () => readFragment(ListFieldsCollectionFragment, queryListFields)?.edges,
@@ -78,6 +98,9 @@ function BoardContextWrapper({
     <BoardContext.Provider
       value={{
         boardId,
+        isAddCardOpen,
+        openAddCard,
+        closeAddCard,
         dbListFields,
         isAddListOpen,
         addListCardId,

@@ -1,19 +1,20 @@
-import { DateSchema } from '@/types/jsonbSchema';
+import { DateInput as DateForm, DateSchema } from '@/types/jsonbSchema';
 import { getFieldTitle, ListFieldInputProps } from '.';
-import { ListFieldData } from '@/types/app';
 import { Field, Fieldset, Input, Label } from '@headlessui/react';
+import { useFormStatus } from 'react-dom';
 
 function DateInput({
   field,
   form,
   handleFieldChange,
-}: Omit<ListFieldInputProps, 'form'> & { form: ListFieldData<DateSchema> }) {
+}: Omit<ListFieldInputProps, 'form'> & { form: DateForm }) {
+  const { pending } = useFormStatus();
   const config = field.config as DateSchema['config'];
   const inputType = config.isIncludeTime ? 'datetime-local' : 'date';
 
   return (
     <li style={{ order: field.position }}>
-      <Fieldset>
+      <Fieldset disabled={pending}>
         <Field className='flex items-center gap-2'>
           <Label className='text-sm font-semibold'>
             {getFieldTitle(field)} :

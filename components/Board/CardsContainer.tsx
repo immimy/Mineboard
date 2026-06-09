@@ -21,7 +21,7 @@ type CardsContainerProps = {
 function CardsContainer({ query }: CardsContainerProps) {
   const cards = useFragment(CardsCollectionFragment, query);
   return (
-    <section className='grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3 items-start'>
+    <section className='mt-3 grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3 items-start'>
       {cards?.edges.map((edge) => {
         return <Card key={edge.node.id} query={edge} />;
       })}

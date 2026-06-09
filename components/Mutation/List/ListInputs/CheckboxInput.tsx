@@ -1,19 +1,20 @@
-import { CheckboxSchema } from '@/types/jsonbSchema';
+import { CheckboxInput as CheckboxForm } from '@/types/jsonbSchema';
 import { ListFieldInputProps } from '.';
-import { ListFieldData } from '@/types/app';
 import { Checkbox, Field, Fieldset, Input } from '@headlessui/react';
 import { CheckmarkIcon } from '@/icons/icons';
+import { useFormStatus } from 'react-dom';
 
 function CheckboxInput({
   field,
   form,
   handleFieldChange,
 }: Omit<ListFieldInputProps, 'form'> & {
-  form: ListFieldData<CheckboxSchema>;
+  form: CheckboxForm;
 }) {
+  const { pending } = useFormStatus();
   return (
     <li style={{ order: field.position }}>
-      <Fieldset className='flex gap-2 items-center'>
+      <Fieldset disabled={pending} className='flex gap-2 items-center'>
         {/* CHECKED */}
         <Field>
           <Checkbox

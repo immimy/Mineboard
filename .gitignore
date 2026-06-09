@@ -42,3 +42,10 @@ next-env.d.ts
 
 # Claude Code
 .claude/settings.local.json
+
+# Codex
+.backups
+
+# Supabase
+supabase/snippets/**
+

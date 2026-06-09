@@ -1,5 +1,8 @@
-import { colorOptions, ColorPalette, TagSchema } from '@/types/jsonbSchema';
-import { ListFieldData } from '@/types/app';
+import {
+  colorOptions,
+  ColorPalette,
+  TagInput as TagForm,
+} from '@/types/jsonbSchema';
 import { ListFieldInputProps } from '.';
 import {
   Button,
@@ -8,6 +11,7 @@ import {
   PopoverPanel,
 } from '@headlessui/react';
 import clsx from 'clsx';
+import { useFormStatus } from 'react-dom';
 
 function getDynamicCSS(color: ColorPalette) {
   return {
@@ -19,7 +23,9 @@ function TagsDisplay({
   field,
   form,
   handleFieldChange,
-}: Omit<ListFieldInputProps, 'form'> & { form: ListFieldData<TagSchema> }) {
+}: Omit<ListFieldInputProps, 'form'> & { form: TagForm }) {
+  const { pending } = useFormStatus();
+
   /** Default tag color */
   const defaultTagCSS = getDynamicCSS(field.config.color);
 
@@ -42,6 +48,7 @@ function TagsDisplay({
           <Popover key={`${tag}-${index}`} className='relative'>
             {/* TAG DISPLAY */}
             <PopoverButton
+              disabled={pending}
               className={clsx(
                 'rounded-full px-2 py-0.5 text-xs wrap-break-word max-w-full hover:cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-border focus-within:ring-offset-1',
                 color ? getDynamicCSS(color).tagCSS : defaultTagCSS.tagCSS,

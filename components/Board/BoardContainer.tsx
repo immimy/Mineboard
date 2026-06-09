@@ -3,15 +3,16 @@
 import { useQuery } from '@apollo/client/react';
 import BoardContextWrapper from './BoardContext';
 import AddListDialog from '../Mutation/List/Create/AddListDialog';
+import AddCardDialog from '../Mutation/Card/Create/AddCardDialog';
 import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
 import { graphql } from '@/gql/__generated__';
-import BoardTitle from './BoardTitle';
+import BoardHeader from './BoardHeader';
 import Error from '../global/Error';
 import CardsContainer from './CardsContainer';
 
-export const SingleBoardDocumentQuery = graphql(/* GraphQL */ `
-  query SingleBoardDocument($boardId: UUID!) {
+const SingleBoardQuery = graphql(/* GraphQL */ `
+  query SingleBoard($boardId: UUID!) {
     # Board
     boardsCollection(filter: { id: { eq: $boardId } }) {
       edges {
@@ -40,7 +41,7 @@ type BoardContainerProps = {
 };
 
 function BoardContainer({ boardId }: BoardContainerProps) {
-  const { loading, error, data } = useQuery(SingleBoardDocumentQuery, {
+  const { loading, error, data } = useQuery(SingleBoardQuery, {
     variables: { boardId },
   });
 
@@ -54,10 +55,12 @@ function BoardContainer({ boardId }: BoardContainerProps) {
       boardId={boardId}
       queryListFields={data.list_fieldsCollection}
     >
-      {/* BOARD TITLE */}
-      <BoardTitle query={data.boardsCollection.edges[0]} />
+      {/* BOARD HEADER */}
+      <BoardHeader query={data.boardsCollection.edges[0]} />
       {/* CARDS */}
       <CardsContainer query={data.cardsCollection} />
+      {/* ADD CARD DIALOG */}
+      <AddCardDialog />
       {/* ADD LIST DIALOG */}
       <AddListDialog />
     </BoardContextWrapper>

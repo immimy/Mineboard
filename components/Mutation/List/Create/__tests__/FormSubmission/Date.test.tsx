@@ -46,12 +46,12 @@ describe('AddListDialog form submission', () => {
       mockBoardId,
       mockCardId,
       expect.objectContaining({
-        [mockDateId]: {
+        [mockDateId]: expect.objectContaining({
           meta: {
             tzOffset: new Date().getTimezoneOffset(),
           },
           value: '2026-05-01',
-        },
+        }),
       }),
     );
   });

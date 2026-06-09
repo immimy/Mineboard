@@ -7,8 +7,8 @@ import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
 import Error from '../global/Error';
 
-export const AllBoardsDocumentQuery = graphql(/* GraphQL */ `
-  query AllBoardDocument($userId: UUID!) {
+const AllBoardsQuery = graphql(/* GraphQL */ `
+  query AllBoards($userId: UUID!) {
     boardsCollection(
       filter: { user_id: { eq: $userId } }
       orderBy: { created_at: DescNullsLast }
@@ -26,7 +26,7 @@ export const AllBoardsDocumentQuery = graphql(/* GraphQL */ `
 type BoardsContainerProps = { userId: string };
 
 function BoardsContainer({ userId }: BoardsContainerProps) {
-  const { loading, error, data } = useQuery(AllBoardsDocumentQuery, {
+  const { loading, error, data } = useQuery(AllBoardsQuery, {
     variables: { userId },
   });
 

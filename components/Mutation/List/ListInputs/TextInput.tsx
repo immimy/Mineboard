@@ -1,16 +1,17 @@
-import { TextSchema } from '@/types/jsonbSchema';
+import { TextInput as TextForm } from '@/types/jsonbSchema';
 import { getFieldTitle, ListFieldInputProps } from '.';
-import { ListFieldData } from '@/types/app';
 import { Field, Fieldset, Label, Textarea } from '@headlessui/react';
+import { useFormStatus } from 'react-dom';
 
 function TextInput({
   field,
   form,
   handleFieldChange,
-}: Omit<ListFieldInputProps, 'form'> & { form: ListFieldData<TextSchema> }) {
+}: Omit<ListFieldInputProps, 'form'> & { form: TextForm }) {
+  const { pending } = useFormStatus();
   return (
     <li style={{ order: field.position }}>
-      <Fieldset>
+      <Fieldset disabled={pending}>
         <Field>
           <Label className='text-sm font-semibold block mb-2 border-b border-border'>
             {getFieldTitle(field)}

@@ -29,7 +29,7 @@ function SubmitButton({
         className,
       )}
     >
-      {pending ? <Loading /> : children || 'submit'}
+      {pending ? <Loading size='size-4' /> : children || 'submit'}
     </Button>
   );
 }
