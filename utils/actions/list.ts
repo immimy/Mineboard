@@ -8,11 +8,7 @@ import {
   validateWithZodSchema,
 } from '../validation/validator';
 import { formatToRpcCreateListValues } from '../validation/helper';
-import {
-  BoardListFieldsQuery,
-  customQuery,
-  ListWithValuesQuery,
-} from './graphql';
+import { BoardListFieldsQuery, customQuery, CachedListQuery } from './graphql';
 import { renderError } from './helper';
 
 export const createList = async (
@@ -66,7 +62,7 @@ export const createList = async (
 
     // Query new created list with values for cache update
     const ListWithValuesDocument = await customQuery({
-      query: ListWithValuesQuery,
+      query: CachedListQuery,
       variables: { listId },
     });
     if (!ListWithValuesDocument?.listsCollection)

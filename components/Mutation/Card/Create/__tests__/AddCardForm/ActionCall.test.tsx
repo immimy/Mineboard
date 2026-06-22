@@ -1,11 +1,11 @@
-import { mockBoardId } from '@/components/Board/__tests__/singleBoardQuery.mock';
+import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 import { ColorPalette } from '@/types/jsonbSchema';
 import * as cardActions from '@/utils/actions/card';
 import { CREATE_CARD_FAIL, mockedUseBoardContext } from '../testMocks';
 import { getAllElements, renderAddCardDialog } from '../testUtils';
 
 vi.mock('@/utils/actions/card');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 
 beforeAll(() => {
   mockedUseBoardContext();

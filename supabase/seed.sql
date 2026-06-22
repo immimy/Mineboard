@@ -207,28 +207,32 @@ begin
   -- Users can pick any of these fields when creating a list item.
   -- ============================================================
 
-  insert into public.list_fields (id, board_id, name, type, config, position) values
+  insert into public.list_fields (id, board_id, type, config, position) values
     (
-      v_field_checkbox_1, v_board_todo,
-      'checkbox_1', 'checkbox',
+      v_field_checkbox_1,
+      v_board_todo,
+      'checkbox',
       '{}'::jsonb,
       0
     ),
     (
-      v_field_date_1, v_board_todo,
-      'date_1', 'date',
+      v_field_date_1, 
+      v_board_todo,
+      'date',
       '{"title": "Deadline", "isIncludeTime": false}'::jsonb,
       1
     ),
     (
-      v_field_text_1, v_board_todo,
-      'text_1', 'text',
+      v_field_text_1, 
+      v_board_todo,
+      'text',
       '{"title": "Note"}'::jsonb,
       2
     ),
     (
-      v_field_tag_1, v_board_todo,
-      'tag_1', 'tag',
+      v_field_tag_1, 
+      v_board_todo,
+      'tag',
       '{"color": 3}'::jsonb,
       3
     );
@@ -238,34 +242,39 @@ begin
   -- LIST FIELDS — project board
   -- ============================================================
 
-  insert into public.list_fields (id, board_id, name, type, config, position) values
+  insert into public.list_fields (id, board_id, type, config, position) values
     (
-      v_field_tag_2, v_board_project,
-      'tag_2', 'tag',
+      v_field_tag_2, 
+      v_board_project,
+      'tag',
       '{"color": 5}'::jsonb,
       0
     ),
     (
-      v_field_tag_3, v_board_project,
-      'tag_3', 'tag',
+      v_field_tag_3, 
+      v_board_project,
+      'tag',
       '{"color": 7}'::jsonb,
       1
     ),
     (
-      v_field_date_2, v_board_project,
-      'date_2', 'date',
+      v_field_date_2, 
+      v_board_project,
+      'date',
       '{"title": "Due date", "isIncludeTime": true}'::jsonb,
       2
     ),
     (
-      v_field_image_1, v_board_project,
-      'image_1', 'image',
+      v_field_image_1, 
+      v_board_project,
+      'image',
       '{"title": "Cover"}'::jsonb,
       3
     ),
     (
-      v_field_number_1, v_board_project,
-      'number_1', 'number',
+      v_field_number_1, 
+      v_board_project,
+      'number',
       '{"title": "Estimate", "isHasUnit": true, "unit": "hrs", "unitPosition": "back"}'::jsonb,
       4
     );

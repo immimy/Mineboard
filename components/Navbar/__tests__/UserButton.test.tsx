@@ -1,5 +1,5 @@
 import { page, userEvent } from 'vitest/browser';
-import UserButton from '../UserButton';
+import { UserButtonComponent } from '../UserButton';
 import { renderAsync } from '@/mocks/browser/helper/helpers';
 import { mockGetUser, mockUser } from '@/mocks/browser/supabase/serverClient';
 
@@ -32,20 +32,20 @@ describe('UserButton — UI when user is NOT authenticated', () => {
   });
 
   it('renders the user icon button', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
     const { userButton } = getAllElements();
     await expect.element(userButton).toBeInTheDocument();
   });
 
   it('does not render user avatar image', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
     await expect
       .element(page.getByRole('img', { name: mockUser.email }).query())
       .not.toBeInTheDocument();
   });
 
   it('shows SignInButton inside popover panel', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
     const { userButton, signInButton } = getAllElements();
     await userEvent.click(userButton);
     await expect.element(signInButton).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe('UserButton — UI when user IS authenticated', () => {
   });
 
   it('renders the user avatar image', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
     const { userAvatar } = getAllElements();
     await expect
       .element(userAvatar)
@@ -73,14 +73,16 @@ describe('UserButton — UI when user IS authenticated', () => {
   });
 
   it('does not render user icon', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
+
     await expect
       .element(page.getByRole('button', { name: 'user icon' }).query())
       .not.toBeInTheDocument();
   });
 
   it('shows SignOutButton inside popover panel', async () => {
-    await renderAsync(UserButton());
+    await renderAsync(UserButtonComponent());
+
     const { userAvatar, signOutButton } = getAllElements();
     await userEvent.click(userAvatar);
     await expect.element(signOutButton).toBeInTheDocument();

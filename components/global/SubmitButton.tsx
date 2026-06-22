@@ -10,6 +10,7 @@ type SubmitButtonProps = {
   className?: string;
   disabled?: boolean;
   formId?: string;
+  text?: string;
 };
 
 function SubmitButton({
@@ -17,6 +18,7 @@ function SubmitButton({
   className,
   disabled,
   formId,
+  text,
 }: SubmitButtonProps & PropsWithChildren) {
   const { pending } = useFormStatus();
   return (
@@ -29,7 +31,7 @@ function SubmitButton({
         className,
       )}
     >
-      {pending ? <Loading size='size-4' /> : children || 'submit'}
+      {pending ? <Loading size='size-4' /> : (children ?? text ?? 'submit')}
     </Button>
   );
 }

@@ -1,7 +1,10 @@
-import { mockBoardId } from '@/components/Board/__tests__/singleBoardQuery.mock';
-import * as BoardContext from '@/components/Board/BoardContext';
+import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import * as BoardContext from '@/components/BoardPage/BoardContext';
 import { makeFragmentData } from '@/gql/__generated__';
-import { CardQuery, CreatedCardFragmentDoc } from '@/gql/__generated__/graphql';
+import {
+  CachedCardQuery,
+  ListsCollectionFragmentDoc,
+} from '@/gql/__generated__/graphql';
 import { ColorPalette } from '@/types/jsonbSchema';
 
 export const mockCloseAddCard = vi.fn();
@@ -9,6 +12,9 @@ export const mockedUseBoardContext = () => {
   vi.mocked(BoardContext.useBoardContext).mockReturnValue({
     boardId: mockBoardId,
     dbListFields: [],
+    isAddListFieldOpen: false,
+    openAddListField: vi.fn(),
+    closeAddListField: vi.fn(),
     isAddCardOpen: true,
     openAddCard: vi.fn(),
     closeAddCard: mockCloseAddCard,
@@ -19,8 +25,9 @@ export const mockedUseBoardContext = () => {
   });
 };
 
-const createdCardNode = makeFragmentData(
-  {
+const createdCardEdge = {
+  __typename: 'cardsEdge',
+  node: {
     __typename: 'cards',
     id: 'newCard',
     title: 'Career roadmap',
@@ -28,14 +35,19 @@ const createdCardNode = makeFragmentData(
     color: ColorPalette.third,
     listsCollection: {
       __typename: 'listsConnection',
-      edges: [],
+      ...makeFragmentData(
+        {
+          __typename: 'listsConnection',
+          edges: [],
+        },
+        ListsCollectionFragmentDoc,
+      ),
     },
   },
-  CreatedCardFragmentDoc,
-);
+} satisfies NonNullable<CachedCardQuery['cardsCollection']>['edges'][number];
 
 export const CREATE_CARD_SUCCESS: {
-  data: CardQuery;
+  data: CachedCardQuery;
   error: null;
 } = {
   error: null,
@@ -43,12 +55,7 @@ export const CREATE_CARD_SUCCESS: {
     __typename: 'Query',
     cardsCollection: {
       __typename: 'cardsConnection',
-      edges: [
-        {
-          __typename: 'cardsEdge',
-          node: { __typename: 'cards', ...createdCardNode },
-        },
-      ],
+      edges: [createdCardEdge],
     },
   },
 };

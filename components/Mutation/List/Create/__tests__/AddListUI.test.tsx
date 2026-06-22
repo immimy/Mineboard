@@ -6,7 +6,7 @@ import { getAllElements, renderAddListDialog } from './testUtils';
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 // ───────────────────────────────────────────────────────────

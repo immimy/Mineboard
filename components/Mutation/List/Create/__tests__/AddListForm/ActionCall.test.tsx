@@ -3,7 +3,7 @@ import {
   mockCardId,
   mockCheckboxId,
   mockTagId,
-} from '@/components/Board/__tests__/singleBoardQuery.mock';
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 import { mockedUseBoardContext, CREATE_LIST_FAIL } from '../testMocks';
 import { getAllElements, renderAddListDialog } from '../testUtils';
 import * as listActions from '@/utils/actions/list';
@@ -14,7 +14,7 @@ import { userEvent } from 'vitest/browser';
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 // ───────────────────────────────────────────────────────────

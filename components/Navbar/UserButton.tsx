@@ -4,8 +4,10 @@ import SignInButton from './SignInButton';
 import Image from 'next/image';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { UserIcon } from '@/icons/icons';
+import { Suspense } from 'react';
+import { NavbarButton as LoadingSkeleton } from '../Skeleton/Button';
 
-async function UserButton() {
+export async function UserButtonComponent() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
@@ -20,7 +22,7 @@ async function UserButton() {
         </PopoverButton>
         <PopoverPanel
           anchor='bottom end'
-          className='min-w-30 mt-2.5 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
+          className='min-w-30 mt-2.5 flex flex-col bg-muted hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
         >
           <SignInButton />
         </PopoverPanel>
@@ -41,11 +43,19 @@ async function UserButton() {
       </PopoverButton>
       <PopoverPanel
         anchor='bottom end'
-        className='min-w-30 mt-2.5 flex flex-col bg-muted/70 hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
+        className='min-w-30 mt-2.5 flex flex-col bg-muted hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
       >
         <SignOutButton />
       </PopoverPanel>
     </Popover>
+  );
+}
+
+function UserButton() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <UserButtonComponent />
+    </Suspense>
   );
 }
 export default UserButton;

@@ -1,5 +1,5 @@
 import { getFieldTitle, ListFieldInputProps } from '../index';
-import { mockPublicId } from '@/components/Board/__tests__/singleBoardQuery.mock';
+import { mockPublicId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 
 type ImageInputProps = {
   field: ListFieldInputProps['field'];

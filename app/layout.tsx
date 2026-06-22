@@ -5,6 +5,7 @@ import Container from '@/components/global/Container';
 import Navbar from '@/components/Navbar/Navbar';
 import { ToastContainer } from 'react-toastify';
 import { ApolloWrapper } from '@/components/global/ApolloWrapper';
+import AppContextWrapper from './context';
 
 const robotoSerif = Roboto_Serif({ subsets: ['latin'] });
 
@@ -23,10 +24,12 @@ export default function RootLayout({
       <body className={`${robotoSerif.className} antialiased`}>
         <div className='bg-background min-h-screen'>
           <ApolloWrapper>
-            <Navbar />
-            <main className='pb-8 md:pb-16'>
-              <Container>{children}</Container>
-            </main>
+            <AppContextWrapper>
+              <Navbar />
+              <main className='pb-8 md:pb-16'>
+                <Container>{children}</Container>
+              </main>
+            </AppContextWrapper>
           </ApolloWrapper>
           <ToastContainer position='bottom-right' />
         </div>

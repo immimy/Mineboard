@@ -1,6 +1,6 @@
 import { CheckmarkIcon } from '@/icons/icons';
 import { Checkbox, Field, Label } from '@headlessui/react';
-import { useCardContext } from '../Board/CardContext';
+import { useCardContext } from '../BoardPage/CardContext';
 import { CheckboxSchema, ColorPalette } from '@/types/jsonbSchema';
 import { ListFieldProps } from '.';
 

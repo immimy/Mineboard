@@ -1,4 +1,4 @@
-import BoardContainer from '@/components/Board/BoardContainer';
+import BoardContainer from '@/components/BoardPage/BoardContainer';
 
 type BoardPageProps = {
   params: Promise<{ id: string }>;

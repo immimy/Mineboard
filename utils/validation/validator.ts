@@ -15,6 +15,29 @@ export function validateWithZodSchema<T>(schema: ZodType<T>, data: unknown): T {
   return result.data;
 }
 
+// Recursively remove fields of object that contain empty string or undefined
+// { title: '', isIncludeTime: true } --> { isIncludeTime: true }
+// [{ title: '', color: 2 }] --> [{ color: 2 }]
+function stripEmptyFields<T>(input: T): T {
+  if (input === null || typeof input !== 'object') {
+    return input;
+  }
+
+  if (Array.isArray(input)) {
+    return input.map((item) => stripEmptyFields(item)) as T;
+  }
+
+  return Object.fromEntries(
+    Object.entries(input).flatMap(([key, value]) => {
+      const output = stripEmptyFields(value);
+
+      if (output === '' || output === undefined) return [];
+
+      return [[key, output]];
+    }),
+  ) as T;
+}
+
 // ─── List_Value schemas ────────────────────────────────────────────
 
 const textValueSchema = z.object({
@@ -106,10 +129,14 @@ export const listValueInputSchema = z.discriminatedUnion('fieldType', [
 ]);
 export type ListValueInput = z.infer<typeof listValueInputSchema>;
 
+// ─── List schema ────────────────────────────────────────────
+
 export const createListSchema = z.object({
   cardId: z.uuid(),
   fieldValues: z.array(listValueInputSchema),
 });
+
+// ─── Card schema ────────────────────────────────────────────
 
 export const createCardSchema = z.object({
   boardId: z.uuid(),
@@ -126,4 +153,108 @@ export const createCardSchema = z.object({
     },
     z.enum(ColorPalette, 'Color must be a valid palette value'),
   ),
+});
+
+// ─── List_Field schemas ────────────────────────────────────────────
+
+export const listFieldSchema = z.discriminatedUnion('type', [
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Text),
+    config: z.object({
+      title: z
+        .string()
+        .trim()
+        .max(30, 'Field title must not exceed 30 characters')
+        .min(0),
+    }),
+  }),
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Number),
+    config: z
+      .object({
+        title: z
+          .string()
+          .trim()
+          .max(30, 'Field title must not exceed 30 characters')
+          .min(0),
+        isHasUnit: z.boolean(),
+        unit: z.string().trim().max(20, 'Unit must not exceed 20 characters'),
+        unitPosition: z.enum(['front', 'back']),
+      })
+      .refine(
+        ({ isHasUnit, unit }) => !(isHasUnit && unit.length === 0),
+        'Unit label is required.',
+      )
+      .transform(({ unit, unitPosition, ...config }) => {
+        if (config.isHasUnit) return { ...config, unit, unitPosition };
+        return { ...config };
+      }),
+  }),
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Date),
+    config: z.object({
+      title: z
+        .string()
+        .trim()
+        .max(30, 'Field title must not exceed 30 characters')
+        .min(0),
+      isIncludeTime: z.boolean(),
+    }),
+  }),
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Image),
+    config: z.object({
+      title: z
+        .string()
+        .trim()
+        .max(30, 'Field title must not exceed 30 characters')
+        .min(0),
+    }),
+  }),
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Checkbox),
+    config: z.object({}),
+  }),
+  z.object({
+    id: z.uuid(),
+    type: z.literal(Field_Type.Tag),
+    config: z.object({
+      color: z.preprocess(
+        (value) => {
+          const output = Number(value);
+          if (typeof output === 'number' && !Number.isNaN(output)) {
+            return output;
+          }
+          return value;
+        },
+        z.enum(ColorPalette, 'Color must be a valid palette value'),
+      ),
+    }),
+  }),
+]);
+
+export const createListFieldsSchema = z.object({
+  boardId: z.uuid(),
+  fields: z
+    .array(
+      listFieldSchema.transform(({ id: _, ...config }) =>
+        stripEmptyFields(config),
+      ),
+    )
+    .min(1, 'Add at least one field before saving'),
+});
+
+// ─── Board schema ────────────────────────────────────────────
+
+export const createBoardSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, 'Board title is required')
+    .max(30, 'Title must not exceed 30 characters'),
 });

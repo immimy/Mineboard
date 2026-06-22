@@ -1,15 +1,18 @@
-import { mockBoardId } from '@/components/Board/__tests__/singleBoardQuery.mock';
-import BoardContextWrapper from '@/components/Board/BoardContext';
-import { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
+import {
+  mockBoardId,
+  mockListFields,
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import AddNewCardActionButton from '@/components/BoardPage/ActionButtons/AddNewCardActionButton';
+import BoardContextWrapper from '@/components/BoardPage/BoardContext';
+import type { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { ApolloCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import AddCardDialog from '../AddCardDialog';
-import AddCardOpenButton from '../AddCardOpenButton';
 
 export const getAllElements = () => ({
-  addCardDialogButton: page.getByRole('button', { name: /add card/i }),
+  addCardDialogButton: page.getByRole('button', { name: /add new card/i }),
   header: page.getByRole('heading', { level: 2, name: /create card/i }),
   description: page.getByText(/add a new card to this board/i),
   titleInput: page.getByLabelText(/title/i),
@@ -20,25 +23,33 @@ export const getAllElements = () => ({
   saveButton: page.getByRole('button', { name: /save/i }),
 });
 
-const emptyListFields = {
-  __typename: 'list_fieldsConnection',
-  edges: [],
-} as {
+type ListFields = {
   ' $fragmentRefs'?: {
     ListFieldsCollectionFragment: ListFieldsCollectionFragment;
   };
 };
 
-export const renderAddCardDialog = (cache?: ApolloCache) => {
+export const renderAddCardDialog = (
+  cache?: ApolloCache,
+  queryListFields = mockListFields as ListFields,
+) => {
   return render(
     <MockedProvider cache={cache}>
       <BoardContextWrapper
         boardId={mockBoardId}
-        queryListFields={emptyListFields}
+        queryListFields={queryListFields}
       >
-        <AddCardOpenButton />
+        <AddNewCardActionButton />
         <AddCardDialog />
       </BoardContextWrapper>
     </MockedProvider>,
   );
 };
+
+const emptyListFields = {
+  __typename: 'list_fieldsConnection',
+  edges: [],
+} as ListFields;
+
+export const renderAddCardDialogWithoutListFields = (cache?: ApolloCache) =>
+  renderAddCardDialog(cache, emptyListFields);

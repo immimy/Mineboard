@@ -7,7 +7,7 @@ import {
   validateWithZodSchema,
   createCardSchema,
 } from '../validation/validator';
-import { CardQuery, customQuery } from './graphql';
+import { CachedCardQuery, customQuery } from './graphql';
 
 export const createCard = async (formData: FormData) => {
   try {
@@ -32,7 +32,7 @@ export const createCard = async (formData: FormData) => {
 
     // Query new created card for cache update
     const cardDocument = await customQuery({
-      query: CardQuery,
+      query: CachedCardQuery,
       variables: { cardId },
     });
 

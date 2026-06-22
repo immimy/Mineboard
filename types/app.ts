@@ -13,3 +13,8 @@ export type ActionFunction = (
 ) => Promise<FormState>;
 
 export type ListForm = Record<string, ListFieldInput>;
+
+export type ActionMenuId =
+  | 'edit-board-title'
+  | 'custom-list-fields'
+  | 'add-new-card';

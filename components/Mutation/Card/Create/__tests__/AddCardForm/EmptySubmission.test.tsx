@@ -3,7 +3,7 @@ import { mockedUseBoardContext } from '../testMocks';
 import { getAllElements, renderAddCardDialog } from '../testUtils';
 
 vi.mock('@/utils/actions/card');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 
 beforeAll(() => {
   mockedUseBoardContext();

@@ -7,7 +7,7 @@ import { mockedUseBoardContext } from '../testMocks';
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 // ───────────────────────────────────────────────────────────

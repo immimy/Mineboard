@@ -14,16 +14,17 @@ function SignOutButton() {
   const signOutAction = async (formState: FormState): Promise<FormState> => {
     const { error } = await signOutWithGoogle();
     if (error) return { ...formState, error };
-    client.clearStore();
+    await client.clearStore();
     replace('/');
     return { ...formState };
   };
 
   return (
     <FormContainer action={signOutAction}>
-      <SubmitButton className='px-6 py-2 text-sm font-medium lg:text-base lg:tracking-tight w-full'>
-        Sign Out
-      </SubmitButton>
+      <SubmitButton
+        text='Sign Out'
+        className='px-6 py-2 text-sm font-medium lg:text-base lg:tracking-tight w-full'
+      />
     </FormContainer>
   );
 }

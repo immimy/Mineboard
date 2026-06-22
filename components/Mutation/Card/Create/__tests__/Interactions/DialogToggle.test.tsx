@@ -1,4 +1,8 @@
-import { getAllElements, renderAddCardDialog } from '../testUtils';
+import {
+  getAllElements,
+  renderAddCardDialog,
+  renderAddCardDialogWithoutListFields,
+} from '../testUtils';
 
 vi.mock('@/utils/actions/card');
 
@@ -22,5 +26,16 @@ describe('AddCardDialog interaction', () => {
     expect(header.query()).toBe(null);
     expect(cancelButton.query()).toBe(null);
     expect(saveButton.query()).toBe(null);
+  });
+
+  it('keeps the open button disabled until list fields exist', async () => {
+    await renderAddCardDialogWithoutListFields();
+
+    const { addCardDialogButton, header } = getAllElements();
+
+    await expect.element(addCardDialogButton).toBeDisabled();
+    await addCardDialogButton.click({ force: true });
+
+    expect(header.query()).toBe(null);
   });
 });

@@ -4,72 +4,23 @@ import {
   Button,
   Description,
   Dialog,
+  DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react';
 import { useCallback, useMemo, useState } from 'react';
-import { useBoardContext } from '@/components/Board/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/BoardContext';
 import RenderListInput from '../ListInputs';
-import {
-  CreatedListFragmentDoc,
-  Field_Type,
-  ListFieldsCollectionFragment,
-} from '@/gql/__generated__/graphql';
+import { MutatedListFragmentDoc } from '@/gql/__generated__/graphql';
 import { ActionFunction, ListForm } from '@/types/app';
-import {
-  CheckboxInput,
-  DateInput,
-  ImageInput,
-  ListFieldInput,
-  NumberInput,
-  TagInput,
-  TextInput,
-} from '@/types/jsonbSchema';
+import { ListFieldInput } from '@/types/jsonbSchema';
 import { createList } from '@/utils/actions/list';
 import { useApolloClient } from '@apollo/client/react';
 import { useFragment as readFragment } from '@/gql/__generated__';
 import FormContainer from '@/components/global/FormContainer';
 import SubmitButton from '@/components/global/SubmitButton';
 import { isListFormEmpty } from '@/utils/validation/helper';
-
-function initFieldState(
-  dbListField: ListFieldsCollectionFragment['edges'][0]['node'],
-) {
-  const initialState = { type: dbListField.type };
-  switch (dbListField.type) {
-    case Field_Type.Checkbox:
-      return Object.assign(initialState, {
-        value: { checked: false, title: '' },
-        meta: { tzOffset: new Date().getTimezoneOffset() },
-      }) as unknown as CheckboxInput;
-
-    case Field_Type.Date:
-      return Object.assign(initialState, {
-        value: '',
-        meta: { tzOffset: new Date().getTimezoneOffset() },
-      } as unknown as DateInput);
-
-    case Field_Type.Image:
-      return Object.assign(initialState, {
-        value: [],
-      } as unknown as ImageInput);
-
-    case Field_Type.Number:
-      return Object.assign(initialState, {
-        value: '',
-      } as unknown as NumberInput);
-
-    case Field_Type.Tag:
-      return Object.assign(initialState, {
-        value: [],
-      } as unknown as TagInput);
-
-    case Field_Type.Text:
-      return Object.assign(initialState, {
-        value: '',
-      } as unknown as TextInput);
-  }
-}
+import { initFormState } from './utils';
 
 function AddListDialog() {
   const client = useApolloClient();
@@ -79,17 +30,20 @@ function AddListDialog() {
     useBoardContext();
 
   // Initial state
-  const INITIAL_STATE = useMemo(() => {
-    return dbListFields?.reduce((acc, edge) => {
-      const field = edge.node;
-      acc[field.id] = initFieldState(field);
-      return acc;
-    }, {} as ListForm);
-  }, [dbListFields]);
-  // Form state
-  const [form, setForm] = useState<ListForm>({
-    ...INITIAL_STATE,
-  });
+  const initialForm = useMemo(
+    () => initFormState(dbListFields),
+    [dbListFields],
+  );
+  // Form state: only reflects to user edits
+  const [form, setForm] = useState<ListForm>({});
+  // Active form: reflects to both user edits and list fields changes
+  // —— REMINDER ——: useState only initializes on the first render and keeps the state value internally; It's does not reinitialize when re-rendering.
+  // —— BugFix ——: Form state does not reflect to the current list fields change, that leads to list creation error.
+  // This active is derived from the latest list fields while preserving values the user already typed.
+  const activeForm = useMemo(
+    () => ({ ...initialForm, ...form }),
+    [form, initialForm],
+  );
 
   // Handle form change
   const handleFieldChange = useCallback(
@@ -101,36 +55,37 @@ function AddListDialog() {
 
   // Close dialog & Reset form state
   const handleCloseDialog = () => {
-    setForm({ ...INITIAL_STATE });
+    setForm(initialForm);
     closeAddList();
   };
 
   // Create list with values form action
   const handleSave: ActionFunction = async () => {
     // Form validation: form contains value at least one field
-    const isFormEmpty = isListFormEmpty(form);
+    const isFormEmpty = isListFormEmpty(activeForm);
     if (isFormEmpty) return { error: 'At least one field must have a value' };
 
     // Server: Create list with values
     const { data, error } = await createList(
       boardId,
       addListCardId as string,
-      form,
+      activeForm,
     );
     if (error || !data) return { error };
 
     // Apollo cache update
-    const listEdge = data.listsCollection?.edges[0].node;
-    const list = readFragment(CreatedListFragmentDoc, listEdge!);
+    const listNode = data.listsCollection?.edges[0].node;
+    const list = readFragment(MutatedListFragmentDoc, listNode);
+    if (!list) return { error: 'Failed to fetch new list, please refresh' };
 
-    // 1. Write fragment
+    // 1. Write fragment reference
     const listRef = client.cache.writeFragment({
-      fragmentName: 'CreatedList',
-      fragment: CreatedListFragmentDoc,
+      fragmentName: 'MutatedList',
+      fragment: MutatedListFragmentDoc,
       data: list,
     });
 
-    // 2. Cache modify
+    // 2. Modify normalized cache
     client.cache.modify({
       id: client.cache.identify({
         __typename: 'cards',
@@ -158,8 +113,13 @@ function AddListDialog() {
   };
 
   return (
-    <Dialog open={isAddListOpen} onClose={handleCloseDialog}>
-      <div className='fixed inset-0 w-screen bg-neutral-foreground/10 p-4 overflow-auto'>
+    <Dialog
+      open={isAddListOpen}
+      onClose={handleCloseDialog}
+      className='relative z-50'
+    >
+      <DialogBackdrop className='fixed inset-0 bg-neutral-foreground/30 dark:bg-neutral/30' />
+      <div className='fixed inset-0 w-screen p-4 overflow-auto'>
         <DialogPanel className='mx-auto mt-10 w-full max-w-lg md:max-w-2xl lg:max-w-4xl rounded bg-background text-foreground p-4 md:p-8'>
           {/* HEADER */}
           <DialogTitle className='text-lg font-semibold capitalize text-accent text-shadow-2xs'>
@@ -173,11 +133,12 @@ function AddListDialog() {
             <ul className='mt-4 grid gap-3 md:p-3'>
               {dbListFields?.map((edge) => {
                 const field = edge.node;
+                if (!activeForm[field.id]) return null;
                 return (
                   <RenderListInput
                     key={field.id}
                     field={field}
-                    form={form[field.id]}
+                    form={activeForm[field.id]}
                     handleFieldChange={handleFieldChange}
                   />
                 );
@@ -193,11 +154,10 @@ function AddListDialog() {
                 Cancel
               </Button>
               <SubmitButton
+                text='Save'
                 formId='add_list'
                 className='rounded border border-border px-3 py-1 hover:bg-successful/50 hover:cursor-pointer hover:text-shadow-2xs max-w-fit'
-              >
-                Save
-              </SubmitButton>
+              />
             </div>
           </FormContainer>
         </DialogPanel>

@@ -3,11 +3,10 @@
 import { MoonIcon, SunIcon } from '@/icons/icons';
 import { Theme } from '@/types/app';
 import { Button } from '@headlessui/react';
-import { MouseEventHandler, useEffect, useState } from 'react';
-import { NavbarButton as ButtonSkeleton } from '../Skeleton/Button';
+import { MouseEventHandler, Suspense, useEffect, useState } from 'react';
+import { NavbarButton as LoadingSkeleton } from '../Skeleton/Button';
 
-function ThemeToggleButton() {
-  const [isLoaded, setIsLoaded] = useState(false);
+function ThemeToggleButtonComponent() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   // Add or Remove "dark" class from the root based on scheme preference
@@ -26,12 +25,8 @@ function ThemeToggleButton() {
       document.documentElement.classList.remove('dark');
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect -- init-on-mount: reads localStorage/matchMedia once, not a cascading render
-    setIsLoaded(true);
     setIsDarkTheme(isPrefersDarkScheme);
   }, []);
-
-  // Loading scheme preference skeleton...
-  if (!isLoaded) return <ButtonSkeleton />;
 
   //  Toggle Theme
   const toggleThemeHandler: MouseEventHandler<HTMLButtonElement> = () => {
@@ -53,6 +48,14 @@ function ThemeToggleButton() {
         <SunIcon className='size-4 lg:size-5' />
       )}
     </Button>
+  );
+}
+
+function ThemeToggleButton() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ThemeToggleButtonComponent />
+    </Suspense>
   );
 }
 export default ThemeToggleButton;

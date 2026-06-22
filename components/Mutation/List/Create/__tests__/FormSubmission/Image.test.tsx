@@ -6,14 +6,14 @@ import {
   mockCardId,
   mockImageId,
   mockPublicId,
-} from '@/components/Board/__tests__/singleBoardQuery.mock';
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 
 // ───────────────────────────────────────────────────────────
 // Mocks
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 beforeAll(() => {

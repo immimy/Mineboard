@@ -1,7 +1,14 @@
 'use client';
 
 import { ActionFunction, FormState } from '@/types/app';
-import { ChangeEventHandler, useActionState, useEffect } from 'react';
+import { Fieldset } from '@headlessui/react';
+import {
+  ChangeEventHandler,
+  PropsWithChildren,
+  useActionState,
+  useEffect,
+} from 'react';
+import { useFormStatus } from 'react-dom';
 import { toast } from 'react-toastify';
 
 const initialState: FormState = {
@@ -30,8 +37,13 @@ function FormContainer({
   }, [state]);
   return (
     <form id={id} action={formAction} onChange={onChange} className={className}>
-      {children}
+      <PendingFieldset>{children}</PendingFieldset>
     </form>
   );
 }
 export default FormContainer;
+
+function PendingFieldset({ children }: PropsWithChildren) {
+  const { pending } = useFormStatus();
+  return <Fieldset disabled={pending}>{children}</Fieldset>;
+}

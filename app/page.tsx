@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <>
       <Suspense>
+        {/* TO-DO: Demo Sidebar */}
         <ErrorToast />
       </Suspense>
     </>

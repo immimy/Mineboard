@@ -15,6 +15,8 @@ export const customQuery = async <
   return data;
 };
 
+/** List */
+
 export const BoardListFieldsQuery = graphql(/* GraphQL */ `
   query BoardListFields($boardId: UUID!) {
     list_fieldsCollection(filter: { board_id: { eq: $boardId } }) {
@@ -28,20 +30,20 @@ export const BoardListFieldsQuery = graphql(/* GraphQL */ `
   }
 `);
 
-export const ListWithValuesQuery = graphql(/* GraphQL */ `
-  query ListWithValues($listId: UUID!) {
+export const CachedListQuery = graphql(/* GraphQL */ `
+  query CachedList($listId: UUID!) {
     listsCollection(filter: { id: { eq: $listId } }) {
       edges {
         node {
-          ...CreatedList
+          ...MutatedList
         }
       }
     }
   }
 `);
 
-export const CreatedListFragment = graphql(/* GraphQL */ `
-  fragment CreatedList on lists {
+export const MutatedListFragment = graphql(/* GraphQL */ `
+  fragment MutatedList on lists {
     id
     position
     list_valuesCollection {
@@ -50,26 +52,37 @@ export const CreatedListFragment = graphql(/* GraphQL */ `
   }
 `);
 
-export const CardQuery = graphql(/* GraphQL */ `
-  query Card($cardId: UUID!) {
+/** Card */
+
+export const CachedCardQuery = graphql(/* GraphQL */ `
+  query CachedCard($cardId: UUID!) {
     cardsCollection(filter: { id: { eq: $cardId } }) {
       edges {
-        node {
-          ...CreatedCard
-        }
+        ...Card @unmask
       }
     }
   }
 `);
 
-export const CreatedCardFragment = graphql(/* GraphQL */ `
-  fragment CreatedCard on cards {
-    id
-    title
-    position
-    color
-    listsCollection(orderBy: [{ position: AscNullsLast }]) {
-      ...ListsCollection @unmask
+/** Board */
+
+export const CachedBoardQuery = graphql(/* GraphQL */ `
+  query CachedBoard($boardId: UUID!) {
+    boardsCollection(filter: { id: { eq: $boardId } }) {
+      edges {
+        ...Board @unmask
+      }
+    }
+  }
+`);
+
+export const CachedListFieldsQuery = graphql(/* GraphQL */ `
+  query CachedListFields($boardId: UUID!) {
+    list_fieldsCollection(
+      filter: { board_id: { eq: $boardId } }
+      orderBy: [{ position: AscNullsLast }]
+    ) {
+      ...ListFieldsCollection @unmask
     }
   }
 `);

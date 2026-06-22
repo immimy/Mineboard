@@ -24,8 +24,10 @@ type ListFieldQuery = ResultOf<
   typeof ListFieldsCollectionFragmentDoc
 >['edges'][0]['node'];
 
-export const getFieldTitle = (field: ListFieldQuery) =>
-  field.config?.title as string;
+export const getFieldTitle = (field: ListFieldQuery) => {
+  const title = field.config?.title;
+  return typeof title === 'string' ? title : '';
+};
 
 export type ListFieldInputProps = {
   field: ListFieldQuery;

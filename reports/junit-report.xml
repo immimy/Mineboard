@@ -1,219 +1,351 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="69" failures="0" errors="0" time="6.2654">
-    <testsuite name="components/Dashboard/__tests__/Dashboard.test.tsx" timestamp="2026-06-09T14:11:14.198Z" hostname="IaM-Desktop" tests="5" failures="0" errors="0" skipped="0" time="0.3164">
-        <testcase classname="components/Dashboard/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render an error when network error occurs" time="0.0738">
+<testsuites name="vitest tests" tests="116" failures="0" errors="0" time="12.934">
+    <testsuite name="components/BoardPage/__tests__/ActionMenu.test.tsx" timestamp="2026-06-22T05:42:20.595Z" hostname="IaM-Desktop" tests="5" failures="0" errors="0" skipped="0" time="0.5454">
+        <testcase classname="components/BoardPage/__tests__/ActionMenu.test.tsx" name="ActionMenu &gt; renders &quot;Add new card&quot; as the default active action" time="0.0636">
         </testcase>
-        <testcase classname="components/Dashboard/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render an error when GraphQL error occurs" time="0.0605">
+        <testcase classname="components/BoardPage/__tests__/ActionMenu.test.tsx" name="ActionMenu &gt; switches to &quot;Edit board title&quot; and runs the selected action" time="0.1837">
         </testcase>
-        <testcase classname="components/Dashboard/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render no data found when returned data is empty" time="0.0667">
+        <testcase classname="components/BoardPage/__tests__/ActionMenu.test.tsx" name="ActionMenu &gt; switches to &quot;Custom list fields&quot; and opens the list fields dialog" time="0.1578">
         </testcase>
-        <testcase classname="components/Dashboard/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render board items correctly" time="0.0589">
+        <testcase classname="components/BoardPage/__tests__/ActionMenu.test.tsx" name="ActionMenu &gt; opens the Add Card dialog when &quot;Add new card&quot; is selected" time="0.0715">
         </testcase>
-        <testcase classname="components/Dashboard/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; links to the correct board page" time="0.0561">
-        </testcase>
-    </testsuite>
-    <testsuite name="components/Board/__tests__/AddCardFeature.test.tsx" timestamp="2026-06-09T14:11:14.200Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.4505">
-        <testcase classname="components/Board/__tests__/AddCardFeature.test.tsx" name="Add card feature &gt; renders new card after successful submission" time="0.4498">
+        <testcase classname="components/BoardPage/__tests__/ActionMenu.test.tsx" name="ActionMenu &gt; disables the Add Card action until list fields exist" time="0.0684">
         </testcase>
     </testsuite>
-    <testsuite name="components/Board/__tests__/AddListFeature.test.tsx" timestamp="2026-06-09T14:11:14.201Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2837">
-        <testcase classname="components/Board/__tests__/AddListFeature.test.tsx" name="Add list feature &gt; renders new list after successful submission" time="0.2834">
+    <testsuite name="components/BoardPage/__tests__/AddCardFeature.test.tsx" timestamp="2026-06-22T05:42:20.596Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.3036">
+        <testcase classname="components/BoardPage/__tests__/AddCardFeature.test.tsx" name="Add card feature &gt; renders new card after successful submission" time="0.3032">
         </testcase>
     </testsuite>
-    <testsuite name="components/Board/__tests__/SingleBoard.test.tsx" timestamp="2026-06-09T14:11:14.201Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.2835">
-        <testcase classname="components/Board/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render an error when network error occurs" time="0.06">
-        </testcase>
-        <testcase classname="components/Board/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render an error when GraphQL error occurs" time="0.064">
-        </testcase>
-        <testcase classname="components/Board/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render no data found when returned data is empty" time="0.085">
-        </testcase>
-        <testcase classname="components/Board/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render board, card, list with values correctly" time="0.0743">
+    <testsuite name="components/BoardPage/__tests__/AddListFeature.test.tsx" timestamp="2026-06-22T05:42:20.597Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.34">
+        <testcase classname="components/BoardPage/__tests__/AddListFeature.test.tsx" name="Add list feature &gt; renders new list after successful submission" time="0.3391">
         </testcase>
     </testsuite>
-    <testsuite name="components/Homepage/__tests__/ErrorToast.test.tsx" timestamp="2026-06-09T14:11:14.203Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.004">
-        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; renders null — no visible DOM element" time="0.0019">
+    <testsuite name="components/BoardPage/__tests__/SingleBoard.test.tsx" timestamp="2026-06-22T05:42:20.597Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.2747">
+        <testcase classname="components/BoardPage/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render an error when network error occurs" time="0.0646">
         </testcase>
-        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; calls toast.error with the error message when error param is present" time="0.0008">
+        <testcase classname="components/BoardPage/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render an error when GraphQL error occurs" time="0.068">
         </testcase>
-        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; does not call toast.error when no error param is present" time="0.0006">
+        <testcase classname="components/BoardPage/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render no data found when returned data is empty" time="0.0661">
+        </testcase>
+        <testcase classname="components/BoardPage/__tests__/SingleBoard.test.tsx" name="Singe board page is rendered correctly &gt; render board, card, list with values correctly" time="0.0756">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/DashboardPage/__tests__/Dashboard.test.tsx" timestamp="2026-06-22T05:42:20.598Z" hostname="IaM-Desktop" tests="5" failures="0" errors="0" skipped="0" time="0.3335">
+        <testcase classname="components/DashboardPage/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render an error when network error occurs" time="0.0648">
+        </testcase>
+        <testcase classname="components/DashboardPage/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render an error when GraphQL error occurs" time="0.0703">
+        </testcase>
+        <testcase classname="components/DashboardPage/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render no data found when returned data is empty" time="0.0612">
+        </testcase>
+        <testcase classname="components/DashboardPage/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; render board items correctly" time="0.0658">
+        </testcase>
+        <testcase classname="components/DashboardPage/__tests__/Dashboard.test.tsx" name="Dashboard page is rendered correctly &gt; links to the correct board page" time="0.0711">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Homepage/__tests__/ErrorToast.test.tsx" timestamp="2026-06-22T05:42:20.599Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.009">
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; renders null — no visible DOM element" time="0.0055">
+        </testcase>
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; calls toast.error with the error message when error param is present" time="0.0014">
+        </testcase>
+        <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; does not call toast.error when no error param is present" time="0.001">
         </testcase>
         <testcase classname="components/Homepage/__tests__/ErrorToast.test.tsx" name="toast function is invoked correctly &gt; does not call toast.error when error param is an empty string" time="0.0005">
         </testcase>
     </testsuite>
-    <testsuite name="components/Navbar/__tests__/Logo.test.tsx" timestamp="2026-06-09T14:11:14.204Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.068">
-        <testcase classname="components/Navbar/__tests__/Logo.test.tsx" name="&quot;Mineboard&quot; logo &gt; renders &quot;Minebord&quot; as a link" time="0.0675">
+    <testsuite name="components/Sidebar/__tests__/DashboardSidebar.test.tsx" timestamp="2026-06-22T05:42:20.600Z" hostname="IaM-Desktop" tests="5" failures="0" errors="0" skipped="0" time="0.4892">
+        <testcase classname="components/Sidebar/__tests__/DashboardSidebar.test.tsx" name="DashboardSidebar &gt; opens board navigation, links to boards, and closes after navigation" time="0.1384">
+        </testcase>
+        <testcase classname="components/Sidebar/__tests__/DashboardSidebar.test.tsx" name="DashboardSidebar &gt; disables board creation while board navigation is loading" time="0.0618">
+        </testcase>
+        <testcase classname="components/Sidebar/__tests__/DashboardSidebar.test.tsx" name="DashboardSidebar &gt; renders an empty state when the user has no boards" time="0.0512">
+        </testcase>
+        <testcase classname="components/Sidebar/__tests__/DashboardSidebar.test.tsx" name="DashboardSidebar &gt; renders an error state when board navigation fails to load" time="0.0497">
+        </testcase>
+        <testcase classname="components/Sidebar/__tests__/DashboardSidebar.test.tsx" name="DashboardSidebar &gt; shows the new board title as a navigation link after successful creation" time="0.1879">
         </testcase>
     </testsuite>
-    <testsuite name="components/Navbar/__tests__/SignInButton.test.tsx" timestamp="2026-06-09T14:11:14.204Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0583">
-        <testcase classname="components/Navbar/__tests__/SignInButton.test.tsx" name="SignInWithGoogle action is called when log in" time="0.0583">
+    <testsuite name="components/Navbar/__tests__/BoardBadge.test.tsx" timestamp="2026-06-22T05:42:20.601Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.256">
+        <testcase classname="components/Navbar/__tests__/BoardBadge.test.tsx" name="BoardBadge &gt; renders Mineboard as a homepage link on the landing page" time="0.0568">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/BoardBadge.test.tsx" name="BoardBadge &gt; renders Mineboard as a homepage link on the dashboard page" time="0.0641">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/BoardBadge.test.tsx" name="BoardBadge &gt; renders the board title on board routes" time="0.068">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/BoardBadge.test.tsx" name="BoardBadge &gt; renders an error when the board title query fails" time="0.0668">
         </testcase>
     </testsuite>
-    <testsuite name="components/Navbar/__tests__/SignOutButton.test.tsx" timestamp="2026-06-09T14:11:14.205Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0584">
-        <testcase classname="components/Navbar/__tests__/SignOutButton.test.tsx" name="SignOutWithGoogle action is called when log out" time="0.0582">
+    <testsuite name="components/Navbar/__tests__/SignInButton.test.tsx" timestamp="2026-06-22T05:42:20.602Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0544">
+        <testcase classname="components/Navbar/__tests__/SignInButton.test.tsx" name="SignInWithGoogle action is called when log in" time="0.0544">
         </testcase>
     </testsuite>
-    <testsuite name="components/Navbar/__tests__/ThemeToggleButton.test.tsx" timestamp="2026-06-09T14:11:14.205Z" hostname="IaM-Desktop" tests="7" failures="0" errors="0" skipped="0" time="0.6481">
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; adds &quot;dark&quot; class to &lt;html&gt; when localStorage is &quot;dark&quot;" time="0.0288">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; removes &quot;dark&quot; class from &lt;html&gt; when localStorage is &quot;light&quot;" time="0.0049">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders MoonIcon when scheme is dark" time="0.0596">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders SunIcon when scheme is light" time="0.0643">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from light → dark" time="0.1862">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from dark → light" time="0.1166">
-        </testcase>
-        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles twice: returns to the original theme" time="0.1864">
+    <testsuite name="components/Navbar/__tests__/SignOutButton.test.tsx" timestamp="2026-06-22T05:42:20.603Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0549">
+        <testcase classname="components/Navbar/__tests__/SignOutButton.test.tsx" name="SignOutWithGoogle action is called when log out" time="0.0548">
         </testcase>
     </testsuite>
-    <testsuite name="components/Navbar/__tests__/UserButton.test.tsx" timestamp="2026-06-09T14:11:14.207Z" hostname="IaM-Desktop" tests="6" failures="0" errors="0" skipped="0" time="0.1555">
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; renders the user icon button" time="0.0077">
+    <testsuite name="components/Navbar/__tests__/ThemeToggleButton.test.tsx" timestamp="2026-06-22T05:42:20.603Z" hostname="IaM-Desktop" tests="7" failures="0" errors="0" skipped="0" time="0.5159">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; adds &quot;dark&quot; class to &lt;html&gt; when localStorage is &quot;dark&quot;" time="0.0045">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; does not render user avatar image" time="0.0037">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle — read localStorage on mount &gt; removes &quot;dark&quot; class from &lt;html&gt; when localStorage is &quot;light&quot;" time="0.0021">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; shows SignInButton inside popover panel" time="0.0752">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders MoonIcon when scheme is dark" time="0.0594">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; renders the user avatar image" time="0.0039">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme icon — icon rendered correctly &gt; renders SunIcon when scheme is light" time="0.0619">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; does not render user icon" time="0.0044">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from light → dark" time="0.1068">
         </testcase>
-        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; shows SignOutButton inside popover panel" time="0.0603">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles from dark → light" time="0.1206">
         </testcase>
-    </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" timestamp="2026-06-09T14:11:14.208Z" hostname="IaM-Desktop" tests="6" failures="0" errors="0" skipped="0" time="0.1332">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders checkbox input correctly" time="0.0318">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders date input correctly" time="0.0191">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders text input correctly" time="0.0204">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders tag input correctly" time="0.0205">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders image input correctly" time="0.0182">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders number input correctly" time="0.0227">
+        <testcase classname="components/Navbar/__tests__/ThemeToggleButton.test.tsx" name="Theme toggle interaction &gt; toggles twice: returns to the original theme" time="0.1601">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" timestamp="2026-06-09T14:11:14.211Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.0542">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" name="AddCardDialog: renders inputs correctly &gt; renders title input and color palette options" time="0.0319">
+    <testsuite name="components/Navbar/__tests__/UserButton.test.tsx" timestamp="2026-06-22T05:42:20.605Z" hostname="IaM-Desktop" tests="6" failures="0" errors="0" skipped="0" time="0.1437">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; renders the user icon button" time="0.0103">
         </testcase>
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" name="AddCardDialog: renders inputs correctly &gt; selects the first color palette by default" time="0.022">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; does not render user avatar image" time="0.004">
         </testcase>
-    </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Checkbox.test.tsx" timestamp="2026-06-09T14:11:14.212Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1042">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Checkbox.test.tsx" name="AddListDialog form submission &gt; checkbox: calls createList with correct value" time="0.104">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user is NOT authenticated &gt; shows SignInButton inside popover panel" time="0.0642">
         </testcase>
-    </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Date.test.tsx" timestamp="2026-06-09T14:11:14.212Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1315">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Date.test.tsx" name="AddListDialog form submission &gt; date: calls createList with correct value" time="0.1311">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; renders the user avatar image" time="0.0038">
         </testcase>
-    </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Image.test.tsx" timestamp="2026-06-09T14:11:14.213Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1343">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Image.test.tsx" name="AddListDialog form submission &gt; image: calls createList with correct value" time="0.1339">
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; does not render user icon" time="0.0081">
+        </testcase>
+        <testcase classname="components/Navbar/__tests__/UserButton.test.tsx" name="UserButton — UI when user IS authenticated &gt; shows SignOutButton inside popover panel" time="0.053">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Number.test.tsx" timestamp="2026-06-09T14:11:14.213Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.118">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Number.test.tsx" name="AddListDialog form submission &gt; number: calls createList with correct value" time="0.1176">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" timestamp="2026-06-22T05:42:20.607Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.0568">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" name="AddCardDialog: renders inputs correctly &gt; renders title input and color palette options" time="0.0358">
+        </testcase>
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardUI.test.tsx" name="AddCardDialog: renders inputs correctly &gt; selects the first color palette by default" time="0.0206">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Tag.test.tsx" timestamp="2026-06-09T14:11:14.214Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2623">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Tag.test.tsx" name="AddListDialog form submission &gt; tag: calls createList with correct value" time="0.2615">
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" timestamp="2026-06-22T05:42:20.609Z" hostname="IaM-Desktop" tests="6" failures="0" errors="0" skipped="0" time="0.1185">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders checkbox input correctly" time="0.0286">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders date input correctly" time="0.0174">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders text input correctly" time="0.018">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders tag input correctly" time="0.0207">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders image input correctly" time="0.0161">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListUI.test.tsx" name="AddListDialog: renders inputs according to list fields correctly &gt; renders number input correctly" time="0.0171">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Text.test.tsx" timestamp="2026-06-09T14:11:14.214Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1245">
-        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Text.test.tsx" name="AddListDialog form submission &gt; text: calls createList with correct value" time="0.1239">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddBoardForm/ActionCall.test.tsx" timestamp="2026-06-22T05:42:20.611Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1094">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/ActionCall.test.tsx" name="AddBoardActionButton form submission &gt; calls createBoard with the trimmed board title" time="0.1091">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/ActionCall.test.tsx" timestamp="2026-06-09T14:11:14.215Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1697">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/ActionCall.test.tsx" name="AddListDialog form submission &gt; calls createList with boardId, cardId and current form data" time="0.1693">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddBoardForm/CacheUpdate.test.tsx" timestamp="2026-06-22T05:42:20.611Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.2705">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/CacheUpdate.test.tsx" name="AddBoardActionButton form submission &gt; adds the created board to the front of the Apollo cache" time="0.1712">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/CacheUpdate.test.tsx" name="AddBoardActionButton form submission &gt; does not add a duplicate board when the cache already has it" time="0.0989">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/CacheUpdate.test.tsx" timestamp="2026-06-09T14:11:14.215Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1802">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/CacheUpdate.test.tsx" name="AddListDialog form submission &gt; update new list to Apollo cache after successful submission" time="0.1798">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddBoardForm/HandleError.test.tsx" timestamp="2026-06-22T05:42:20.612Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.5441">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/HandleError.test.tsx" name="AddBoardActionButton form submission &gt; shows an error toast when createBoard returns an error" time="0.1336">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/HandleError.test.tsx" name="AddBoardActionButton form submission &gt; shows an error toast when the created board is missing from the response" time="0.1168">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/HandleError.test.tsx" name="AddBoardActionButton form submission &gt; shows a generic error toast when createBoard throws" time="0.1161">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/HandleError.test.tsx" name="AddBoardActionButton form submission &gt; removes the pending board after the action settles" time="0.1771">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/CloseDialogOnSuccess.test.tsx" timestamp="2026-06-09T14:11:14.215Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1121">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/CloseDialogOnSuccess.test.tsx" name="AddListDialog form submission &gt; closes the dialog after successful submission" time="0.1117">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddBoardForm/Interaction.test.tsx" timestamp="2026-06-22T05:42:20.615Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.3317">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Interaction.test.tsx" name="AddBoardActionButton interaction &gt; opens and cancels the inline form" time="0.1782">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Interaction.test.tsx" name="AddBoardActionButton interaction &gt; cancels the inline form with Escape" time="0.0832">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Interaction.test.tsx" name="AddBoardActionButton interaction &gt; does not open when disabled" time="0.0159">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Interaction.test.tsx" name="AddBoardActionButton interaction &gt; does not open without a user id" time="0.0539">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/EmptySubmission.test.tsx" timestamp="2026-06-09T14:11:14.216Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0954">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/EmptySubmission.test.tsx" name="AddListDialog form submission &gt; blocks empty submission and keeps the dialog open" time="0.095">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddBoardForm/Validation.test.tsx" timestamp="2026-06-22T05:42:20.616Z" hostname="IaM-Desktop" tests="3" failures="0" errors="0" skipped="0" time="0.2132">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Validation.test.tsx" name="AddBoardActionButton form validation &gt; blocks empty title submission" time="0.0764">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Validation.test.tsx" name="AddBoardActionButton form validation &gt; blocks whitespace-only titles" time="0.0724">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddBoardForm/Validation.test.tsx" name="AddBoardActionButton form validation &gt; blocks titles over 30 characters after trimming" time="0.0641">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/HandleError.test.tsx" timestamp="2026-06-09T14:11:14.216Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.115">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/HandleError.test.tsx" name="AddListDialog form submission &gt; shows an error toast and keeps dialog open when createList fails" time="0.1146">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldDetailsDisclosure.test.tsx" timestamp="2026-06-22T05:42:20.617Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2096">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldDetailsDisclosure.test.tsx" name="Add list fields details disclosure &gt; collapses and expands field details while keeping draft values" time="0.2093">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/ResetForm.test.tsx" timestamp="2026-06-09T14:11:14.217Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2177">
-        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/ResetForm.test.tsx" name="AddListDialog form submission &gt; resets form fields when the dialog is closed" time="0.2175">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldRemoval.test.tsx" timestamp="2026-06-22T05:42:20.617Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.3491">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldRemoval.test.tsx" name="Add list fields removal &gt; removes the selected field without removing sibling fields" time="0.349">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" timestamp="2026-06-09T14:11:14.217Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1268">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" name="AddListDialog interaction &gt; checkbox: toggles the checked state on click" time="0.0897">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" name="AddListDialog interaction &gt; checkbox: updates the title text on type" time="0.0366">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldTypeChange.test.tsx" timestamp="2026-06-22T05:42:20.618Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.3058">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/FieldTypeChange.test.tsx" name="Add list fields type changes &gt; changes field type and resets type-specific config" time="0.3056">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Date.test.tsx" timestamp="2026-06-09T14:11:14.217Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0825">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Date.test.tsx" name="AddListDialog interaction &gt; date: updates value on type" time="0.0821">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewCheckboxTag.test.tsx" timestamp="2026-06-22T05:42:20.618Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1425">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewCheckboxTag.test.tsx" name="Add list fields checkbox and tag preview &gt; shows the checkbox checklist preview" time="0.0695">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewCheckboxTag.test.tsx" name="Add list fields checkbox and tag preview &gt; shows the tag preview" time="0.0726">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/DialogToggle.test.tsx" timestamp="2026-06-09T14:11:14.218Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1266">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/DialogToggle.test.tsx" name="AddListDialog interaction &gt; dialog is opened/closed when clicking the open/cancel button" time="0.1266">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewDateImage.test.tsx" timestamp="2026-06-22T05:42:20.619Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1722">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewDateImage.test.tsx" name="Add list fields date and image preview &gt; shows the date field title and formatted example date" time="0.0997">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewDateImage.test.tsx" name="Add list fields date and image preview &gt; shows the image field title and placeholder image" time="0.0723">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Number.test.tsx" timestamp="2026-06-09T14:11:14.218Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0473">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Number.test.tsx" name="AddListDialog interaction &gt; number: updates value on type" time="0.0469">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewTextNumber.test.tsx" timestamp="2026-06-22T05:42:20.620Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1686">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewTextNumber.test.tsx" name="Add list fields text and number preview &gt; shows the text field title and example note" time="0.0866">
+        </testcase>
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/PreviewTextNumber.test.tsx" name="Add list fields text and number preview &gt; shows the number field title and formatted example number" time="0.0816">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" timestamp="2026-06-09T14:11:14.219Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1462">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" name="AddListDialog interaction &gt; tag: commits a tag on Enter and clears the input" time="0.0779">
-        </testcase>
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" name="AddListDialog interaction &gt; tag: commits a tag on Space" time="0.068">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitEditedValues.test.tsx" timestamp="2026-06-22T05:42:20.621Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.6349">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitEditedValues.test.tsx" name="Add list fields edited submit values &gt; submits updated values after field type changes and removal" time="0.6348">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagPaste.test.tsx" timestamp="2026-06-09T14:11:14.219Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2082">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagPaste.test.tsx" name="AddListDialog interaction &gt; tag: converts pasted text to tags correctly" time="0.2077">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitError.test.tsx" timestamp="2026-06-22T05:42:20.621Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.137">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitError.test.tsx" name="Add list fields submit errors &gt; keeps the form mounted and shows a toast when saving list fields fails" time="0.1368">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagRemove.test.tsx" timestamp="2026-06-09T14:11:14.220Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0944">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagRemove.test.tsx" name="AddListDialog interaction &gt; tag: removes the last tag on Backspace when input is empty" time="0.094">
+    <testsuite name="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitValues.test.tsx" timestamp="2026-06-22T05:42:20.621Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2671">
+        <testcase classname="components/Mutation/Board/Create/__tests__/AddListFieldsForm/SubmitValues.test.tsx" name="Add list fields submit values &gt; submits the configured field values" time="0.267">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Text.test.tsx" timestamp="2026-06-09T14:11:14.220Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0607">
-        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Text.test.tsx" name="AddListDialog interaction &gt; text: updates textarea value on type" time="0.0604">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" timestamp="2026-06-22T05:42:20.622Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.2777">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" name="AddCardDialog form submission &gt; calls createCard with boardId and current form data" time="0.1768">
+        </testcase>
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" name="AddCardDialog form submission &gt; submits the default color when no palette is selected manually" time="0.1002">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" timestamp="2026-06-09T14:11:14.220Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.2766">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" name="AddCardDialog form submission &gt; calls createCard with boardId and current form data" time="0.1769">
-        </testcase>
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ActionCall.test.tsx" name="AddCardDialog form submission &gt; submits the default color when no palette is selected manually" time="0.0993">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/CloseDialogOnSuccess.test.tsx" timestamp="2026-06-22T05:42:20.622Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1302">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/CloseDialogOnSuccess.test.tsx" name="AddCardDialog form submission &gt; closes the dialog after the success " time="0.1297">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/CacheUpdate.test.tsx" timestamp="2026-06-09T14:11:14.221Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1134">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/CacheUpdate.test.tsx" name="AddCardDialog form submission &gt; updates Apollo cache after successful submission" time="0.113">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/EmptySubmission.test.tsx" timestamp="2026-06-22T05:42:20.623Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0932">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/EmptySubmission.test.tsx" name="AddCardDialog form submission &gt; blocks empty title submission with native required validation" time="0.0928">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/CloseDialogOnSuccess.test.tsx" timestamp="2026-06-09T14:11:14.221Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0931">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/CloseDialogOnSuccess.test.tsx" name="AddCardDialog form submission &gt; closes the dialog after the success " time="0.0927">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/HandleError.test.tsx" timestamp="2026-06-22T05:42:20.623Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1264">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/HandleError.test.tsx" name="AddCardDialog form submission &gt; shows an error toast and keeps dialog open when createCard fails" time="0.126">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/EmptySubmission.test.tsx" timestamp="2026-06-09T14:11:14.222Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0889">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/EmptySubmission.test.tsx" name="AddCardDialog form submission &gt; blocks empty title submission with native required validation" time="0.0884">
+    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/ResetForm.test.tsx" timestamp="2026-06-22T05:42:20.624Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2616">
+        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ResetForm.test.tsx" name="AddCardDialog form submission &gt; resets form fields when the dialog is closed" time="0.2613">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/HandleError.test.tsx" timestamp="2026-06-09T14:11:14.222Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1293">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/HandleError.test.tsx" name="AddCardDialog form submission &gt; shows an error toast and keeps dialog open when createCard fails" time="0.1291">
+    <testsuite name="components/Mutation/Card/Create/__tests__/Interactions/DialogToggle.test.tsx" timestamp="2026-06-22T05:42:20.625Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1677">
+        <testcase classname="components/Mutation/Card/Create/__tests__/Interactions/DialogToggle.test.tsx" name="AddCardDialog interaction &gt; dialog is opened/closed when clicking the open/cancel button" time="0.1409">
+        </testcase>
+        <testcase classname="components/Mutation/Card/Create/__tests__/Interactions/DialogToggle.test.tsx" name="AddCardDialog interaction &gt; keeps the open button disabled until list fields exist" time="0.0264">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/AddCardForm/ResetForm.test.tsx" timestamp="2026-06-09T14:11:14.223Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2542">
-        <testcase classname="components/Mutation/Card/Create/__tests__/AddCardForm/ResetForm.test.tsx" name="AddCardDialog form submission &gt; resets form fields when the dialog is closed" time="0.2541">
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/ActionCall.test.tsx" timestamp="2026-06-22T05:42:20.626Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1374">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/ActionCall.test.tsx" name="AddListDialog form submission &gt; calls createList with boardId, cardId and current form data" time="0.1371">
         </testcase>
     </testsuite>
-    <testsuite name="components/Mutation/Card/Create/__tests__/Interactions/DialogToggle.test.tsx" timestamp="2026-06-09T14:11:14.223Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1385">
-        <testcase classname="components/Mutation/Card/Create/__tests__/Interactions/DialogToggle.test.tsx" name="AddCardDialog interaction &gt; dialog is opened/closed when clicking the open/cancel button" time="0.1383">
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/CloseDialogOnSuccess.test.tsx" timestamp="2026-06-22T05:42:20.626Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1312">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/CloseDialogOnSuccess.test.tsx" name="AddListDialog form submission &gt; closes the dialog after successful submission" time="0.1305">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/EmptySubmission.test.tsx" timestamp="2026-06-22T05:42:20.627Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0915">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/EmptySubmission.test.tsx" name="AddListDialog form submission &gt; blocks empty submission and keeps the dialog open" time="0.0912">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/HandleError.test.tsx" timestamp="2026-06-22T05:42:20.627Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1091">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/HandleError.test.tsx" name="AddListDialog form submission &gt; shows an error toast and keeps dialog open when createList fails" time="0.1087">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/AddListForm/ResetForm.test.tsx" timestamp="2026-06-22T05:42:20.628Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1769">
+        <testcase classname="components/Mutation/List/Create/__tests__/AddListForm/ResetForm.test.tsx" name="AddListDialog form submission &gt; resets form fields when the dialog is closed" time="0.1767">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Checkbox.test.tsx" timestamp="2026-06-22T05:42:20.628Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1165">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Checkbox.test.tsx" name="AddListDialog form submission &gt; checkbox: calls createList with correct value" time="0.1162">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Date.test.tsx" timestamp="2026-06-22T05:42:20.628Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1582">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Date.test.tsx" name="AddListDialog form submission &gt; date: calls createList with correct value" time="0.1579">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Image.test.tsx" timestamp="2026-06-22T05:42:20.629Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1464">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Image.test.tsx" name="AddListDialog form submission &gt; image: calls createList with correct value" time="0.1461">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Number.test.tsx" timestamp="2026-06-22T05:42:20.629Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1103">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Number.test.tsx" name="AddListDialog form submission &gt; number: calls createList with correct value" time="0.11">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Tag.test.tsx" timestamp="2026-06-22T05:42:20.630Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2604">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Tag.test.tsx" name="AddListDialog form submission &gt; tag: calls createList with correct value" time="0.2599">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/FormSubmission/Text.test.tsx" timestamp="2026-06-22T05:42:20.630Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1118">
+        <testcase classname="components/Mutation/List/Create/__tests__/FormSubmission/Text.test.tsx" name="AddListDialog form submission &gt; text: calls createList with correct value" time="0.1114">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" timestamp="2026-06-22T05:42:20.630Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1268">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" name="AddListDialog interaction &gt; checkbox: toggles the checked state on click" time="0.091">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Checkbox.test.tsx" name="AddListDialog interaction &gt; checkbox: updates the title text on type" time="0.0354">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Date.test.tsx" timestamp="2026-06-22T05:42:20.631Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0883">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Date.test.tsx" name="AddListDialog interaction &gt; date: updates value on type" time="0.088">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/DialogToggle.test.tsx" timestamp="2026-06-22T05:42:20.631Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.1387">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/DialogToggle.test.tsx" name="AddListDialog interaction &gt; dialog is opened/closed when clicking the open/cancel button" time="0.1384">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Number.test.tsx" timestamp="2026-06-22T05:42:20.632Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0455">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Number.test.tsx" name="AddListDialog interaction &gt; number: updates value on type" time="0.0451">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" timestamp="2026-06-22T05:42:20.632Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1431">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" name="AddListDialog interaction &gt; tag: commits a tag on Enter and clears the input" time="0.0816">
+        </testcase>
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagCommit.test.tsx" name="AddListDialog interaction &gt; tag: commits a tag on Space" time="0.0611">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagPaste.test.tsx" timestamp="2026-06-22T05:42:20.633Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.199">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagPaste.test.tsx" name="AddListDialog interaction &gt; tag: converts pasted text to tags correctly" time="0.1986">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/TagRemove.test.tsx" timestamp="2026-06-22T05:42:20.633Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0825">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/TagRemove.test.tsx" name="AddListDialog interaction &gt; tag: removes the last tag on Backspace when input is empty" time="0.0823">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/Mutation/List/Create/__tests__/Interactions/Text.test.tsx" timestamp="2026-06-22T05:42:20.634Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.0512">
+        <testcase classname="components/Mutation/List/Create/__tests__/Interactions/Text.test.tsx" name="AddListDialog interaction &gt; text: updates textarea value on type" time="0.0507">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/BoardPage/__tests__/AddListFieldsFeature/EmptyBoardState.test.tsx" timestamp="2026-06-22T05:42:20.634Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.41">
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/EmptyBoardState.test.tsx" name="Add list fields empty board state &gt; renders the add list fields empty state when there are no list fields" time="0.0695">
+        </testcase>
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/EmptyBoardState.test.tsx" name="Add list fields empty board state &gt; keeps add card unavailable before any list fields exist" time="0.1386">
+        </testcase>
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/EmptyBoardState.test.tsx" name="Add list fields empty board state &gt; opens the add list fields dialog from the empty cards container" time="0.1351">
+        </testcase>
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/EmptyBoardState.test.tsx" name="Add list fields empty board state &gt; does not render card or list content before a card exists" time="0.0664">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/BoardPage/__tests__/AddListFieldsFeature/NoCardsState.test.tsx" timestamp="2026-06-22T05:42:20.635Z" hostname="IaM-Desktop" tests="2" failures="0" errors="0" skipped="0" time="0.1951">
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/NoCardsState.test.tsx" name="Add list fields no cards state &gt; renders the add card empty state when list fields exist but no cards exist" time="0.0624">
+        </testcase>
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/NoCardsState.test.tsx" name="Add list fields no cards state &gt; opens the add card dialog from the cards container create button" time="0.1325">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/BoardPage/__tests__/AddListFieldsFeature/DialogOpening.test.tsx" timestamp="2026-06-22T05:42:20.636Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.2166">
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/DialogOpening.test.tsx" name="Add list fields dialog opening &gt; opens the add list fields dialog from the action menu button" time="0.2165">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/BoardPage/__tests__/AddListFieldsFeature/PostCreateAvailability.test.tsx" timestamp="2026-06-22T05:42:20.636Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.5963">
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/PostCreateAvailability.test.tsx" name="Add list fields post-create availability &gt; makes add card available after list fields are created" time="0.5957">
+        </testcase>
+    </testsuite>
+    <testsuite name="components/BoardPage/__tests__/AddListFieldsFeature/FullCreateFlow.test.tsx" timestamp="2026-06-22T05:42:20.637Z" hostname="IaM-Desktop" tests="1" failures="0" errors="0" skipped="0" time="0.6831">
+        <testcase classname="components/BoardPage/__tests__/AddListFieldsFeature/FullCreateFlow.test.tsx" name="Add list fields full create flow &gt; creates list fields, a card, and a list with values that render on the new card" time="0.6829">
         </testcase>
     </testsuite>
 </testsuites>

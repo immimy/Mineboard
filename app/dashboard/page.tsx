@@ -1,4 +1,4 @@
-import BoardsContainer from '@/components/Dashboard/BoardsContainer';
+import BoardsContainer from '@/components/DashboardPage/BoardsContainer';
 import { createClient } from '@/utils/database/serverClient';
 import { redirect } from 'next/navigation';
 

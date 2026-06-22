@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
-vi.mock('@/components/Board/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
 
 // ───────────────────────────────────────────────────────────
 // Setup
@@ -33,9 +33,11 @@ describe('AddListDialog form submission', () => {
     const { header, saveButton } = getAllElements();
     await saveButton.click();
 
-    expect(toast.error).toHaveBeenCalledWith(
-      'At least one field must have a value',
-    );
+    await vi.waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith(
+        'At least one field must have a value',
+      );
+    });
     expect(listActions.createList).not.toHaveBeenCalled();
     expect(header).toBeVisible();
   });

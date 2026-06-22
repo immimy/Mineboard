@@ -12,3 +12,7 @@ export const useRouter = vi.fn(() => {
     replace: mockReplace,
   };
 });
+
+export const useParams = vi.fn();
+
+export const usePathname = vi.fn();

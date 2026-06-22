@@ -72,7 +72,7 @@ build_prod:
 
 unit_tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.59.1-noble
+  image: mcr.microsoft.com/playwright:v1.60.0-noble
   script:
     - npm ci
     - npm test

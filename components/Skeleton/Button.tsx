@@ -7,3 +7,11 @@ export function NavbarButton() {
     </div>
   );
 }
+
+export function NavbarBadge() {
+  return (
+    <div className='min-w-12 max-w-24 flex justify-center items-center'>
+      <LoadingIcon />
+    </div>
+  );
+}

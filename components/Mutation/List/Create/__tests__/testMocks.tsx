@@ -2,21 +2,24 @@ import {
   mockBoardId,
   mockCardId,
   mockListFields,
-} from '@/components/Board/__tests__/singleBoardQuery.mock';
-import * as BoardContext from '@/components/Board/BoardContext';
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import * as BoardContext from '@/components/BoardPage/BoardContext';
 import { makeFragmentData } from '@/gql/__generated__';
 import {
-  CreatedListFragmentDoc,
+  CachedListQuery,
   Field_Type,
-  ListWithValuesQuery,
+  MutatedListFragmentDoc,
 } from '@/gql/__generated__/graphql';
-import type { CreatedListFragment } from '@/gql/__generated__/graphql';
+import type { MutatedListFragment } from '@/gql/__generated__/graphql';
 
 export const mockCloseAddList = vi.fn();
 export const mockedUseBoardContext = () => {
   vi.mocked(BoardContext.useBoardContext).mockReturnValue({
     boardId: mockBoardId,
     dbListFields: mockListFields.edges,
+    isAddListFieldOpen: false,
+    openAddListField: vi.fn(),
+    closeAddListField: vi.fn(),
     isAddCardOpen: false,
     openAddCard: vi.fn(),
     closeAddCard: vi.fn(),
@@ -28,7 +31,7 @@ export const mockedUseBoardContext = () => {
 };
 
 const createdListValuesCollection: NonNullable<
-  CreatedListFragment['list_valuesCollection']
+  MutatedListFragment['list_valuesCollection']
 > = {
   __typename: 'list_valuesConnection',
   edges: [
@@ -69,10 +72,10 @@ const createdListNode = makeFragmentData(
     position: 1,
     list_valuesCollection: createdListValuesCollection,
   },
-  CreatedListFragmentDoc,
+  MutatedListFragmentDoc,
 );
 export const CREATE_LIST_SUCCESS: {
-  data: ListWithValuesQuery;
+  data: CachedListQuery;
   error: null;
 } = {
   error: null,

@@ -2,8 +2,8 @@ import {
   mockBoardId,
   mockCardId,
   mockListFields,
-} from '@/components/Board/__tests__/singleBoardQuery.mock';
-import BoardContextWrapper from '@/components/Board/BoardContext';
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import BoardContextWrapper from '@/components/BoardPage/BoardContext';
 import { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { render } from 'vitest-browser-react';

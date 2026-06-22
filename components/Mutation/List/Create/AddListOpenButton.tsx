@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@headlessui/react';
-import { useBoardContext } from '@/components/Board/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/BoardContext';
 import { PlusIcon } from '@/icons/icons';
 
 type AddListButtonProps = { cardId: string };
