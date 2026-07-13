@@ -6,57 +6,79 @@ import {
   successMock,
 } from './singleBoardQuery.mock';
 import { formatDate } from '@/utils/formatter/helper';
-import { getAllElements, renderSingleBoard } from './testUtils';
+import { page } from 'vitest/browser';
+import { renderBoard } from './testUtils';
 
-vi.mock('@/components/Mutation/List/Create/AddListDialog', () => ({
+vi.mock('@/components/Mutation/List/AddListDialog', () => ({
   default: () => <div data-testid='mock-add-list-dialog' />,
 }));
-vi.mock('@/components/Mutation/Card/Create/AddCardDialog', () => ({
+vi.mock('@/components/Mutation/Card/AddCardDialog', () => ({
   default: () => <div data-testid='mock-add-card-dialog' />,
 }));
-vi.mock('@/components/Mutation/Board/Create/AddListFieldDialog', () => ({
+vi.mock('@/components/Mutation/Card/UpdateCardDialog', () => ({
+  default: () => <div data-testid='mock-update-card-dialog' />,
+}));
+vi.mock('@/components/Mutation/List/UpdateListDialog', () => ({
+  default: () => <div data-testid='mock-update-list-dialog' />,
+}));
+vi.mock('@/components/Mutation/Board/ListField/ListFieldDialog', () => ({
   default: () => <div data-testid='mock-add-list-field-dialog' />,
 }));
 vi.mock('@/components/BoardPage/ActionMenuContainer', () => ({
   default: () => <div data-testid='mock-action-menu-container' />,
 }));
 
+const getAllElements = () => {
+  const cards = page.getByRole('article');
+  const lists = page
+    .getByRole('listitem')
+    .filter({ has: page.getByRole('list') });
+
+  return {
+    loading: page.getByLabelText('loading'),
+    error: page.getByText(/an error occurred/i),
+    noData: page.getByText(/no data found/i),
+    card: cards.nth(0).filter({ hasText: /test card/i }),
+    list: lists.nth(0),
+  };
+};
+
 // ---------------------------------------------------------------------------
 // Single Board Page
 // ---------------------------------------------------------------------------
 describe('Singe board page is rendered correctly', () => {
   it('render an error when network error occurs', async () => {
-    await renderSingleBoard([networkErrorMock]);
+    await renderBoard([networkErrorMock]);
     const { loading, error } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
     await expect.element(error).toBeInTheDocument();
   });
 
   it('render an error when GraphQL error occurs', async () => {
-    await renderSingleBoard([graphqlErrorMock]);
+    await renderBoard([graphqlErrorMock]);
     const { loading, error } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
     await expect.element(error).toBeInTheDocument();
   });
 
   it('render no data found when returned data is empty', async () => {
-    await renderSingleBoard([noDataMock]);
+    await renderBoard([noDataMock]);
     const { loading, noData } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
     await expect.element(noData).toBeInTheDocument();
   });
 
   it('render board, card, list with values correctly', async () => {
-    await renderSingleBoard([successMock]);
-    const { loading, card1, list1 } = getAllElements();
+    await renderBoard([successMock]);
+    const { loading, card, list } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
 
     // Display board title, card and list
-    expect(card1).toBeVisible();
-    expect(list1).toBeVisible();
+    expect(card).toBeVisible();
+    expect(list).toBeVisible();
 
     // Display all list values
-    const listValues = list1.getByRole('listitem');
+    const listValues = list.getByRole('listitem');
     expect(listValues).toHaveLength(6);
     // Display list values according to types
     // and arrange the orders correctly

@@ -1,12 +1,16 @@
 import { MockedProvider } from '@apollo/client/testing/react';
-import { MockLink } from '@apollo/client/testing';
+import type { MockLink } from '@apollo/client/testing';
 import { BoardTitleDocument } from '@/gql/__generated__/graphql';
 import { GraphQLError } from 'graphql/error';
 import { useParams, usePathname } from 'next/navigation';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import BoardBadge from '../BoardBadge';
-import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitleContext';
+
+vi.mock('@/utils/actions/board');
+
+const mockBoardId = 'boardId1';
 
 const boardTitleMock: MockLink.MockedResponse = {
   request: {
@@ -48,7 +52,9 @@ const renderBoardBadge = (
 ) => {
   return render(
     <MockedProvider mocks={mocks}>
-      <BoardBadge />
+      <BoardTitleProvider>
+        <BoardBadge />
+      </BoardTitleProvider>
     </MockedProvider>,
   );
 };
@@ -81,15 +87,18 @@ describe('BoardBadge', () => {
   // Other routes, unless landing page, should render board title.
   // Since currently there is only boards page, this will suffice for the time being.
   it('renders the board title on board routes', async () => {
-    vi.mocked(usePathname).mockReturnValue(`/boards/${mockBoardId}`);
+    vi.mocked(usePathname).mockReturnValue(`/dashboard/${mockBoardId}`);
 
     renderBoardBadge();
 
-    await expect.element(page.getByText('Test Board')).toBeInTheDocument();
+    const titleInput = page.getByRole('textbox', { name: /board title/i });
+
+    await expect.element(titleInput).toHaveValue('Test Board');
+    await expect.element(titleInput).toBeDisabled();
   });
 
   it('renders an error when the board title query fails', async () => {
-    vi.mocked(usePathname).mockReturnValue(`/boards/${mockBoardId}`);
+    vi.mocked(usePathname).mockReturnValue(`/dashboard/${mockBoardId}`);
 
     renderBoardBadge([boardTitleErrorMock]);
 

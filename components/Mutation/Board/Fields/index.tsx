@@ -5,11 +5,11 @@ import ImageFieldInput from './ImageFieldInput';
 import NumberFieldInput from './NumberFieldInput';
 import TagFieldInput from './TagFieldInput';
 import TextFieldInput from './TextFieldInput';
-import { ListFieldDraft } from '@/types/jsonbSchema';
+import { ListFieldForm } from '@/types/app';
 
 type FieldInputProps = {
-  field: ListFieldDraft;
-  onConfigChange: (field: ListFieldDraft) => void;
+  field: ListFieldForm;
+  onConfigChange: (field: ListFieldForm) => void;
   onTypeChange: (type: Field_Type) => void;
   onRemove: () => void;
 };
@@ -25,9 +25,7 @@ function FieldInput({
       return (
         <CheckboxFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />
@@ -36,9 +34,7 @@ function FieldInput({
       return (
         <DateFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />
@@ -47,9 +43,7 @@ function FieldInput({
       return (
         <ImageFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />
@@ -58,9 +52,7 @@ function FieldInput({
       return (
         <NumberFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />
@@ -69,9 +61,7 @@ function FieldInput({
       return (
         <TagFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />
@@ -80,9 +70,7 @@ function FieldInput({
       return (
         <TextFieldInput
           field={field}
-          onChange={(config) =>
-            onConfigChange({ id: field.id, type: field.type, config })
-          }
+          onChange={(config) => onConfigChange({ ...field, config })}
           onTypeChange={onTypeChange}
           onRemove={onRemove}
         />

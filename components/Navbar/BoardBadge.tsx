@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import { NavbarBadge as LoadingSkeleton } from '../Skeleton/Button';
 import { useQuery } from '@apollo/client/react';
 import Error from '../global/Error';
+import UpdateBoardTitle from '../Mutation/Board/Title/UpdateBoardTitle';
 
 const BoardTitleQuery = graphql(/* GraphQL */ `
   query BoardTitle($boardId: UUID!) {
@@ -38,12 +39,8 @@ function BoardTitle() {
   if (error || !data) return <Error isMarginTop={false} />;
 
   const title = data.boardsCollection?.edges[0].node.title;
-
-  return (
-    <h6 className='text-lg md:text-xl font-semibold tracking-wider truncate'>
-      {title}
-    </h6>
-  );
+  if (!title) return null;
+  return <UpdateBoardTitle boardId={boardId as string} title={title} />;
 }
 
 function HomepageLink() {

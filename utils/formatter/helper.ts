@@ -22,3 +22,17 @@ export const localDateToUTC = (value: string, tzOffset: number): string => {
   date.setMinutes(date.getMinutes() + tzOffset); // timezone offset
   return date.toISOString();
 };
+
+/**
+ *
+ * @param value UTC date/datetime string (with timezone)
+ * @param isIncludeTime
+ * @returns local datetime string
+ */
+export const UTCDateToLocal = (
+  value: string,
+  isIncludeTime: boolean,
+): string => {
+  if (!value) return '';
+  return dayjs(value).format(isIncludeTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD');
+};

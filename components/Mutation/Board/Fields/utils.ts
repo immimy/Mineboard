@@ -1,27 +1,57 @@
 import { Field_Type } from '@/gql/__generated__/graphql';
-import { ColorPalette, ListField, ListFieldDraft } from '@/types/jsonbSchema';
+import { ListFieldForm } from '@/types/app';
+import {
+  CheckboxSchema,
+  ColorPalette,
+  DateSchema,
+  ImageSchema,
+  ListField,
+  ListFieldDraft,
+  NumberSchema,
+  TagSchema,
+  TextSchema,
+} from '@/types/jsonbSchema';
 
 // Create field draft for FieldsForm state
-export function createFieldDraft(
-  type: Field_Type,
-  id = crypto.randomUUID(),
-): ListFieldDraft {
+export function createFieldDraft({
+  id = `client:${crypto.randomUUID()}`,
+  type,
+  position,
+  config,
+}: {
+  id?: string;
+  type: Field_Type;
+  position: number;
+  config?: ListFieldDraft['config'];
+}): ListFieldForm {
+  const initial = { id, position };
   switch (type) {
     case Field_Type.Checkbox:
-      return { id, type, config: {} };
+      return {
+        ...initial,
+        type,
+        config: (config as CheckboxSchema['config']) ?? {},
+      };
     case Field_Type.Date:
       return {
-        id,
+        ...initial,
         type,
-        config: { title: '', isIncludeTime: false },
+        config: (config as DateSchema['config']) ?? {
+          title: '',
+          isIncludeTime: false,
+        },
       };
     case Field_Type.Image:
-      return { id, type, config: { title: '' } };
+      return {
+        ...initial,
+        type,
+        config: (config as ImageSchema['config']) ?? { title: '' },
+      };
     case Field_Type.Number:
       return {
-        id,
+        ...initial,
         type,
-        config: {
+        config: (config as NumberSchema['config']) ?? {
           title: '',
           isHasUnit: false,
           unit: '',
@@ -29,9 +59,19 @@ export function createFieldDraft(
         },
       };
     case Field_Type.Tag:
-      return { id, type, config: { color: ColorPalette.first } };
+      return {
+        ...initial,
+        type,
+        config: (config as TagSchema['config']) ?? {
+          color: ColorPalette.first,
+        },
+      };
     case Field_Type.Text:
-      return { id, type, config: { title: '' } };
+      return {
+        ...initial,
+        type,
+        config: (config as TextSchema['config']) ?? { title: '' },
+      };
   }
 }
 

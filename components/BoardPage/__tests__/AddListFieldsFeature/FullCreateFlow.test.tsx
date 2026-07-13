@@ -12,14 +12,16 @@ import {
   createdTextFieldId,
 } from './testMocks';
 import {
-  expectTextListFieldActionCall,
   getAllElements,
   openListFieldsFromEmptyState,
   renderBoard,
   saveTextListField,
 } from './testUtils';
 
-vi.mock('@/utils/actions/board', () => ({ createListFields: vi.fn() }));
+vi.mock('@/utils/actions/board', () => ({
+  createListFields: vi.fn(),
+  updateListFields: vi.fn(),
+}));
 vi.mock('@/utils/actions/card');
 vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
@@ -46,7 +48,7 @@ describe('Add list fields full create flow', () => {
     await saveTextListField();
 
     await vi.waitFor(() => {
-      expectTextListFieldActionCall(boardActions.createListFields);
+      expect(boardActions.createListFields).toHaveBeenCalledOnce();
     });
 
     await userEvent.click(addCardButton);

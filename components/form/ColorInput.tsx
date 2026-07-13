@@ -37,9 +37,10 @@ function ColorInput({
       <div className='grid gap-1'>
         <Label className='text-sm font-semibold capitalize'>{label}</Label>
       </div>
-      <div className='flex items-center justify-center gap-3 overflow-auto minimal-scrollbar'>
+
+      <div className='mx-auto px-3 max-w-full inline-flex items-center gap-3 overflow-auto minimal-scrollbar'>
         {options.map((color) => (
-          <Field key={color}>
+          <Field key={color} className='shrink-0'>
             <Radio
               value={color}
               aria-label={`Palette ${color}`}

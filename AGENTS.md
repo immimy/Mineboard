@@ -42,6 +42,7 @@ Apply this context to every task. When a request conflicts with these instructio
 - Default to Server Actions for app mutations and form handling.
 - Use Route Handlers only when a third-party service needs an HTTP endpoint, such as `/api/sign-cloudinary` or the Supabase OAuth callback.
 - Cloudinary stores images. Persist only Cloudinary `public_id` values in list value JSON, never full URLs.
+- Keep dialog contexts in `components/Mutation/Context` split into state and actions contexts. Components that only need open/close actions should not subscribe to dialog state such as `isOpen`, because a single state+actions context would re-render every consumer on each toggle. This is most important for repeated board items: `Card` consumes `useUpdateCardDialogActions()`, so opening one update-card dialog would otherwise re-render every rendered card; `List` consumes `useUpdateListDialogActions()`, so opening one update-list dialog would otherwise re-render every rendered list.
 - Do not deploy, push, run migrations, alter schema, add dependencies, or modify CI/CD without explicit in-session confirmation.
 
 ## Current App Flow

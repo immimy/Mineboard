@@ -161,3 +161,12 @@ export type ListFieldInput =
   | ImageInput
   | CheckboxInput
   | TagInput;
+
+// Update list
+export type ListFieldValue =
+  | TextValue
+  | NumberValue
+  | DateValue
+  | ImageValue
+  | CheckboxValue
+  | TagValue;

@@ -1,21 +1,23 @@
-import AppContextWrapper from '@/app/context';
+import AppContextProvider from '@/components/global/AppContext';
 import BoardContainer from '@/components/BoardPage/BoardContainer';
 import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import { Field_Type } from '@/gql/__generated__/graphql';
 import { MockLink } from '@apollo/client/testing';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { emptyBoardMock } from './testMocks';
+import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitleContext';
 
 export const renderBoard = (
   mocks: MockLink.MockedResponse[] = [emptyBoardMock],
 ) => {
   return render(
     <MockedProvider mocks={mocks}>
-      <AppContextWrapper>
-        <BoardContainer boardId={mockBoardId} />
-      </AppContextWrapper>
+      <AppContextProvider>
+        <BoardTitleProvider>
+          <BoardContainer boardId={mockBoardId} />
+        </BoardTitleProvider>
+      </AppContextProvider>
     </MockedProvider>,
   );
 };
@@ -53,16 +55,4 @@ export const saveTextListField = async (title = 'Note') => {
   await userEvent.click(addTextFieldButton);
   await textTitleInput.fill(title);
   await userEvent.click(saveButton);
-};
-
-export const expectTextListFieldActionCall = (
-  createListFields: unknown,
-  title = 'Note',
-) => {
-  expect(createListFields).toHaveBeenCalledWith(mockBoardId, [
-    expect.objectContaining({
-      type: Field_Type.Text,
-      config: { title },
-    }),
-  ]);
 };

@@ -1,0 +1,70 @@
+import {
+  mockBoardId,
+  mockCardId,
+  mockCheckboxId,
+  mockTagId,
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import { mockedUseBoardContext, CREATE_LIST_FAIL } from '../testMocks';
+import {
+  getAllElements,
+  openAddListDialog,
+  renderAddListDialog,
+} from '../testUtils';
+import * as listActions from '@/utils/actions/list';
+import { userEvent } from 'vitest/browser';
+
+// ───────────────────────────────────────────────────────────
+// Mocks
+// ───────────────────────────────────────────────────────────
+
+vi.mock('@/utils/actions/list');
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
+vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
+
+// ───────────────────────────────────────────────────────────
+// Setup
+// ───────────────────────────────────────────────────────────
+
+beforeAll(() => {
+  mockedUseBoardContext();
+  vi.mocked(listActions.createList).mockResolvedValue(CREATE_LIST_FAIL);
+});
+afterAll(() => {
+  vi.resetAllMocks();
+});
+
+// ───────────────────────────────────────────────────────────
+// Form submission
+// ───────────────────────────────────────────────────────────
+
+describe('AddListDialog form submission', () => {
+  it('calls createList with boardId, cardId and current form data', async () => {
+    await renderAddListDialog();
+    await openAddListDialog();
+
+    const { tagList, checkboxList, saveButton } = getAllElements();
+    const titleInput = checkboxList.getByPlaceholder('checklist');
+    const tagInput = tagList.getByPlaceholder(/add tag/i);
+
+    // Fill out tag
+    await tagInput.fill('routine');
+    await userEvent.keyboard('{Enter}');
+    // Fill out checkbox
+    await titleInput.fill('write daily journal');
+    // Submit form
+    await saveButton.click();
+
+    await vi.waitFor(() => {
+      expect(listActions.createList).toHaveBeenCalledWith(
+        mockBoardId,
+        mockCardId,
+        expect.objectContaining({
+          [mockTagId]: expect.objectContaining({ value: [{ tag: 'routine' }] }),
+          [mockCheckboxId]: expect.objectContaining({
+            value: { checked: false, title: 'write daily journal' },
+          }),
+        }),
+      );
+    });
+  });
+});

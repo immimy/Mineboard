@@ -1,6 +1,14 @@
-function CarouselSlide({ children }: React.PropsWithChildren) {
+import clsx from 'clsx';
+
+type CarouselSlideProps = React.PropsWithChildren<{
+  className?: string;
+}>;
+
+function CarouselSlide({ children, className }: CarouselSlideProps) {
   return (
-    <figure className='grow-0 shrink-0 basis-72 min-w-0'>{children}</figure>
+    <figure className={clsx('shrink-0 basis-full min-w-0', className)}>
+      {children}
+    </figure>
   );
 }
 export default CarouselSlide;

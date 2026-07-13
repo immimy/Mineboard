@@ -8,8 +8,6 @@ import {
 } from '@apollo/client-integration-nextjs';
 import { supabaseProjectUrl } from '@/utils/database/config';
 
-const cache = new InMemoryCache();
-
 const httpLink = new HttpLink({
   uri: `${supabaseProjectUrl}/graphql/v1`,
   fetchOptions: { cache: 'no-store' },
@@ -33,7 +31,7 @@ const authLink = new SetContextLink(async (prevContext) => {
 // - ✅ ALWAYS call getClient in the action instead of directly use query to avoid create multiple independent `ApolloClient` instance.
 export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
   return new ApolloClient({
-    cache,
+    cache: new InMemoryCache(),
     link: authLink.concat(httpLink),
   });
 });

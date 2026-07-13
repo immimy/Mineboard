@@ -1,11 +1,11 @@
 'use client';
 
-import { useAppContext } from '@/app/context';
+import { useAppContext } from '@/components/global/AppContext';
 import { BoardFragment } from '@/components/DashboardPage/Board';
 import { AllBoardsQuery } from '@/components/DashboardPage/BoardsContainer';
-import AddBoardActionButton, {
+import AddBoardTitle, {
   PendingBoard,
-} from '@/components/Mutation/Board/Create/AddBoardActionButton';
+} from '@/components/Mutation/Board/Title/AddBoardTitle';
 import Error from '@/components/global/Error';
 import { Loading } from '@/components/global/LoadingContainer';
 import { useFragment as readFragment } from '@/gql/__generated__';
@@ -34,7 +34,7 @@ function DashboardSidebar({ userId }: DashboardSidebarProps) {
       hidden={!isSidebarOpen}
       aria-label='Board navigation'
       onClick={closeSidebar}
-      className='fixed inset-0 z-40 bg-foreground/35 dark:bg-background/50'
+      className='fixed inset-0 z-60 bg-foreground/35 dark:bg-background/50'
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -100,7 +100,7 @@ function DashboardSidebar({ userId }: DashboardSidebarProps) {
         </div>
 
         {/* Add boards */}
-        <AddBoardActionButton
+        <AddBoardTitle
           userId={userId}
           isDisabled={loading}
           setPendingBoards={setPendingBoards}

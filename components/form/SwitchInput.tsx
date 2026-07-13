@@ -26,7 +26,7 @@ function SwitchInput({
         className,
       )}
     >
-      <div>
+      <div className='min-w-0'>
         <Label className='text-sm font-semibold text-foreground'>{label}</Label>
         {description ? (
           <Description className='text-xs text-muted-foreground'>
@@ -37,7 +37,7 @@ function SwitchInput({
       <Switch
         checked={checked}
         onChange={onChange}
-        className='group inline-flex h-7 w-12 items-center rounded-full border border-border bg-muted transition data-checked:bg-accent data-disabled:cursor-not-allowed data-disabled:opacity-70'
+        className='shrink-0 group inline-flex h-7 w-12 items-center rounded-full border border-border bg-muted transition data-checked:bg-accent data-disabled:cursor-not-allowed data-disabled:opacity-70'
       >
         <span className='size-5 translate-x-1 rounded-full bg-background shadow transition group-data-checked:translate-x-6' />
       </Switch>

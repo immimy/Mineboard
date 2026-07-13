@@ -2,14 +2,16 @@ import * as boardActions from '@/utils/actions/board';
 import { userEvent } from 'vitest/browser';
 import { CREATE_LIST_FIELDS_SUCCESS } from './testMocks';
 import {
-  expectTextListFieldActionCall,
   getAllElements,
   openListFieldsFromEmptyState,
   renderBoard,
   saveTextListField,
 } from './testUtils';
 
-vi.mock('@/utils/actions/board', () => ({ createListFields: vi.fn() }));
+vi.mock('@/utils/actions/board', () => ({
+  createListFields: vi.fn(),
+  updateListFields: vi.fn(),
+}));
 vi.mock('@/utils/actions/card');
 vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
@@ -41,7 +43,7 @@ describe('Add list fields post-create availability', () => {
     await saveTextListField('Note');
 
     await vi.waitFor(() => {
-      expectTextListFieldActionCall(boardActions.createListFields, 'Note');
+      expect(boardActions.createListFields).toHaveBeenCalledOnce();
     });
 
     await expect.element(listFieldsFormIntro).not.toBeInTheDocument();

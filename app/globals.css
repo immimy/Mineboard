@@ -49,6 +49,7 @@
 
 /* Define TailwindCSS class utilities and variants */
 @theme inline {
+  /* Color scheme  */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -86,6 +87,10 @@
 /* CSS variables */
 /* Light scheme */
 :root {
+  /* Navbar */
+  --nav-height: clamp(2.75rem, 6vw, 3.25rem);
+
+  /* Color scheme */
   --background: hsl(220, 30%, 96%);
   --foreground: hsl(217, 91%, 18%);
   --muted: hsl(220, 20%, 92%);

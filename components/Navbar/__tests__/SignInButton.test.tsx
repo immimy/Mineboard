@@ -24,5 +24,7 @@ beforeEach(() => {
 it('SignInWithGoogle action is called when log in', async () => {
   render(<SignInButton />);
   await userEvent.click(getAllElements().signInButton);
-  expect(signInWithGoogle).toHaveBeenCalledOnce();
+  await vi.waitFor(() => {
+    expect(signInWithGoogle).toHaveBeenCalledOnce();
+  });
 });

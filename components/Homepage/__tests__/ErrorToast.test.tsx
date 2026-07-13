@@ -25,8 +25,10 @@ describe('toast function is invoked correctly', () => {
 
     await render(<ErrorToast />);
 
-    expect(toast.error).toHaveBeenCalledWith('Auth callback failed');
-    expect(toast.error).toHaveBeenCalledTimes(1);
+    await vi.waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Auth callback failed');
+      expect(toast.error).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('does not call toast.error when no error param is present', async () => {

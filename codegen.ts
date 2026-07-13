@@ -35,7 +35,9 @@ const config: CodegenConfig = {
     },
   },
   hooks: {
-    afterOneFileWrite: ['npx prettier --write --singleQuote --jsxSingleQuote'],
+    afterOneFileWrite: [
+      'npx prettier --write --single-quote --jsx-single-quote',
+    ],
   },
 };
 

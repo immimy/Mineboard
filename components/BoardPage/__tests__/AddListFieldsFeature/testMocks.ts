@@ -146,6 +146,7 @@ const createdListValuesCollection: NonNullable<
         value: 'Practice cache updates',
         list_fields: {
           __typename: 'list_fields',
+          id: createdTextFieldId,
           type: Field_Type.Text,
           config: { title: 'Note' },
           position: 0,

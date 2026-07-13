@@ -1,16 +1,19 @@
 'use client';
 
 import { useQuery } from '@apollo/client/react';
-import BoardContextWrapper from './BoardContext';
-import AddListDialog from '../Mutation/List/Create/AddListDialog';
-import AddCardDialog from '../Mutation/Card/Create/AddCardDialog';
+import BoardContextProvider from './BoardContext';
+import DialogsProvider from '../Mutation/Context/DialogsProvider';
+import AddListDialog from '../Mutation/List/AddListDialog';
+import AddCardDialog from '../Mutation/Card/AddCardDialog';
+import UpdateCardDialog from '../Mutation/Card/UpdateCardDialog';
+import UpdateListDialog from '../Mutation/List/UpdateListDialog';
 import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
 import { graphql } from '@/gql/__generated__';
 import BoardHeader from './BoardHeader';
 import Error from '../global/Error';
 import CardsContainer from './CardsContainer';
-import AddListFieldDialog from '../Mutation/Board/Create/AddListFieldDialog';
+import ListFieldDialog from '../Mutation/Board/ListField/ListFieldDialog';
 import NoCardsDisplay from './NoCardsDisplay';
 
 const SingleBoardQuery = graphql(/* GraphQL */ `
@@ -53,26 +56,34 @@ function BoardContainer({ boardId }: BoardContainerProps) {
   if (!data || !data?.boardsCollection?.edges.length) return <NoDataFound />;
 
   return (
-    <BoardContextWrapper
+    <BoardContextProvider
       boardId={boardId}
       queryListFields={data.list_fieldsCollection}
     >
-      {/* Board Header */}
-      <BoardHeader />
-      {/* Without Cards */}
-      <NoCardsDisplay
-        cardsQuery={data.cardsCollection}
-        listFieldsQuery={data.list_fieldsCollection}
-      />
-      {/* With Cards */}
-      <CardsContainer query={data.cardsCollection} />
-      {/* Add List Field Dialog */}
-      <AddListFieldDialog />
-      {/* Add Card Dialog */}
-      <AddCardDialog />
-      {/* Add List Dialog */}
-      <AddListDialog />
-    </BoardContextWrapper>
+      <DialogsProvider>
+        {/* Board Header */}
+        <BoardHeader />
+
+        {/* Cards container */}
+        {/* Without Cards */}
+        <NoCardsDisplay
+          cardsQuery={data.cardsCollection}
+          listFieldsQuery={data.list_fieldsCollection}
+        />
+        {/* With Cards */}
+        <CardsContainer query={data.cardsCollection} />
+
+        {/* Dialogs */}
+        {/* List Field: Create&Update Feature */}
+        <ListFieldDialog />
+        {/* Add Feature */}
+        <AddCardDialog />
+        <AddListDialog />
+        {/* Update Feature */}
+        <UpdateCardDialog />
+        <UpdateListDialog />
+      </DialogsProvider>
+    </BoardContextProvider>
   );
 }
 export default BoardContainer;

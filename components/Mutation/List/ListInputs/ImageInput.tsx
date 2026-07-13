@@ -2,7 +2,6 @@ import { ImageInput as ImageForm } from '@/types/jsonbSchema';
 import { getFieldTitle, ListFieldInputProps } from '.';
 import { Button } from '@headlessui/react';
 import {
-  CldImage,
   CldUploadWidget,
   CldUploadWidgetProps,
   CloudinaryUploadWidgetInfo,
@@ -12,8 +11,8 @@ import { toast } from 'react-toastify';
 import { ImageDownIcon } from '@/icons/icons';
 import { useRef } from 'react';
 import clsx from 'clsx';
-import CarouselSlide from '@/components/Slider/CarouselSlide';
 import { useFormStatus } from 'react-dom';
+import ImageSlide from '@/components/Slider/ImageSlide';
 
 const maxFiles = 5;
 const tags =
@@ -115,18 +114,18 @@ function ImageInput({
       </CldUploadWidget>
       {/* IMAGE PREVIEW */}
       {numOfFiles > 0 && (
-        <Carousel responsiveMaxWidth='max-w-2xs sm:max-w-md md:max-w-lg lg:max-w-3xl'>
-          {form.value.map((image) => {
+        <Carousel
+          responsiveMaxWidth='max-w-2xs sm:max-w-md md:max-w-3xl'
+          isSnapHidden={numOfFiles <= 1}
+        >
+          {form.value.map((image, index) => {
             return (
-              <CarouselSlide key={image}>
-                <CldImage
-                  src={image}
-                  alt={image}
-                  width={288}
-                  height={220}
-                  className='w-72 h-55'
-                />
-              </CarouselSlide>
+              <ImageSlide
+                key={image}
+                image={image}
+                index={index}
+                className='md:basis-auto'
+              />
             );
           })}
         </Carousel>

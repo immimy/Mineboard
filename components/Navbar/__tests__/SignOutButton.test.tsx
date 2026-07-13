@@ -33,11 +33,13 @@ beforeEach(() => {
 it('SignOutWithGoogle action is called when log out', async () => {
   render(<SignOutButton />);
   await userEvent.click(getAllElements().signOutButton);
-  // Function calls
-  // 1. Signout server action
-  expect(signOutWithGoogle).toHaveBeenCalledOnce();
-  // 2. Clear Apollo cache on the client
-  expect(mockClearStore).toHaveBeenCalledOnce();
-  // 3. Redirect a user to the homepage
-  expect(mockReplace).toHaveBeenCalledWith('/');
+  await vi.waitFor(() => {
+    // Function calls
+    // 1. Signout server action
+    expect(signOutWithGoogle).toHaveBeenCalledOnce();
+    // 2. Clear Apollo cache on the client
+    expect(mockClearStore).toHaveBeenCalledOnce();
+    // 3. Redirect a user to the homepage
+    expect(mockReplace).toHaveBeenCalledWith('/');
+  });
 });

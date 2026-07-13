@@ -163,6 +163,7 @@ export const successMock: MockLink.MockedResponse = {
                               value: { checked: false, title: 'Mark as done' },
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_CHECKBOX_ID,
                                 type: 'checkbox',
                                 config: {},
                                 position: 0,
@@ -179,6 +180,7 @@ export const successMock: MockLink.MockedResponse = {
                               value: '2026-04-10T17:00:00Z',
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_DATE_ID,
                                 type: 'date',
                                 config: {
                                   title: 'Deadline',
@@ -198,6 +200,7 @@ export const successMock: MockLink.MockedResponse = {
                               value: 'Start with Atomic Habits',
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_TEXT_ID,
                                 type: 'text',
                                 config: { title: 'Note' },
                                 position: 2,
@@ -217,6 +220,7 @@ export const successMock: MockLink.MockedResponse = {
                               ],
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_TAG_ID,
                                 type: 'tag',
                                 config: { color: 3 },
                                 position: 3,
@@ -233,6 +237,7 @@ export const successMock: MockLink.MockedResponse = {
                               value: [mockImageUrl],
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_IMAGE_ID,
                                 type: 'image',
                                 config: {
                                   title: 'Cover',
@@ -251,6 +256,7 @@ export const successMock: MockLink.MockedResponse = {
                               value: 8,
                               list_fields: {
                                 __typename: 'list_fields',
+                                id: FIELD_NUMBER_ID,
                                 type: 'number',
                                 config: {
                                   title: 'Estimate',

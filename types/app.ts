@@ -1,4 +1,4 @@
-import { ListFieldInput } from './jsonbSchema';
+import { ListFieldDraft, ListFieldInput } from './jsonbSchema';
 
 export type Theme = 'light' | 'dark';
 
@@ -12,9 +12,11 @@ export type ActionFunction = (
   formData: FormData,
 ) => Promise<FormState>;
 
+export type ListFieldForm = ListFieldDraft & { position: number };
+
 export type ListForm = Record<string, ListFieldInput>;
 
 export type ActionMenuId =
   | 'edit-board-title'
   | 'custom-list-fields'
-  | 'add-new-card';
+  | 'delete-board';

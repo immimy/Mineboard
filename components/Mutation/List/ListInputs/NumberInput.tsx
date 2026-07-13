@@ -11,10 +11,10 @@ function NumberInput({
 
   return (
     <li style={{ order: field.position }}>
-      <Field className='flex items-center gap-2'>
+      <Field className='flex flex-wrap items-center gap-2'>
         {/* LABEL */}
         <Label className='text-sm font-semibold'>
-          {getFieldTitle(field)} :
+          {getFieldTitle(field) || 'Number'} :
         </Label>
         {/* INPUT */}
         <div className='flex items-center gap-2'>

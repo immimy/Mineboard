@@ -46,12 +46,18 @@ const textValueSchema = z.object({
 
 const numberValueSchema = z.object({
   value: z
-    .string()
-    .trim()
-    .refine((value) => value === '' || !Number.isNaN(value))
+    .union([z.string().trim(), z.number()])
+    .refine(
+      (value) =>
+        value === '' ||
+        (typeof value === 'number'
+          ? Number.isFinite(value)
+          : Number.isFinite(Number(value))),
+      'Invalid number value',
+    )
     .transform((value) => {
       if (value === '') return value;
-      return Number(value);
+      return typeof value === 'number' ? value : Number(value);
     }),
 });
 
@@ -95,7 +101,7 @@ const tagValueSchema = z.object({
   ),
 });
 
-export const listValueInputSchema = z.discriminatedUnion('fieldType', [
+const listValueSchema = z.discriminatedUnion('fieldType', [
   z.object({
     listFieldId: z.uuid(),
     fieldType: z.literal(Field_Type.Text),
@@ -127,19 +133,23 @@ export const listValueInputSchema = z.discriminatedUnion('fieldType', [
     input: tagValueSchema,
   }),
 ]);
-export type ListValueInput = z.infer<typeof listValueInputSchema>;
+export type ListValueInput = z.infer<typeof listValueSchema>;
 
 // ─── List schema ────────────────────────────────────────────
 
 export const createListSchema = z.object({
   cardId: z.uuid(),
-  fieldValues: z.array(listValueInputSchema),
+  fieldValues: z.array(listValueSchema),
+});
+
+export const updateListSchema = z.object({
+  listId: z.uuid(),
+  fieldValues: z.array(listValueSchema),
 });
 
 // ─── Card schema ────────────────────────────────────────────
 
-export const createCardSchema = z.object({
-  boardId: z.uuid(),
+const cardSchema = z.object({
   title: z
     .string()
     .trim()
@@ -155,22 +165,37 @@ export const createCardSchema = z.object({
   ),
 });
 
+export const createCardSchema = z.object({
+  boardId: z.uuid(),
+  ...cardSchema.shape,
+});
+
+export const updateCardSchema = z.object({
+  cardId: z.uuid(),
+  ...cardSchema.shape,
+});
+
 // ─── List_Field schemas ────────────────────────────────────────────
+
+const listFieldIdSchema = z.union(
+  [z.uuid(), z.string().startsWith('client:')],
+  'List field id must be a database uuid or a client draft id',
+);
 
 export const listFieldSchema = z.discriminatedUnion('type', [
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Text),
     config: z.object({
       title: z
         .string()
         .trim()
         .max(30, 'Field title must not exceed 30 characters')
-        .min(0),
+        .optional(),
     }),
   }),
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Number),
     config: z
       .object({
@@ -178,13 +203,18 @@ export const listFieldSchema = z.discriminatedUnion('type', [
           .string()
           .trim()
           .max(30, 'Field title must not exceed 30 characters')
-          .min(0),
+          .optional(),
         isHasUnit: z.boolean(),
-        unit: z.string().trim().max(20, 'Unit must not exceed 20 characters'),
-        unitPosition: z.enum(['front', 'back']),
+        unit: z
+          .string()
+          .trim()
+          .max(20, 'Unit must not exceed 20 characters')
+          .optional(),
+        unitPosition: z.enum(['front', 'back']).optional(),
       })
       .refine(
-        ({ isHasUnit, unit }) => !(isHasUnit && unit.length === 0),
+        ({ isHasUnit, unit, unitPosition }) =>
+          !isHasUnit || (Boolean(unit) && Boolean(unitPosition)),
         'Unit label is required.',
       )
       .transform(({ unit, unitPosition, ...config }) => {
@@ -193,35 +223,35 @@ export const listFieldSchema = z.discriminatedUnion('type', [
       }),
   }),
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Date),
     config: z.object({
       title: z
         .string()
         .trim()
         .max(30, 'Field title must not exceed 30 characters')
-        .min(0),
+        .optional(),
       isIncludeTime: z.boolean(),
     }),
   }),
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Image),
     config: z.object({
       title: z
         .string()
         .trim()
         .max(30, 'Field title must not exceed 30 characters')
-        .min(0),
+        .optional(),
     }),
   }),
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Checkbox),
     config: z.object({}),
   }),
   z.object({
-    id: z.uuid(),
+    id: listFieldIdSchema,
     type: z.literal(Field_Type.Tag),
     config: z.object({
       color: z.preprocess(
@@ -249,12 +279,32 @@ export const createListFieldsSchema = z.object({
     .min(1, 'Add at least one field before saving'),
 });
 
+export const updateListFieldsSchema = z.object({
+  boardId: z.uuid(),
+  fields: z
+    .array(
+      listFieldSchema.transform(({ id, ...field }) => ({
+        id: id.startsWith('client:') ? '' : id,
+        ...stripEmptyFields(field),
+      })),
+    )
+    .min(1, 'Add at least one field before saving'),
+  deletedFieldIds: z.array(z.uuid()),
+});
+
 // ─── Board schema ────────────────────────────────────────────
 
-export const createBoardSchema = z.object({
+const boardSchema = z.object({
   title: z
     .string()
     .trim()
     .min(1, 'Board title is required')
     .max(30, 'Title must not exceed 30 characters'),
+});
+
+export const createBoardSchema = boardSchema;
+
+export const updateBoardTitleSchema = z.object({
+  boardId: z.uuid(),
+  ...boardSchema.shape,
 });

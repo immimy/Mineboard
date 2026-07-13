@@ -50,9 +50,12 @@ function Carousel({
   return (
     <div className={clsx('mx-auto py-2', responsiveMaxWidth)}>
       {/* EMBLA__VIEWPORT */}
-      <div ref={emblaRef} className='overflow-hidden mx-auto w-full mb-2.5'>
+      <div
+        ref={emblaRef}
+        className='w-full min-w-0 max-w-full overflow-hidden mx-auto mb-2.5'
+      >
         {/* EMBLA__CONTAINER */}
-        <div className='flex touch-pan-y touch-pinch-zoom'>
+        <div className='w-full flex touch-pan-y touch-pinch-zoom'>
           {/* EMBLA__SLIDE */}
           {children}
         </div>

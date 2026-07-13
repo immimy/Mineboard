@@ -12,9 +12,9 @@ function DateInput({
 
   return (
     <li style={{ order: field.position }}>
-      <Field className='flex items-center gap-2'>
+      <Field className='flex flex-wrap flex-row items-center gap-2'>
         <Label className='text-sm font-semibold'>
-          {getFieldTitle(field)} :
+          {getFieldTitle(field) || 'Date'} :
         </Label>
         <Input
           type={inputType}

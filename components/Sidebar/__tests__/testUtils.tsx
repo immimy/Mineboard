@@ -1,4 +1,6 @@
-import AppContextWrapper, { useAppContext } from '@/app/context';
+import AppContextProvider, {
+  useAppContext,
+} from '@/components/global/AppContext';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -36,12 +38,12 @@ export const renderDashboardSidebar = (
 ) => {
   return render(
     <MockedProvider mocks={mocks}>
-      <AppContextWrapper>
+      <AppContextProvider>
         <PreventNavigationBoundary>
           <OpenSidebarButton />
           <DashboardSidebar userId={mockUserId} />
         </PreventNavigationBoundary>
-      </AppContextWrapper>
+      </AppContextProvider>
     </MockedProvider>,
   );
 };

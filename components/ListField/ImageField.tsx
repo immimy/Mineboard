@@ -1,12 +1,8 @@
-import Image from 'next/image';
 import { ListFieldProps } from '.';
 import { ImageSchema } from '@/types/jsonbSchema';
 import Carousel from '../Slider/Carousel';
-import CarouselSlide from '../Slider/CarouselSlide';
-import { CldImage } from 'next-cloudinary';
 import { ImageIcon } from '@/icons/icons';
-
-const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
+import ImageSlide from '../Slider/ImageSlide';
 
 function ImageField({ data, position }: ListFieldProps<ImageSchema>) {
   const {
@@ -33,57 +29,7 @@ function ImageField({ data, position }: ListFieldProps<ImageSchema>) {
           isSnapHidden={value.length <= 1}
         >
           {value.map((image, index) => {
-            const loading = index === 0 ? 'eager' : 'lazy';
-
-            // PRODUCTION: Cloudinary Image
-            if (isProduction) {
-              return (
-                <CarouselSlide key={image}>
-                  <CldImage
-                    loading={loading}
-                    src={image}
-                    alt={image}
-                    width={288}
-                    height={220}
-                    className='w-72 h-55'
-                    crop='auto'
-                    gravity='auto'
-                  />
-                </CarouselSlide>
-              );
-            }
-
-            // DEVELOPMENT with public Id: Cloudinary Image
-            if (!image.startsWith('https')) {
-              return (
-                <CarouselSlide key={image}>
-                  <CldImage
-                    loading={loading}
-                    src={image}
-                    alt={image}
-                    width={288}
-                    height={220}
-                    className='w-72 h-55'
-                    crop='auto'
-                    gravity='auto'
-                  />
-                </CarouselSlide>
-              );
-            }
-
-            // DEVELOPMENT with seed data: Next Image
-            return (
-              <CarouselSlide key={image}>
-                <Image
-                  loading={loading}
-                  src={image}
-                  alt={image}
-                  width={288}
-                  height={220}
-                  className='w-72 h-55'
-                />
-              </CarouselSlide>
-            );
+            return <ImageSlide key={image} image={image} index={index} />;
           })}
         </Carousel>
       )}

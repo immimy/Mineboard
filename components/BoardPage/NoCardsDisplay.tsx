@@ -1,12 +1,13 @@
 'use client';
 
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useAddCardDialogActions } from '@/components/Mutation/Context/AddCardDialogContext';
+import { useListFieldDialogActions } from '@/components/Mutation/Context/ListFieldDialogContext';
 import { FragmentType, useFragment as readFragment } from '@/gql/__generated__';
 import {
   CardsCollectionFragmentDoc,
   ListFieldsCollectionFragmentDoc,
 } from '@/gql/__generated__/graphql';
-import { GearIcon, PlusSquareIcon } from '@/icons/icons';
+import { GearIcon, PlusIcon } from '@/icons/icons';
 import { Button } from '@headlessui/react';
 import type { ComponentType } from 'react';
 
@@ -16,7 +17,8 @@ type NoCardsDisplayProps = {
 };
 
 function NoCardsDisplay({ cardsQuery, listFieldsQuery }: NoCardsDisplayProps) {
-  const { openAddCard, openAddListField } = useBoardContext();
+  const { openAddCard } = useAddCardDialogActions();
+  const { openListFieldDialog } = useListFieldDialogActions();
   const cards = readFragment(CardsCollectionFragmentDoc, cardsQuery);
   const listFields = readFragment(
     ListFieldsCollectionFragmentDoc,
@@ -30,7 +32,7 @@ function NoCardsDisplay({ cardsQuery, listFieldsQuery }: NoCardsDisplayProps) {
         title='No list fields yet'
         description='Cards need at least one list field before they can be created.'
         actionLabel='Create one'
-        onAction={openAddListField}
+        onAction={openListFieldDialog}
       />
     );
   }
@@ -38,7 +40,7 @@ function NoCardsDisplay({ cardsQuery, listFieldsQuery }: NoCardsDisplayProps) {
   if (!cards?.edges.length) {
     return (
       <EmptyBoardState
-        Icon={PlusSquareIcon}
+        Icon={PlusIcon}
         title='No cards yet'
         description='Add the first card and start filling in your board fields.'
         actionLabel='Create one'

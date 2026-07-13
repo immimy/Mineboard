@@ -1,0 +1,64 @@
+import {
+  mockBoardId,
+  mockCardId,
+  mockCheckboxId,
+} from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import { mockedUseBoardContext, CREATE_LIST_FAIL } from '../testMocks';
+import {
+  getAllElements,
+  openAddListDialog,
+  renderAddListDialog,
+} from '../testUtils';
+import * as listActions from '@/utils/actions/list';
+
+// ───────────────────────────────────────────────────────────
+// Mocks
+// ───────────────────────────────────────────────────────────
+
+vi.mock('@/utils/actions/list');
+vi.mock('@/components/BoardPage/BoardContext', { spy: true });
+vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
+
+// ───────────────────────────────────────────────────────────
+// Setup
+// ───────────────────────────────────────────────────────────
+
+beforeAll(() => {
+  mockedUseBoardContext();
+  vi.mocked(listActions.createList).mockResolvedValue(CREATE_LIST_FAIL);
+});
+afterAll(() => {
+  vi.resetAllMocks();
+});
+
+// ───────────────────────────────────────────────────────────
+// Form submission
+// ───────────────────────────────────────────────────────────
+
+describe('AddListDialog form submission', () => {
+  it('checkbox: calls createList with correct value', async () => {
+    await renderAddListDialog();
+    await openAddListDialog();
+
+    const { checkboxList, saveButton } = getAllElements();
+    const titleInput = checkboxList.getByPlaceholder('checklist');
+
+    await titleInput.fill('Morning coffee');
+    await saveButton.click();
+
+    await vi.waitFor(() => {
+      expect(listActions.createList).toHaveBeenCalledWith(
+        mockBoardId,
+        mockCardId,
+        expect.objectContaining({
+          [mockCheckboxId]: expect.objectContaining({
+            value: {
+              checked: false,
+              title: 'Morning coffee',
+            },
+          }),
+        }),
+      );
+    });
+  });
+});
