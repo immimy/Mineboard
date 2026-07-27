@@ -15,17 +15,20 @@ import { useFormStatus } from 'react-dom';
 import ImageSlide from '@/components/Slider/ImageSlide';
 
 const maxFiles = 5;
-const tags =
+const uploadPreset =
   process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-    ? ['unsaved']
-    : ['unsaved', 'dev'];
+    ? 'mineboard_app'
+    : 'mineboard_app_dev';
 
 function ImageInput({
   field,
   form,
+  ownerId,
   handleFieldChange,
+  handleImageUpload,
 }: Omit<ListFieldInputProps, 'form'> & { form: ImageForm }) {
   const { pending } = useFormStatus();
+  // Temporary reference while the Cloudinary widget opens
   const imagesRef = useRef<string[]>([]);
 
   // Total current files and the remaining quota left for uploads
@@ -43,6 +46,7 @@ function ImageInput({
     imagesRef.current = [];
   };
 
+  // Handle error on the Cloudinary image upload
   const handleError: CldUploadWidgetProps['onError'] = (error) => {
     if (!error) return;
     const errorMessage =
@@ -52,9 +56,22 @@ function ImageInput({
     toast.error(errorMessage || 'Failed to upload an image');
   };
 
+  // Handle success on the Cloudinary image upload
   const handleSuccess: CldUploadWidgetProps['onSuccess'] = (results) => {
     const publicId = (results.info as CloudinaryUploadWidgetInfo).public_id;
+    if (!publicId) return;
+    // Add new image to the temporary reference
     imagesRef.current = [...imagesRef.current, publicId];
+    // Track uploaded image to the image upload session
+    handleImageUpload?.(publicId);
+  };
+
+  // Remove the selected image from the the form state
+  const handleRemove = (publicId: string) => {
+    handleFieldChange(field.id, {
+      ...form,
+      value: form.value.filter((image) => image !== publicId),
+    });
   };
 
   return (
@@ -66,7 +83,7 @@ function ImageInput({
       {/* CLOUDINARY WIDGET */}
       <CldUploadWidget
         key={`${field.id}-${numOfFiles}`}
-        uploadPreset='mineboard_app'
+        uploadPreset={uploadPreset}
         signatureEndpoint='/api/sign-cloudinary'
         options={{
           sources: ['local'],
@@ -74,7 +91,7 @@ function ImageInput({
           maxFiles: available > 0 ? available : -1,
           maxFileSize: 0.5 * 1024 * 1024, // 0.5 MB
           resourceType: 'image',
-          tags,
+          context: ownerId ? { owner_id: ownerId } : undefined,
           clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
         }}
         onSuccess={handleSuccess}
@@ -125,6 +142,7 @@ function ImageInput({
                 image={image}
                 index={index}
                 className='md:basis-auto'
+                onRemove={() => handleRemove(image)}
               />
             );
           })}

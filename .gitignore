@@ -48,6 +48,10 @@ next-env.d.ts
 
 # Supabase
 supabase/snippets/**
+/devImagesCleanup.mjs
 
 # Markdown pending tasks
-/TO-DOs
+/TO-DOs/**/*.md
+
+# VScode config
+.vscode

@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { createClient } from '@/utils/database/serverClient';
 import { HttpLink } from '@apollo/client';
 import { SetContextLink } from '@apollo/client/link/context';

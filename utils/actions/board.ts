@@ -22,12 +22,11 @@ import { createClient } from '../database/serverClient';
 import { ListFieldDraft } from '@/types/jsonbSchema';
 
 export const createBoard = async (formData: FormData) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Input validation
     const result = validateWithZodSchema(
       createBoardSchema,
@@ -56,12 +55,11 @@ export const createBoard = async (formData: FormData) => {
 };
 
 export const updateBoardTitle = async (formData: FormData) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Input validation
     const result = validateWithZodSchema(
       updateBoardTitleSchema,
@@ -90,12 +88,11 @@ export const createListFields = async (
   boardId: string,
   fields: ListFieldDraft[],
 ) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Input validation
     const result = validateWithZodSchema(createListFieldsSchema, {
       boardId,
@@ -131,12 +128,11 @@ export const updateListFields = async (
   boardId: string,
   fields: ListFieldDraft[],
 ) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Get current database fields to derive removals on the server boundary.
     const dbListFieldsDocument = await customQuery({
       query: BoardListFieldsQuery,

@@ -23,6 +23,7 @@ const ListFieldsCollectionFragment = graphql(/* GraphQL */ `
 
 type ContextType = {
   boardId: string;
+  userId?: string;
   dbListFields?: ResultOf<typeof ListFieldsCollectionFragment>['edges'];
 };
 
@@ -38,12 +39,14 @@ export const useBoardContext = () => {
 
 type BoardContextProps = {
   boardId: string;
+  userId?: string;
   queryListFields?: FragmentType<typeof ListFieldsCollectionFragment> | null;
 } & React.PropsWithChildren;
 
 function BoardContextProvider({
   children,
   boardId,
+  userId,
   queryListFields,
 }: BoardContextProps) {
   // List Fields retrieved from database
@@ -56,6 +59,7 @@ function BoardContextProvider({
     <BoardContext.Provider
       value={{
         boardId,
+        userId,
         dbListFields,
       }}
     >

@@ -1,3 +1,6 @@
+import 'server-only';
+
+import type { Database } from '@/supabase/database.types';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { supabaseProjectUrl, supabasePublishableKey } from './config';
@@ -5,7 +8,7 @@ import { supabaseProjectUrl, supabasePublishableKey } from './config';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     supabaseProjectUrl!,
     supabasePublishableKey!,
     // To use Server-Side Rendering (SSR) with Supabase, you need to configure your Supabase client to use cookies.

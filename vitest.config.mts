@@ -2,7 +2,12 @@
 import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
-import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const mockBrowserPath = (...segments: string[]) =>
+  fileURLToPath(
+    new URL(['./mocks/browser', ...segments].join('/'), import.meta.url),
+  );
 
 export default defineConfig({
   plugins: [react()],
@@ -38,32 +43,29 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
     alias: {
+      'server-only': fileURLToPath(
+        new URL('./mocks/server-only.ts', import.meta.url),
+      ),
       // Replace modules with lightweight browser-safe stubs.
       /**
        * React-Toastify
        */
-      'react-toastify': path.resolve(
-        __dirname,
-        'mocks/browser/react-toastify/toast.ts',
-      ),
+      'react-toastify': mockBrowserPath('react-toastify', 'toast.ts'),
       /**
        * Next.js
        */
-      'next/link': path.resolve(__dirname, 'mocks/browser/next/link.tsx'),
-      'next/image': path.resolve(__dirname, 'mocks/browser/next/image.tsx'),
-      'next/headers': path.resolve(__dirname, 'mocks/browser/next/headers.ts'),
-      'next/navigation': path.resolve(
-        __dirname,
-        'mocks/browser/next/navigation.ts',
-      ),
+      'next/link': mockBrowserPath('next', 'link.tsx'),
+      'next/image': mockBrowserPath('next', 'image.tsx'),
+      'next/headers': mockBrowserPath('next', 'headers.ts'),
+      'next/navigation': mockBrowserPath('next', 'navigation.ts'),
       /**
        * Supabase
        */
-      '@/utils/database/serverClient': path.resolve(
-        __dirname,
-        'mocks/browser/supabase/serverClient.ts',
+      '@/utils/database/serverClient': mockBrowserPath(
+        'supabase',
+        'serverClient.ts',
       ),
-      '@supabase/ssr': path.resolve(__dirname, 'mocks/browser/supabase/ssr.ts'),
+      '@supabase/ssr': mockBrowserPath('supabase', 'ssr.ts'),
     },
   },
 });

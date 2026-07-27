@@ -2,53 +2,52 @@ import { CldImage } from 'next-cloudinary';
 import CarouselSlide from './CarouselSlide';
 import Image from 'next/image';
 import clsx from 'clsx';
+import RemoveImageButton from './RemoveImageButton';
 
 const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
 
-type ImageSlideProps = { image: string; index: number; className?: string };
+type ImageSlideProps = {
+  image: string;
+  index: number;
+  className?: string;
+  onRemove?: () => void;
+};
 
-function ImageSlide({ image, index, className }: ImageSlideProps) {
+function ImageSlide({ image, index, className, onRemove }: ImageSlideProps) {
   const loading = index ? 'lazy' : 'eager';
+  let imageElement: React.ReactNode;
 
   // PRODUCTION: Cloudinary Image
   if (isProduction) {
-    return (
-      <CarouselSlide key={image} className={clsx(className)}>
-        <CldImage
-          loading={loading}
-          src={image}
-          alt={image}
-          width={288}
-          height={220}
-          className='w-full object-cover aspect-72/55'
-          crop='auto'
-          gravity='auto'
-        />
-      </CarouselSlide>
+    imageElement = (
+      <CldImage
+        loading={loading}
+        src={image}
+        alt={image}
+        width={288}
+        height={220}
+        className='w-full object-cover aspect-72/55'
+        crop='auto'
+        gravity='auto'
+      />
     );
-  }
-
-  // DEVELOPMENT with public Id: Cloudinary Image
-  if (!image.startsWith('https')) {
-    return (
-      <CarouselSlide key={image} className={clsx(className)}>
-        <CldImage
-          loading={loading}
-          src={image}
-          alt={image}
-          width={288}
-          height={220}
-          className='w-full object-cover aspect-72/55'
-          crop='auto'
-          gravity='auto'
-        />
-      </CarouselSlide>
+  } else if (!image.startsWith('https')) {
+    // DEVELOPMENT with public Id: Cloudinary Image
+    imageElement = (
+      <CldImage
+        loading={loading}
+        src={image}
+        alt={image}
+        width={288}
+        height={220}
+        className='w-full object-cover aspect-72/55'
+        crop='auto'
+        gravity='auto'
+      />
     );
-  }
-
-  // DEVELOPMENT with seed data: Next Image
-  return (
-    <CarouselSlide key={image} className={clsx(className)}>
+  } else {
+    // DEVELOPMENT with seed data: Next Image
+    imageElement = (
       <Image
         loading={loading}
         src={image}
@@ -57,6 +56,16 @@ function ImageSlide({ image, index, className }: ImageSlideProps) {
         height={220}
         className='w-full object-cover aspect-72/55'
       />
+    );
+  }
+
+  return (
+    <CarouselSlide
+      key={image}
+      className={clsx('relative overflow-hidden rounded-lg', className)}
+    >
+      {imageElement}
+      {onRemove && <RemoveImageButton index={index} onRemove={onRemove} />}
     </CarouselSlide>
   );
 }

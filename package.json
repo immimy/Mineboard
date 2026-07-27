@@ -4,7 +4,7 @@
   "private": true,
   "overrides": {
     "lodash": "4.18.1",
-    "vite": "8.0.5",
+    "vite": "8.0.16",
     "postcss": "8.5.10"
   },
   "scripts": {
@@ -17,7 +17,11 @@
     "test:browser": "vitest --config vitest.config.mts",
     "test:node": "vitest --config vitest.node.config.mts",
     "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts",
-    "codegen": "graphql-codegen --config codegen.ts --watch"
+    "codegen": "graphql-codegen --config codegen.ts --watch",
+    "dev:db-reset": "supabase db reset && npm run dev:codegen-enabler && npm run dev:vault-setup && npm run dev:cloudinaryCleanup",
+    "dev:cloudinaryCleanup": "node --env-file=.env.local devImagesCleanup.mjs",
+    "dev:codegen-enabler": "supabase db query --local --file supabase/snippets/grant_public_to_anon.sql",
+    "dev:vault-setup": "supabase db query --local --file supabase/snippets/image_cleanup_vault.sql"
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",

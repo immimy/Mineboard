@@ -26,8 +26,12 @@ Apply this context to every task. When a request conflicts with these instructio
 - Typecheck: `npm run typecheck`
 - Validate: `npm run validate`
 - Codegen watch: `npm run codegen`
+- Generate Supabase database types:
+  `npx supabase gen types typescript --local --schema public > supabase/database.types.ts`
 
 `npm run codegen` is watch-mode. Use it when editing GraphQL operations, then stop it after generated files are updated.
+
+Regenerate `supabase/database.types.ts` after applying a migration locally that changes the database schema or RPC signatures. Commit the migration and regenerated type together; never edit the generated type manually.
 
 ## Project Rules
 
@@ -124,6 +128,7 @@ Path alias: `@/*` maps to the project root.
 - Check `mocks/` before adding new stubs. Browser and node configs alias Supabase and Next.js modules to local mocks.
 - Existing coverage focuses on dashboard/board states, add board/card/list/list-field flows, auth callback behavior, route protection, sidebar navigation, navbar auth/theme controls, and form edge cases.
 - Prefer behavior/result assertions for create flows over direct Apollo cache inspection unless the cache behavior is the feature being tested.
+- When adding or updating tests, inspect only nearby tests and run the smallest relevant test command; do not run the full test suite unless needed.
 
 ## Gotchas
 

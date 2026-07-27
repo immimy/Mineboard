@@ -12,43 +12,71 @@ import { ActionFunction } from '@/types/app';
 import { updateList } from '@/utils/actions/list';
 import { isListFormEmpty } from '@/utils/validation/helper';
 import ListDialog from './ListDialog';
+import {
+  requestImageCleanup,
+  useImageUploadSession,
+} from '@/hooks/image-cleanup';
+import { useRef } from 'react';
 
 function UpdateListDialog() {
   const client = useApolloClient();
-  const { boardId } = useBoardContext();
+  const savingRef = useRef(false);
+
+  const { boardId, userId } = useBoardContext();
   const { isOpen, listId, listFields, form } = useUpdateListDialogState();
   const { closeUpdateList, updateField } = useUpdateListDialogActions();
+  const { trackUpload, discardSession, completeSession } =
+    useImageUploadSession();
 
   const handleCloseDialog = () => {
+    if (savingRef.current) return;
+
+    const discardedIds = discardSession();
     closeUpdateList();
+    requestImageCleanup({ case: 'cancelled', discardedIds });
+  };
+
+  const handleSuccessfulSave = () => {
+    const result = completeSession(form);
+    closeUpdateList();
+    requestImageCleanup({ case: 'saved', ...result });
   };
 
   const handleSave: ActionFunction = async () => {
+    if (savingRef.current) return { error: null };
+
     if (!listId) return { error: 'List is not selected' };
 
     const isFormEmpty = isListFormEmpty(form);
     if (isFormEmpty) return { error: 'At least one field must have a value' };
 
-    const { data, error } = await updateList(boardId, listId, form);
-    if (error || !data) return { error };
+    try {
+      savingRef.current = true;
 
-    const listNode = data.listsCollection?.edges[0].node;
-    const list = readFragment(MutatedListFragmentDoc, listNode);
-    if (!list) return { error: 'Failed to fetch updated list, please refresh' };
+      const { data, error } = await updateList(boardId, listId, form);
+      if (error || !data) return { error };
 
-    client.cache.writeFragment({
-      id: client.cache.identify({
-        __typename: 'lists',
-        id: list.id,
-      }),
-      fragmentName: 'MutatedList',
-      fragment: MutatedListFragmentDoc,
-      data: list,
-    });
+      const listNode = data.listsCollection?.edges[0].node;
+      const list = readFragment(MutatedListFragmentDoc, listNode);
+      if (!list)
+        return { error: 'Failed to fetch updated list, please refresh' };
 
-    handleCloseDialog();
+      client.cache.writeFragment({
+        id: client.cache.identify({
+          __typename: 'lists',
+          id: list.id,
+        }),
+        fragmentName: 'MutatedList',
+        fragment: MutatedListFragmentDoc,
+        data: list,
+      });
 
-    return { error: null };
+      handleSuccessfulSave();
+
+      return { error: null };
+    } finally {
+      savingRef.current = false;
+    }
   };
 
   return (
@@ -57,9 +85,11 @@ function UpdateListDialog() {
       title='Update list'
       description='Edit the list values for this card.'
       open={isOpen}
+      ownerId={userId}
       listFields={listFields}
       form={form}
       onFieldChange={updateField}
+      onImageUpload={trackUpload}
       onClose={handleCloseDialog}
       action={handleSave}
     />

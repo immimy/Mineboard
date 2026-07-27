@@ -27,12 +27,11 @@ export const createList = async (
   cardId: string,
   forms: ListForm,
 ) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Get list fields from the database
     const listFieldsQuery = await customQuery({
       query: BoardListFieldsQuery,
@@ -76,12 +75,11 @@ export const updateList = async (
   listId: string,
   forms: ListForm,
 ) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Get list fields from the database
     const listFieldsQuery = await customQuery({
       query: BoardListFieldsQuery,

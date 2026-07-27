@@ -20,9 +20,11 @@ type ListDialogProps = {
   title: string;
   description: string;
   open: boolean;
+  ownerId?: string;
   listFields?: ListFieldsCollectionFragment['edges'];
   form: ListForm;
   onFieldChange: (fieldId: string, value: ListFieldInput) => void;
+  onImageUpload?: (publicId: string) => void;
   onClose: () => void;
   action: ActionFunction;
 };
@@ -32,9 +34,11 @@ function ListDialog({
   title,
   description,
   open,
+  ownerId,
   listFields,
   form,
   onFieldChange,
+  onImageUpload,
   onClose,
   action,
 }: ListDialogProps) {
@@ -66,7 +70,9 @@ function ListDialog({
                     key={field.id}
                     field={field}
                     form={form[field.id]}
+                    ownerId={ownerId}
                     handleFieldChange={onFieldChange}
+                    handleImageUpload={onImageUpload}
                   />
                 );
               })}

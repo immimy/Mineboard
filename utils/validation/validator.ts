@@ -38,6 +38,10 @@ function stripEmptyFields<T>(input: T): T {
   ) as T;
 }
 
+// =====================================================================
+// ——— Input Schemas
+// =====================================================================
+
 // ─── List_Value schemas ────────────────────────────────────────────
 
 const textValueSchema = z.object({
@@ -78,9 +82,7 @@ const dateValueSchema = z
   });
 
 const imageValueSchema = z.object({
-  value: z
-    .array(z.string().trim().optional())
-    .max(5, 'You can upload up to 5 images'),
+  value: z.array(z.string().trim()).max(5, 'You can upload up to 5 images'),
 });
 
 const checkboxValueSchema = z.object({
@@ -308,3 +310,45 @@ export const updateBoardTitleSchema = z.object({
   boardId: z.uuid(),
   ...boardSchema.shape,
 });
+
+// ─── Image cleanup schema ────────────────────────────────────────────
+
+const MAX_IMAGE_CLEANUP_PUBLIC_IDS = 50;
+const imagePublicIdsSchema = z.array(
+  z.string().min(1, 'Cloudinary public IDs cannot be empty.'),
+  { error: 'Image cleanup expected an array of Cloudinary public IDs.' },
+);
+
+export const imageCleanupSchema = z
+  .discriminatedUnion(
+    'case',
+    [
+      // Cancelled list dialog
+      z.object({
+        case: z.literal('cancelled'),
+        discardedIds: imagePublicIdsSchema,
+      }),
+      // Saved list dialog
+      z.object({
+        case: z.literal('saved'),
+        savedIds: imagePublicIdsSchema,
+        discardedIds: imagePublicIdsSchema,
+      }),
+    ],
+    { error: 'Image cleanup received an unexpected case.' },
+  )
+  .refine(
+    (input) =>
+      input.discardedIds.length +
+        (input.case === 'saved' ? input.savedIds.length : 0) <=
+      MAX_IMAGE_CLEANUP_PUBLIC_IDS,
+    `Image cleanup accepts at most ${MAX_IMAGE_CLEANUP_PUBLIC_IDS} public IDs.`,
+  )
+  .refine(
+    (input) =>
+      input.case === 'cancelled' ||
+      !input.savedIds.some((publicId) => input.discardedIds.includes(publicId)),
+    'Image cleanup received the same public ID as saved and discarded.',
+  );
+
+export type ImageCleanupInput = z.infer<typeof imageCleanupSchema>;

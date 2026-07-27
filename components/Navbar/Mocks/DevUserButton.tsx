@@ -24,7 +24,7 @@ async function DevUserButtonComponent() {
         </PopoverButton>
         <PopoverPanel
           anchor='bottom end'
-          className='min-w-30 mt-2.5 flex flex-col bg-muted text-muted-foreground rounded rounded-t-none shadow shadow-border'
+          className='z-60 min-w-30 mt-2.5 flex flex-col bg-muted text-muted-foreground rounded rounded-t-none shadow shadow-border'
         >
           {/* OWNER */}
           <FormContainer action={signInWithEmail}>
@@ -61,7 +61,7 @@ async function DevUserButtonComponent() {
       </PopoverButton>
       <PopoverPanel
         anchor='bottom end'
-        className='min-w-30 mt-2.5 flex flex-col bg-muted hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
+        className='z-60 min-w-30 mt-2.5 flex flex-col bg-muted hover:bg-background text-muted-foreground rounded rounded-t-none shadow shadow-border'
       >
         <SignOutButton />
       </PopoverPanel>

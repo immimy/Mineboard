@@ -32,11 +32,19 @@ export const getFieldTitle = (field: ListFieldQuery) => {
 export type ListFieldInputProps = {
   field: ListFieldQuery;
   form: ListFieldInput;
+  ownerId?: string;
   handleFieldChange: (fieldId: string, value: ListFieldInput) => void;
+  handleImageUpload?: (publicId: string) => void;
 };
 
 const RenderListInput = memo(
-  ({ field, form, handleFieldChange }: ListFieldInputProps) => {
+  ({
+    field,
+    form,
+    ownerId,
+    handleFieldChange,
+    handleImageUpload,
+  }: ListFieldInputProps) => {
     switch (field.type) {
       case Field_Type.Checkbox:
         return (
@@ -59,7 +67,9 @@ const RenderListInput = memo(
           <ImageInput
             field={field}
             form={form as ImageForm}
+            ownerId={ownerId}
             handleFieldChange={handleFieldChange}
+            handleImageUpload={handleImageUpload}
           />
         );
       case Field_Type.Number:

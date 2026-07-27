@@ -1,5 +1,10 @@
 import { configDefaults, defineConfig } from 'vitest/config';
-import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const mockNodePath = (...segments: string[]) =>
+  fileURLToPath(
+    new URL(['./mocks/node', ...segments].join('/'), import.meta.url),
+  );
 
 export default defineConfig({
   plugins: [],
@@ -31,23 +36,23 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
     alias: {
+      'server-only': fileURLToPath(
+        new URL('./mocks/server-only.ts', import.meta.url),
+      ),
       // Replace modules with stubs.
       /**
        * Next.js
        */
-      'next/navigation': path.resolve(
-        __dirname,
-        'mocks/node/next/navigation.ts',
-      ),
-      'next/headers': path.resolve(__dirname, 'mocks/node/next/headers.ts'),
+      'next/navigation': mockNodePath('next', 'navigation.ts'),
+      'next/headers': mockNodePath('next', 'headers.ts'),
       /**
        * Supabase
        */
-      '@/utils/database/serverClient': path.resolve(
-        __dirname,
-        'mocks/node/supabase/serverClient.ts',
+      '@/utils/database/serverClient': mockNodePath(
+        'supabase',
+        'serverClient.ts',
       ),
-      '@supabase/ssr': path.resolve(__dirname, 'mocks/node/supabase/ssr.ts'),
+      '@supabase/ssr': mockNodePath('supabase', 'ssr.ts'),
     },
   },
 });

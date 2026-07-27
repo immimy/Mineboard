@@ -16,12 +16,11 @@ import {
 } from './graphql';
 
 export const createCard = async (formData: FormData) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Input validation
     const result = validateWithZodSchema(
       createCardSchema,
@@ -49,12 +48,11 @@ export const createCard = async (formData: FormData) => {
 };
 
 export const updateCard = async (formData: FormData) => {
+  const supabase = await createClient();
+  // Authenticated user only
+  await authenticateUser(supabase);
+
   try {
-    const supabase = await createClient();
-
-    // Authenticated user only
-    await authenticateUser(supabase);
-
     // Input validation
     const result = validateWithZodSchema(
       updateCardSchema,

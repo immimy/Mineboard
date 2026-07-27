@@ -43,9 +43,10 @@ const SingleBoardQuery = graphql(/* GraphQL */ `
 
 type BoardContainerProps = {
   boardId: string;
+  userId?: string;
 };
 
-function BoardContainer({ boardId }: BoardContainerProps) {
+function BoardContainer({ boardId, userId }: BoardContainerProps) {
   const { loading, error, data } = useQuery(SingleBoardQuery, {
     variables: { boardId },
   });
@@ -58,6 +59,7 @@ function BoardContainer({ boardId }: BoardContainerProps) {
   return (
     <BoardContextProvider
       boardId={boardId}
+      userId={userId}
       queryListFields={data.list_fieldsCollection}
     >
       <DialogsProvider>

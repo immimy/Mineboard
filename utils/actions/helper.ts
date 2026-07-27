@@ -1,5 +1,7 @@
-export const renderError = (error: unknown) => {
+export const renderError = (error: unknown, defaultMessage?: string) => {
   const errorMessage =
-    error instanceof Error ? error.message : 'An error occurred';
+    error instanceof Error
+      ? error.message
+      : defaultMessage || 'An error occurred';
   return { data: null, error: errorMessage };
 };

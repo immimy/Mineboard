@@ -110,9 +110,11 @@ deploy_prod:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
   environment: production
   before_script:
-    # Ensure that all migrations are pushed to the remote database
+    # Ensure that all edge functions are deployed
+    # and migrations are pushed to Supabase
     - npx supabase login --token $SUPABASE_ACCESS_TOKEN
     - npx supabase link --project-ref $SUPABASE_PROJECT_REF
+    - npx supabase functions deploy
     - npx supabase migration list
     - npx supabase db push
   script:

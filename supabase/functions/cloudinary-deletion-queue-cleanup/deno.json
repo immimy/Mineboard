@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "@supabase/server": "npm:@supabase/server@1.3.0",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.98.0",
+    "cloudinary": "npm:cloudinary@2.9.0"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}
