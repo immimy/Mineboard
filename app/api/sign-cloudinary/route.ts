@@ -25,10 +25,7 @@ export async function POST(request: NextRequest) {
 
   const params = paramsToSign as Record<string, unknown>;
   const ownerId = getContextOwnerId(params.context);
-  const allowedUploadPreset =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-      ? 'mineboard_app'
-      : 'mineboard_app_dev';
+  const allowedUploadPreset = process.env.ALLOWED_CLOUDINARY_PRESET;
 
   // Limits users to only upload the assets for themselves
   // Upload preset must be in the allowlist

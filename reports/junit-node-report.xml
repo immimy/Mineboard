@@ -1,13 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="4" failures="0" errors="0" time="0.0097911">
-    <testsuite name="utils/actions/__tests__/imageCleanup.node.test.ts" timestamp="2026-07-27T13:50:20.318Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.0097911">
-        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; does not mutate Cloudinary when no authenticated user is available" time="0.0031135">
+<testsuites name="vitest tests" tests="29" failures="0" errors="0" time="0.0726567">
+    <testsuite name="utils/actions/__tests__/imageCleanup.node.test.ts" timestamp="2026-07-27T15:16:47.785Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.0088596">
+        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; does not mutate Cloudinary when no authenticated user is available" time="0.003159">
         </testcase>
-        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; mutates only assets owned by the authenticated user" time="0.0041585">
+        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; mutates only assets owned by the authenticated user" time="0.0030507">
         </testcase>
-        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; repairs referenced cancelled uploads and deletes only unreferenced uploads" time="0.0009244">
+        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; repairs referenced cancelled uploads and deletes only unreferenced uploads" time="0.0009423">
         </testcase>
-        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; fails closed when the cancelled-upload reference lookup fails" time="0.0004045">
+        <testcase classname="utils/actions/__tests__/imageCleanup.node.test.ts" name="imageCleanup &gt; fails closed when the cancelled-upload reference lookup fails" time="0.0004646">
+        </testcase>
+    </testsuite>
+    <testsuite name="utils/database/__tests__/auth.node.test.ts" timestamp="2026-07-27T15:16:47.786Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.0084442">
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignInWithGoogle action &gt; redirects to Google OAuth URL on success" time="0.0047547">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignInWithGoogle action &gt; redirects to the homepage with error when Supabase returns an error" time="0.0007606">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignOutWithGoogle action &gt; redirects to the homepage on success" time="0.0006719">
+        </testcase>
+        <testcase classname="utils/database/__tests__/auth.node.test.ts" name="SignOutWithGoogle action &gt; renders error message when Supabase returns an error" time="0.0004998">
+        </testcase>
+    </testsuite>
+    <testsuite name="utils/database/__tests__/proxy.node.test.ts" timestamp="2026-07-27T15:16:47.787Z" hostname="IaM-Desktop" tests="10" failures="0" errors="0" skipped="0" time="0.0135022">
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; redirects to / when accessing a protected route" time="0.0057171">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; redirects to / when accessing a deeply nested protected route" time="0.0008541">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to / (public route)" time="0.0010045">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to /about (public route)" time="0.000449">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User is NOT authenticated &gt; allows access to /about/team (public sub-path)" time="0.0005864">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; redirects to /dashboard when accessing /" time="0.0007356">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; allows access to /dashboard" time="0.0004039">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — User IS authenticated &gt; allows access to a protected nested route" time="0.0002807">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — route matcher work correctly (/product as public) &gt; redirects to / when accessing /products" time="0.0010661">
+        </testcase>
+        <testcase classname="utils/database/__tests__/proxy.node.test.ts" name="Proxy — route matcher work correctly (/product as public) &gt; redirects to / when accessing /products/about/product-id" time="0.0006452">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/api/auth/__tests__/auth.node.test.ts" timestamp="2026-07-27T15:16:47.789Z" hostname="IaM-Desktop" tests="7" failures="0" errors="0" skipped="0" time="0.0097581">
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; No code in params &gt; redirects to homepage with error" time="0.0040201">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Fails to exchange code for a session &gt; redirects to homepage with error" time="0.0008695">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Succeed to exchange code for a session &gt; redirects to / by default in local env" time="0.0009756">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Succeed to exchange code for a session &gt; redirects to ?next= path in local env" time="0.0005034">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Succeed to exchange code for a session &gt; ignores non-relative next param and redirects to /" time="0.0005255">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Succeed to exchange code for a session &gt; uses x-forwarded-host in production" time="0.0007121">
+        </testcase>
+        <testcase classname="app/api/auth/__tests__/auth.node.test.ts" name="GET /api/auth &gt; Succeed to exchange code for a session &gt; falls back to origin when no x-forwarded-host in production" time="0.0003214">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/api/sign-cloudinary/__tests__/sign-cloudinary.node.test.ts" timestamp="2026-07-27T15:16:47.791Z" hostname="IaM-Desktop" tests="4" failures="0" errors="0" skipped="0" time="0.0320926">
+        <testcase classname="app/api/sign-cloudinary/__tests__/sign-cloudinary.node.test.ts" name="POST /api/sign-cloudinary &gt; rejects unauthenticated cleanup upload requests" time="0.0226897">
+        </testcase>
+        <testcase classname="app/api/sign-cloudinary/__tests__/sign-cloudinary.node.test.ts" name="POST /api/sign-cloudinary &gt; rejects a mismatched owner" time="0.0025828">
+        </testcase>
+        <testcase classname="app/api/sign-cloudinary/__tests__/sign-cloudinary.node.test.ts" name="POST /api/sign-cloudinary &gt; rejects a mismatched upload preset" time="0.0025603">
+        </testcase>
+        <testcase classname="app/api/sign-cloudinary/__tests__/sign-cloudinary.node.test.ts" name="POST /api/sign-cloudinary &gt; signs only the authenticated user’s allowed upload parameters" time="0.0027637">
         </testcase>
     </testsuite>
 </testsuites>

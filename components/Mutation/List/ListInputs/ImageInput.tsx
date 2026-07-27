@@ -15,10 +15,7 @@ import { useFormStatus } from 'react-dom';
 import ImageSlide from '@/components/Slider/ImageSlide';
 
 const maxFiles = 5;
-const uploadPreset =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-    ? 'mineboard_app'
-    : 'mineboard_app_dev';
+const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 
 function ImageInput({
   field,

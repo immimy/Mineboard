@@ -18,7 +18,7 @@ function buildRequest(paramsToSign: unknown) {
 describe('POST /api/sign-cloudinary', () => {
   beforeEach(() => {
     vi.stubEnv('CLOUDINARY_API_SECRET', 'test-secret');
-    vi.stubEnv('NEXT_PUBLIC_VERCEL_ENV', 'development');
+    vi.stubEnv('ALLOWED_CLOUDINARY_PRESET', 'mineboard_app_dev');
     vi.mocked(getCloudinaryServerClient).mockReturnValue({
       utils: { api_sign_request: mockSignRequest },
     } as never);
