@@ -9,6 +9,7 @@ import {
   getRequiredEnv,
 } from './utils/config.mjs';
 import { loadMockData } from './utils/data.mjs';
+import { revalidateHomepage } from './utils/revalidate.mjs';
 import { buildDatabaseRows } from './utils/rows.mjs';
 import {
   clearDemoBoards,
@@ -39,6 +40,10 @@ async function main() {
 
   const rows = buildDatabaseRows(boards, user.id, publicIdsByAssetKey);
   await insertRows(supabase, rows);
+
+  if (environment === 'production') {
+    await revalidateHomepage();
+  }
 
   console.log(
     `Created ${rows.boards.length} boards, ${rows.cards.length} cards and ${rows.lists.length} lists for ${user.email ?? user.id}.`,
