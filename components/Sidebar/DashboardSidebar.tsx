@@ -2,7 +2,7 @@
 
 import { useAppContext } from '@/components/global/AppContext';
 import { BoardFragment } from '@/components/DashboardPage/Board';
-import { AllBoardsQuery } from '@/components/DashboardPage/BoardsContainer';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 import AddBoardTitle, {
   PendingBoard,
 } from '@/components/Mutation/Board/Title/AddBoardTitle';
@@ -22,8 +22,9 @@ function DashboardSidebar({ userId }: DashboardSidebarProps) {
 
   const [pendingBoards, setPendingBoards] = useState<PendingBoard[]>([]);
 
+  const queryConfig = getAllBoardsQueryConfig(userId);
   const { loading, error, data } = useQuery(AllBoardsQuery, {
-    variables: { userId },
+    variables: queryConfig.variables,
   });
 
   const boards = data?.boardsCollection?.edges ?? [];
@@ -56,7 +57,7 @@ function DashboardSidebar({ userId }: DashboardSidebarProps) {
         </div>
 
         {/* Board navigation */}
-        <div className='min-h-0 flex-1 overflow-y-auto'>
+        <nav className='min-h-0 flex-1 overflow-y-auto'>
           {loading ? (
             <div className='py-8'>
               <Loading size='size-5' />
@@ -97,7 +98,7 @@ function DashboardSidebar({ userId }: DashboardSidebarProps) {
               No boards yet
             </p>
           )}
-        </div>
+        </nav>
 
         {/* Add boards */}
         <AddBoardTitle

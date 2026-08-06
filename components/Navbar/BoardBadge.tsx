@@ -1,6 +1,6 @@
 'use client';
 
-import { graphql } from '@/gql/__generated__';
+import { BoardTitleQuery, getBoardTitleQueryConfig } from '@/gql/queries';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { Suspense } from 'react';
@@ -9,30 +9,19 @@ import { useQuery } from '@apollo/client/react';
 import Error from '../global/Error';
 import UpdateBoardTitle from '../Mutation/Board/Title/UpdateBoardTitle';
 
-const BoardTitleQuery = graphql(/* GraphQL */ `
-  query BoardTitle($boardId: UUID!) {
-    boardsCollection(filter: { id: { eq: $boardId } }) {
-      edges {
-        ...Board @unmask
-      }
-    }
-  }
-`);
-
 function BoardBadgeComponent() {
   const pathname = usePathname();
-  const regex = /(^\/(\?.*)?$)|(^\/dashboard(\?.*)?)$/;
-  const isLanding = regex.test(pathname);
-  if (isLanding) return <HomepageLink />;
-  // CAVEATS: All paths unless landing page return this board title.
-  // If there are more routes in the future, this should be reviewed further.
-  return <BoardTitle />;
+  const regex = /^\/dashboard\/[^/]+\/?$/;
+  const isBoardPage = regex.test(pathname);
+
+  return isBoardPage ? <BoardTitle /> : <HomepageLink />;
 }
 
 function BoardTitle() {
   const { id: boardId } = useParams();
+  const queryConfig = getBoardTitleQueryConfig(boardId as string);
   const { loading, error, data } = useQuery(BoardTitleQuery, {
-    variables: { boardId: boardId as string },
+    variables: queryConfig.variables,
   });
 
   if (loading) return <LoadingSkeleton />;

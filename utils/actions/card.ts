@@ -6,19 +6,22 @@ import { renderError } from './helper';
 import {
   validateWithZodSchema,
   createCardSchema,
+  deleteCardsSchema,
   updateCardSchema,
 } from '../validation/validator';
 import {
   CachedCardQuery,
   customMutation,
   customQuery,
+  DeleteCardsMutation,
   UpdateCardMutation,
 } from './graphql';
+import { revalidateDemoHomepage } from './helper';
 
 export const createCard = async (formData: FormData) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Input validation
@@ -41,6 +44,7 @@ export const createCard = async (formData: FormData) => {
       variables: { cardId },
     });
 
+    revalidateDemoHomepage(user);
     return { data: cardDocument, error: null };
   } catch (error) {
     return renderError(error);
@@ -50,7 +54,7 @@ export const createCard = async (formData: FormData) => {
 export const updateCard = async (formData: FormData) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Input validation
@@ -72,7 +76,39 @@ export const updateCard = async (formData: FormData) => {
     const updatedCard = data?.updatecardsCollection.records[0];
     if (!updatedCard) throw new Error('Failed to update card');
 
+    revalidateDemoHomepage(user);
     return { data: updatedCard, error: null };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const deleteCards = async (boardId: string, cardIds: string[]) => {
+  const supabase = await createClient();
+  const user = await authenticateUser(supabase);
+
+  try {
+    const result = validateWithZodSchema(deleteCardsSchema, {
+      boardId,
+      cardIds,
+    });
+    const data = await customMutation({
+      mutation: DeleteCardsMutation,
+      variables: {
+        boardId: result.boardId,
+        cardIds: result.cardIds,
+        expectedCount: result.cardIds.length,
+      },
+    });
+
+    if (
+      data?.deleteFromcardsCollection.affectedCount !== result.cardIds.length
+    ) {
+      throw new Error('Failed to delete selected cards');
+    }
+
+    revalidateDemoHomepage(user);
+    return { error: null };
   } catch (error) {
     return renderError(error);
   }

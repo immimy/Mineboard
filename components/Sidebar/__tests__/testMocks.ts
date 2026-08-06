@@ -1,8 +1,8 @@
 import {
-  AllBoardsDocument,
   AllBoardsQuery as AllBoardsQueryType,
   CachedBoardQuery,
 } from '@/gql/__generated__/graphql';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 import { GraphQLError } from 'graphql/error';
 
 export const mockUserId = 'userId1';
@@ -32,8 +32,8 @@ const secondBoardEdge = makeBoardEdge(secondBoardId, 'Personal to-do');
 const createdBoardEdge = makeBoardEdge(createdBoardId, 'Career roadmap');
 
 const allBoardsQueryRequest = {
-  query: AllBoardsDocument,
-  variables: { userId: mockUserId },
+  query: AllBoardsQuery,
+  variables: getAllBoardsQueryConfig(mockUserId).variables,
 };
 
 const makeBoardsData = (edges: BoardEdge[]): AllBoardsQueryType => ({

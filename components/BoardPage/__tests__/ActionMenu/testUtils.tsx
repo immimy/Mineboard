@@ -12,6 +12,8 @@ import ActionMenuContainer from '../../ActionMenuContainer';
 import BoardContextProvider from '../../BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { mockBoardId, mockListFields } from '../singleBoardQuery.mock';
+import CardDeletionsProvider from '../../CardDeletionsContext';
+import type { InMemoryCache } from '@apollo/client';
 
 vi.mock('@/utils/actions/card');
 vi.mock('@/utils/actions/board');
@@ -27,24 +29,37 @@ const mockBoardTitle = 'Test Board';
 
 export const renderActionMenu = (
   queryListFields: ListFieldsQuery = listFieldsWithValues,
+  {
+    cache,
+    userId,
+  }: {
+    cache?: InMemoryCache;
+    userId?: string;
+  } = {},
 ) => {
   return render(
-    <MockedProvider>
+    <MockedProvider cache={cache}>
       <AppContextProvider>
         <BoardTitleProvider>
           <BoardContextProvider
             boardId={mockBoardId}
+            userId={userId}
             queryListFields={queryListFields}
           >
-            <DialogsProvider>
-              {/* Action Menu */}
-              <ActionMenuContainer />
+            <CardDeletionsProvider>
+              <DialogsProvider>
+                {/* Action Menu */}
+                <ActionMenuContainer />
 
-              {/* Other Components */}
-              <UpdateBoardTitle boardId={mockBoardId} title={mockBoardTitle} />
-              <ListFieldDialog />
-              <AddCardDialog />
-            </DialogsProvider>
+                {/* Other Components */}
+                <UpdateBoardTitle
+                  boardId={mockBoardId}
+                  title={mockBoardTitle}
+                />
+                <ListFieldDialog />
+                <AddCardDialog />
+              </DialogsProvider>
+            </CardDeletionsProvider>
           </BoardContextProvider>
         </BoardTitleProvider>
       </AppContextProvider>
@@ -71,6 +86,8 @@ export const getAllElements = () => {
     }),
     listFieldsDescription: page.getByText(/personalize the list item/i),
     boardTitleInput: page.getByRole('textbox', { name: /board title/i }),
+    cancelButton: page.getByRole('button', { name: /cancel/i }),
+    confirmButton: page.getByRole('button', { name: /continue/i }),
   };
 };
 

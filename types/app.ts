@@ -19,4 +19,5 @@ export type ListForm = Record<string, ListFieldInput>;
 export type ActionMenuId =
   | 'edit-board-title'
   | 'custom-list-fields'
-  | 'delete-board';
+  | 'delete-board'
+  | 'multiple-card-deletions';

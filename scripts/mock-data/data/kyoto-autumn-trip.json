@@ -1,0 +1,116 @@
+{
+  "title": "Kyoto Autumn Trip",
+  "fields": [
+    { "key": "activity", "type": "checkbox", "config": {} },
+    {
+      "key": "schedule",
+      "type": "date",
+      "config": { "title": "Date & time", "isIncludeTime": true }
+    },
+    {
+      "key": "budget",
+      "type": "number",
+      "config": {
+        "title": "Budget",
+        "isHasUnit": true,
+        "unit": "¥",
+        "unitPosition": "front"
+      }
+    },
+    {
+      "key": "note",
+      "type": "text",
+      "config": { "title": "Location or booking note" }
+    },
+    { "key": "place", "type": "image", "config": { "title": "Place" } },
+    { "key": "status", "type": "tag", "config": { "color": 7 } }
+  ],
+  "cards": [
+    {
+      "title": "Ideas & research",
+      "color": 8,
+      "items": [
+        {
+          "activity": "Arashiyama bamboo grove",
+          "budget": "3000",
+          "status": [["research", 8]],
+          "note": "Pair with Tenryu-ji and arrive early."
+        },
+        {
+          "activity": "Nishiki Market",
+          "budget": "5000",
+          "status": [["food", 7]]
+        },
+        {
+          "activity": "Philosopher's Path",
+          "budget": "1000",
+          "status": [["optional", 3]]
+        }
+      ]
+    },
+    {
+      "title": "Booked",
+      "color": 6,
+      "items": [
+        {
+          "activity": { "title": "Bangkok–Osaka flight", "checked": true },
+          "schedule": "2026-11-10T02:30:00Z",
+          "budget": "68000",
+          "status": [["confirmed", 6]],
+          "note": "Save the booking reference offline."
+        },
+        {
+          "activity": { "title": "Kyoto hotel", "checked": true },
+          "schedule": "2026-11-10T06:00:00Z",
+          "budget": "72000",
+          "status": [["confirmed", 6]]
+        },
+        {
+          "activity": { "title": "Tea ceremony", "checked": true },
+          "schedule": "2026-11-13T05:00:00Z",
+          "budget": "6000",
+          "status": [["confirmed", 6]]
+        }
+      ]
+    },
+    {
+      "title": "Daily itinerary",
+      "color": 7,
+      "items": [
+        {
+          "activity": "Fushimi Inari morning",
+          "schedule": "2026-11-12T22:00:00Z",
+          "budget": "2000",
+          "place": ["kyoto-fushimi-inari"],
+          "status": [["planned", 1]],
+          "note": "Arrive before 08:00 to avoid crowds."
+        },
+        {
+          "activity": "Kiyomizu-dera sunset",
+          "schedule": "2026-11-13T07:30:00Z",
+          "budget": "2500",
+          "place": ["kyoto-temple"],
+          "status": [["planned", 1]]
+        },
+        {
+          "activity": "Gion evening walk",
+          "schedule": "2026-11-13T10:00:00Z",
+          "budget": "4000",
+          "status": [["planned", 1]]
+        }
+      ]
+    },
+    {
+      "title": "Packing",
+      "color": 1,
+      "items": [
+        {
+          "activity": "Comfortable walking shoes",
+          "status": [["essential", 4]]
+        },
+        { "activity": "Light rain jacket", "status": [["essential", 4]] },
+        { "activity": "Travel adapter", "status": [["tech", 1]] }
+      ]
+    }
+  ]
+}

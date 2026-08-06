@@ -149,6 +149,11 @@ export const updateListSchema = z.object({
   fieldValues: z.array(listValueSchema),
 });
 
+export const deleteListSchema = z.object({
+  cardId: z.uuid(),
+  listId: z.uuid(),
+});
+
 // ─── Card schema ────────────────────────────────────────────
 
 const cardSchema = z.object({
@@ -175,6 +180,11 @@ export const createCardSchema = z.object({
 export const updateCardSchema = z.object({
   cardId: z.uuid(),
   ...cardSchema.shape,
+});
+
+export const deleteCardsSchema = z.object({
+  boardId: z.uuid(),
+  cardIds: z.array(z.uuid()).min(1, 'Select at least one card'),
 });
 
 // ─── List_Field schemas ────────────────────────────────────────────
@@ -309,6 +319,10 @@ export const createBoardSchema = boardSchema;
 export const updateBoardTitleSchema = z.object({
   boardId: z.uuid(),
   ...boardSchema.shape,
+});
+
+export const deleteBoardSchema = z.object({
+  boardId: z.uuid(),
 });
 
 // ─── Image cleanup schema ────────────────────────────────────────────

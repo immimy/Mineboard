@@ -39,6 +39,7 @@ build_preview:
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
     - if: '$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH'
+  environment: preview/$CI_COMMIT_REF_SLUG
   script:
     - node --version
     - npm --version
@@ -46,9 +47,10 @@ build_preview:
     - vercel pull --yes --environment=preview --token $VERCEL_TOKEN
     - vercel build --token $VERCEL_TOKEN
   artifacts:
-    untracked: true
     paths:
       - .vercel/output/
+      - .vercel/project.json
+      - .next/
       - node_modules/
 
 build_prod:
@@ -56,6 +58,7 @@ build_prod:
   image: $CI_REGISTRY_IMAGE/vercel
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+  environment: production
   script:
     - node --version
     - npm --version
@@ -63,9 +66,10 @@ build_prod:
     - vercel pull --yes --environment=production --token $VERCEL_TOKEN
     - vercel build --prod --token $VERCEL_TOKEN
   artifacts:
-    untracked: true
     paths:
       - .vercel/output/
+      - .vercel/project.json
+      - .next/
       - node_modules/
 
 # ----- TEST -------------------------

@@ -27,7 +27,7 @@ type ListProps = {
 };
 
 function List({ query }: ListProps) {
-  const { isPreview, title } = useCardContext();
+  const { cardId, title } = useCardContext();
   const { openUpdateList } = useUpdateListDialogActions();
 
   const list = useFragment(ListFragment, query).node;
@@ -53,7 +53,6 @@ function List({ query }: ListProps) {
       <div className='absolute inset-x-0 top-0 flex justify-between items-center'>
         {/* Grip Button */}
         <IconButton
-          disabled={isPreview}
           Icon={GripVIcon}
           label={`Drag list of ${title} ${list.position}`}
           title=''
@@ -63,12 +62,12 @@ function List({ query }: ListProps) {
 
         {/* Update List Button */}
         <IconButton
-          disabled={isPreview}
           Icon={PencilIcon}
           label={`Update list of ${title} ${list.position}`}
           title={`Update list of ${title}`}
           onClick={() =>
             openUpdateList({
+              cardId,
               listId: list.id,
               listValues: formListValues,
             })

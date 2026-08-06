@@ -11,10 +11,10 @@ import { ActionFunction } from '@/types/app';
 import { useFragment as readFragment } from '@/gql/__generated__';
 import {
   CardsCollectionFragmentDoc,
-  SingleBoardDocument,
-  SingleBoardQuery,
+  SingleBoardQuery as SingleBoardQueryData,
   SingleBoardQueryVariables,
 } from '@/gql/__generated__/graphql';
+import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 import CardDialog from './CardDialog';
 import { renderError } from '@/components/global/utils';
 
@@ -45,10 +45,11 @@ function AddCardDialog() {
       if (!card) return { error: 'Created card was not returned' };
 
       // Update `SingleBoardQuery` by appending new card to the collection
-      client.cache.updateQuery<SingleBoardQuery, SingleBoardQueryVariables>(
+      const queryConfig = getSingleBoardQueryConfig(boardId);
+      client.cache.updateQuery<SingleBoardQueryData, SingleBoardQueryVariables>(
         {
-          query: SingleBoardDocument,
-          variables: { boardId },
+          query: SingleBoardQuery,
+          variables: queryConfig.variables,
         },
         (queryData) => {
           if (!queryData?.cardsCollection) return queryData;

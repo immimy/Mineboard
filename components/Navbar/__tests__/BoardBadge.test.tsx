@@ -1,6 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing/react';
 import type { MockLink } from '@apollo/client/testing';
-import { BoardTitleDocument } from '@/gql/__generated__/graphql';
+import { BoardTitleQuery, getBoardTitleQueryConfig } from '@/gql/queries';
 import { GraphQLError } from 'graphql/error';
 import { useParams, usePathname } from 'next/navigation';
 import { page } from 'vitest/browser';
@@ -11,11 +11,12 @@ import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitle
 vi.mock('@/utils/actions/board');
 
 const mockBoardId = 'boardId1';
+const queryConfig = getBoardTitleQueryConfig(mockBoardId);
 
 const boardTitleMock: MockLink.MockedResponse = {
   request: {
-    query: BoardTitleDocument,
-    variables: { boardId: mockBoardId },
+    query: BoardTitleQuery,
+    variables: queryConfig.variables,
   },
   result: {
     data: {
@@ -39,8 +40,8 @@ const boardTitleMock: MockLink.MockedResponse = {
 
 const boardTitleErrorMock: MockLink.MockedResponse = {
   request: {
-    query: BoardTitleDocument,
-    variables: { boardId: mockBoardId },
+    query: BoardTitleQuery,
+    variables: queryConfig.variables,
   },
   result: {
     errors: [new GraphQLError('Board title failed')],
@@ -84,8 +85,6 @@ describe('BoardBadge', () => {
       .toHaveAttribute('href', '/');
   });
 
-  // Other routes, unless landing page, should render board title.
-  // Since currently there is only boards page, this will suffice for the time being.
   it('renders the board title on board routes', async () => {
     vi.mocked(usePathname).mockReturnValue(`/dashboard/${mockBoardId}`);
 

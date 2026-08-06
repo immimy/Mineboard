@@ -9,7 +9,7 @@ const config: CodegenConfig = {
       : 'http://localhost:54321/graphql/v1',
   // Define the path that all graphql queries live
   documents: [
-    '{app,components,gql,utils/actions}/**/*.{ts,tsx}',
+    '{app,components,gql,utils}/**/*.{ts,tsx}',
     '!gql/__generated__/**',
   ],
   // Don't exit with non-zero status when there are no documents

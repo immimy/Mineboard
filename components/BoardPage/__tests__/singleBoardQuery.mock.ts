@@ -1,12 +1,14 @@
 import { MockLink } from '@apollo/client/testing';
 import { GraphQLError } from 'graphql/error';
-import { Field_Type, SingleBoardDocument } from '@/gql/__generated__/graphql';
+import { Field_Type } from '@/gql/__generated__/graphql';
+import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 
 // ─── IDs ──────────────────────────────────────────────────────────────────────
 
 const BOARD_ID = 'boardId1';
 const CARD_ID = 'cardId1';
 const LIST_ID = 'listId1';
+const queryConfig = getSingleBoardQueryConfig(BOARD_ID);
 
 const FIELD_CHECKBOX_ID = 'field0';
 const FIELD_DATE_ID = 'field1';
@@ -101,8 +103,8 @@ export const mockListFields = {
 export const successMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: BOARD_ID },
+    query: SingleBoardQuery,
+    variables: queryConfig.variables,
   },
   result: {
     data: {
@@ -285,8 +287,8 @@ export const successMock: MockLink.MockedResponse = {
 export const noDataMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: BOARD_ID },
+    query: SingleBoardQuery,
+    variables: queryConfig.variables,
   },
   result: {
     data: {
@@ -316,8 +318,8 @@ export const noDataMock: MockLink.MockedResponse = {
 export const networkErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: BOARD_ID },
+    query: SingleBoardQuery,
+    variables: queryConfig.variables,
   },
   error: new Error('Network failure'),
 };
@@ -325,8 +327,8 @@ export const networkErrorMock: MockLink.MockedResponse = {
 export const graphqlErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: BOARD_ID },
+    query: SingleBoardQuery,
+    variables: queryConfig.variables,
   },
   result: {
     errors: [new GraphQLError('GraphQL failure')],
@@ -336,6 +338,7 @@ export const graphqlErrorMock: MockLink.MockedResponse = {
 export {
   BOARD_ID as mockBoardId,
   CARD_ID as mockCardId,
+  LIST_ID as mockListId,
   FIELD_CHECKBOX_ID as mockCheckboxId,
   FIELD_DATE_ID as mockDateId,
   FIELD_TEXT_ID as mockTextId,

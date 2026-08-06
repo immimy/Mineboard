@@ -13,6 +13,7 @@ import { MockedProvider } from '@apollo/client/testing/react';
 import { Button } from '@headlessui/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
+import CardDeletionsProvider from '@/components/BoardPage/CardDeletionsContext';
 
 type RenderListFieldOptions = {
   cache?: ApolloCache;
@@ -36,14 +37,16 @@ export const renderListFieldForm = ({ cache }: RenderListFieldOptions = {}) => {
   return render(
     <MockedProvider cache={cache}>
       <BoardContextProvider boardId={mockBoardId}>
-        <DialogsProvider>
-          <FieldListFormProvider>
-            <div className='grid grid-cols-2'>
-              <FieldsForm />
-              <FieldsPreview />
-            </div>
-          </FieldListFormProvider>
-        </DialogsProvider>
+        <CardDeletionsProvider>
+          <DialogsProvider>
+            <FieldListFormProvider>
+              <div className='grid grid-cols-2'>
+                <FieldsForm />
+                <FieldsPreview />
+              </div>
+            </FieldListFormProvider>
+          </DialogsProvider>
+        </CardDeletionsProvider>
       </BoardContextProvider>
     </MockedProvider>,
   );
@@ -59,10 +62,12 @@ export const renderListFieldDialog = ({
         boardId={mockBoardId}
         queryListFields={queryListFields}
       >
-        <DialogsProvider>
-          <OpenListFieldDialogButton />
-          <ListFieldDialog />
-        </DialogsProvider>
+        <CardDeletionsProvider>
+          <DialogsProvider>
+            <OpenListFieldDialogButton />
+            <ListFieldDialog />
+          </DialogsProvider>
+        </CardDeletionsProvider>
       </BoardContextProvider>
     </MockedProvider>,
   );

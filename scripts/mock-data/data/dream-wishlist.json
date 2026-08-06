@@ -1,0 +1,116 @@
+{
+  "title": "Dream Wishlist",
+  "fields": [
+    { "key": "item", "type": "checkbox", "config": {} },
+    { "key": "preview", "type": "image", "config": { "title": "Preview" } },
+    {
+      "key": "budget",
+      "type": "number",
+      "config": {
+        "title": "Budget",
+        "isHasUnit": true,
+        "unit": "฿",
+        "unitPosition": "front"
+      }
+    },
+    { "key": "priority", "type": "tag", "config": { "color": 5 } },
+    {
+      "key": "details",
+      "type": "text",
+      "config": { "title": "Product link or note" }
+    }
+  ],
+  "cards": [
+    {
+      "title": "Tech upgrades",
+      "color": 5,
+      "items": [
+        {
+          "item": "Mirrorless camera",
+          "preview": ["wishlist-camera"],
+          "budget": "42900",
+          "priority": [["saving", 5]],
+          "details": "Compact body with strong low-light performance."
+        },
+        {
+          "item": "Noise-cancelling headphones",
+          "preview": ["wishlist-headphones"],
+          "budget": "12500",
+          "priority": [["high priority", 4]]
+        },
+        {
+          "item": "Mechanical keyboard",
+          "budget": "4500",
+          "priority": [["researching", 3]],
+          "details": "Quiet tactile switches and a compact layout."
+        }
+      ]
+    },
+    {
+      "title": "Home workspace",
+      "color": 2,
+      "items": [
+        {
+          "item": "Ergonomic chair",
+          "preview": ["wishlist-workspace"],
+          "budget": "18900",
+          "priority": [["researching", 3]]
+        },
+        {
+          "item": "Minimal desk lamp",
+          "preview": ["wishlist-workspace"],
+          "budget": "2900",
+          "priority": [["nice to have", 8]]
+        },
+        {
+          "item": "Monitor arm",
+          "budget": "3200",
+          "priority": [["next purchase", 1]]
+        }
+      ]
+    },
+    {
+      "title": "Books & learning",
+      "color": 3,
+      "items": [
+        {
+          "item": "Advanced TypeScript book",
+          "budget": "1600",
+          "priority": [["career", 1]]
+        },
+        {
+          "item": "UI design course",
+          "budget": "5900",
+          "priority": [["career", 1]],
+          "details": "Choose a project-based course with portfolio feedback."
+        },
+        {
+          "item": "Japanese workbook",
+          "budget": "850",
+          "priority": [["personal", 2]]
+        }
+      ]
+    },
+    {
+      "title": "Experiences",
+      "color": 7,
+      "items": [
+        {
+          "item": "Pottery workshop",
+          "budget": "2400",
+          "priority": [["this year", 6]]
+        },
+        {
+          "item": "Weekend diving course",
+          "budget": "14500",
+          "priority": [["saving", 5]]
+        },
+        {
+          "item": "Concert ticket",
+          "budget": "3500",
+          "priority": [["watch dates", 3]]
+        }
+      ]
+    }
+  ]
+}

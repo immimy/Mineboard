@@ -7,8 +7,8 @@ import {
   ListsCollectionFragmentDoc,
   MutatedListFragment,
   MutatedListFragmentDoc,
-  SingleBoardDocument,
 } from '@/gql/__generated__/graphql';
+import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 import { ColorPalette } from '@/types/jsonbSchema';
 import { MockLink } from '@apollo/client/testing';
 import { mockBoardId } from '../singleBoardQuery.mock';
@@ -62,8 +62,8 @@ const makeSingleBoardMock = (data: {
 }): MockLink.MockedResponse => ({
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: mockBoardId },
+    query: SingleBoardQuery,
+    variables: getSingleBoardQueryConfig(mockBoardId).variables,
   },
   result: {
     data: {

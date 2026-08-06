@@ -5,6 +5,7 @@ import { authenticateUser } from './auth';
 import { createClient } from '../database/serverClient';
 import {
   createListSchema,
+  deleteListSchema,
   updateListSchema,
   validateWithZodSchema,
 } from '../validation/validator';
@@ -16,11 +17,14 @@ import {
 import {
   BoardListFieldsQuery,
   CachedListQuery,
+  customMutation,
   customQuery,
+  DeleteListMutation,
   ListValuesQuery,
 } from './graphql';
 import { renderError } from './helper';
 import { ListValueInput } from '../validation/validator';
+import { revalidateDemoHomepage } from './helper';
 
 export const createList = async (
   boardId: string,
@@ -29,7 +33,7 @@ export const createList = async (
 ) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Get list fields from the database
@@ -64,6 +68,7 @@ export const createList = async (
     if (!ListWithValuesDocument?.listsCollection)
       throw new Error('Failed to fetch new list, please refresh');
 
+    revalidateDemoHomepage(user);
     return { data: ListWithValuesDocument, error: null };
   } catch (error) {
     return renderError(error);
@@ -77,7 +82,7 @@ export const updateList = async (
 ) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Get list fields from the database
@@ -158,7 +163,30 @@ export const updateList = async (
     if (!ListWithValuesDocument?.listsCollection)
       throw new Error('Failed to fetch updated list, please refresh');
 
+    revalidateDemoHomepage(user);
     return { data: ListWithValuesDocument, error: null };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const deleteList = async (cardId: string, listId: string) => {
+  const supabase = await createClient();
+  const user = await authenticateUser(supabase);
+
+  try {
+    const result = validateWithZodSchema(deleteListSchema, { cardId, listId });
+    const data = await customMutation({
+      mutation: DeleteListMutation,
+      variables: result,
+    });
+
+    if (data?.deleteFromlistsCollection.affectedCount !== 1) {
+      throw new Error('Failed to delete list');
+    }
+
+    revalidateDemoHomepage(user);
+    return { error: null };
   } catch (error) {
     return renderError(error);
   }

@@ -18,10 +18,12 @@
     "test:node": "vitest --config vitest.node.config.mts",
     "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts",
     "codegen": "graphql-codegen --config codegen.ts --watch",
-    "dev:db-reset": "supabase db reset && npm run dev:codegen-enabler && npm run dev:vault-setup && npm run dev:cloudinaryCleanup",
-    "dev:cloudinaryCleanup": "node --env-file=.env.local devImagesCleanup.mjs",
+    "dev:db-reset": "supabase db reset && npm run dev:codegen-enabler && npm run dev:vault-setup && npm run dev:cloudinaryCleanup && npm run mock-data:dev",
+    "dev:cloudinaryCleanup": "node --env-file=.env.local scripts/image-cleanup/devImagesCleanup.mjs",
     "dev:codegen-enabler": "supabase db query --local --file supabase/snippets/grant_public_to_anon.sql",
-    "dev:vault-setup": "supabase db query --local --file supabase/snippets/image_cleanup_vault.sql"
+    "dev:vault-setup": "supabase db query --local --file supabase/snippets/image_cleanup_vault.sql",
+    "mock-data:dev": "node --env-file=.env.local scripts/mock-data/seed.mjs --environment=development",
+    "mock-data:production": "node --env-file=.env.seed.production scripts/mock-data/seed.mjs --environment=production"
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",

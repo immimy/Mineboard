@@ -26,6 +26,7 @@ type CardDialogProps<TForm extends CardFormState = CardFormState> = {
   onFormChange: Dispatch<SetStateAction<TForm>>;
   onClose: () => void;
   action: ActionFunction;
+  deleteAction?: ActionFunction;
 };
 
 function CardDialog<TForm extends CardFormState>({
@@ -37,6 +38,7 @@ function CardDialog<TForm extends CardFormState>({
   onFormChange,
   onClose,
   action,
+  deleteAction,
 }: CardDialogProps<TForm>) {
   return (
     <Dialog open={open} onClose={onClose} className='relative z-50'>
@@ -95,6 +97,15 @@ function CardDialog<TForm extends CardFormState>({
               />
             </div>
           </FormContainer>
+
+          {/* CARD DELETION */}
+          {deleteAction && (
+            <FormContainer action={deleteAction}>
+              <SubmitButton className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'>
+                Delete Card
+              </SubmitButton>
+            </FormContainer>
+          )}
         </DialogPanel>
       </div>
     </Dialog>

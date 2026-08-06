@@ -66,6 +66,12 @@ export default defineConfig({
         'serverClient.ts',
       ),
       '@supabase/ssr': mockBrowserPath('supabase', 'ssr.ts'),
+      /**
+       * Server Actions
+       */
+      '@/utils/actions/board': mockBrowserPath('actions', 'board.ts'),
+      '@/utils/actions/card': mockBrowserPath('actions', 'card.ts'),
+      '@/utils/actions/list': mockBrowserPath('actions', 'list.ts'),
     },
   },
 });

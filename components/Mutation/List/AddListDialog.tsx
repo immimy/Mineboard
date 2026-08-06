@@ -9,6 +9,7 @@ import { MutatedListFragmentDoc } from '@/gql/__generated__/graphql';
 import { ActionFunction } from '@/types/app';
 import { createList } from '@/utils/actions/list';
 import { useApolloClient } from '@apollo/client/react';
+import { InMemoryCache } from '@apollo/client';
 import { useFragment as readFragment } from '@/gql/__generated__';
 import { isListFormEmpty } from '@/utils/validation/helper';
 import ListDialog from './ListDialog';
@@ -97,6 +98,10 @@ function AddListDialog() {
           },
         },
       });
+
+      // Remove the list from Apollo's __META entry so GC can clean up orphaned cache data.
+      if (listRef && client.cache instanceof InMemoryCache)
+        client.cache.release(listRef.__ref);
 
       // Image status update & Image cleanup
       handleSuccessfulSave();

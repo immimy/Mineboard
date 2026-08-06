@@ -121,6 +121,7 @@ Path alias: `@/*` maps to the project root.
 
 ## Testing
 
+- For feature work, add and run client/browser tests only. Do not add or run node tests unless explicitly requested.
 - Browser tests use `vitest.config.mts`, Chromium via Playwright, and `vitest.setup.ts`.
 - Node tests use `vitest.node.config.mts`, `environment: 'node'`, and `vitest.node.setup.ts`.
 - Name node-only tests `*.node.test.ts`; browser config excludes those files.

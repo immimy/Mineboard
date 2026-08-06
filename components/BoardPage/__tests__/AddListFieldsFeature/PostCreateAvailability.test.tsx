@@ -8,12 +8,6 @@ import {
   saveTextListField,
 } from './testUtils';
 
-vi.mock('@/utils/actions/board', () => ({
-  createListFields: vi.fn(),
-  updateListFields: vi.fn(),
-}));
-vi.mock('@/utils/actions/card');
-vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 beforeEach(() => {

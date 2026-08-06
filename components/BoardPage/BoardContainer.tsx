@@ -9,82 +9,93 @@ import UpdateCardDialog from '../Mutation/Card/UpdateCardDialog';
 import UpdateListDialog from '../Mutation/List/UpdateListDialog';
 import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
-import { graphql } from '@/gql/__generated__';
+import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 import BoardHeader from './BoardHeader';
 import Error from '../global/Error';
 import CardsContainer from './CardsContainer';
 import ListFieldDialog from '../Mutation/Board/ListField/ListFieldDialog';
 import NoCardsDisplay from './NoCardsDisplay';
-
-const SingleBoardQuery = graphql(/* GraphQL */ `
-  query SingleBoard($boardId: UUID!) {
-    # Board
-    boardsCollection(filter: { id: { eq: $boardId } }) {
-      edges {
-        ...Board
-      }
-    }
-    # List Fields
-    list_fieldsCollection(
-      filter: { board_id: { eq: $boardId } }
-      orderBy: [{ position: AscNullsLast }]
-    ) {
-      ...ListFieldsCollection
-    }
-    # Cards
-    cardsCollection(
-      filter: { board_id: { eq: $boardId } }
-      orderBy: [{ position: AscNullsLast }]
-    ) {
-      ...CardsCollection
-    }
-  }
-`);
+import CardDeletionsProvider from './CardDeletionsContext';
+import type { FragmentType } from '@/gql/__generated__';
+import {
+  CardsCollectionFragmentDoc,
+  ListFieldsCollectionFragmentDoc,
+} from '@/gql/__generated__/graphql';
 
 type BoardContainerProps = {
   boardId: string;
   userId?: string;
+  initialListFields?: FragmentType<
+    typeof ListFieldsCollectionFragmentDoc
+  > | null;
+  initialCards?: FragmentType<typeof CardsCollectionFragmentDoc> | null;
+  isReadonly?: boolean;
 };
 
-function BoardContainer({ boardId, userId }: BoardContainerProps) {
+function BoardContainer({
+  boardId,
+  userId,
+  initialListFields,
+  initialCards,
+  isReadonly = false,
+}: BoardContainerProps) {
+  const hasInitialData =
+    initialListFields !== undefined && initialCards !== undefined;
+  const queryConfig = getSingleBoardQueryConfig(boardId);
+
+  // Fetch single board data (skip if there is initial value)
   const { loading, error, data } = useQuery(SingleBoardQuery, {
-    variables: { boardId },
+    variables: queryConfig.variables,
+    skip: hasInitialData,
   });
 
-  if (loading) return <LoadingContainer />;
-  if (error) return <Error />;
+  const listFields = hasInitialData
+    ? initialListFields
+    : data?.list_fieldsCollection;
+  const cards = hasInitialData ? initialCards : data?.cardsCollection;
 
-  if (!data || !data?.boardsCollection?.edges.length) return <NoDataFound />;
+  if (!hasInitialData && loading) return <LoadingContainer />;
+  if (error) return <Error />;
+  if (!hasInitialData && !data?.boardsCollection?.edges.length) {
+    return <NoDataFound />;
+  }
 
   return (
     <BoardContextProvider
       boardId={boardId}
       userId={userId}
-      queryListFields={data.list_fieldsCollection}
+      queryListFields={listFields}
     >
-      <DialogsProvider>
-        {/* Board Header */}
-        <BoardHeader />
+      <CardDeletionsProvider>
+        <DialogsProvider>
+          {/* Board Header */}
+          {!isReadonly && <BoardHeader />}
 
-        {/* Cards container */}
-        {/* Without Cards */}
-        <NoCardsDisplay
-          cardsQuery={data.cardsCollection}
-          listFieldsQuery={data.list_fieldsCollection}
-        />
-        {/* With Cards */}
-        <CardsContainer query={data.cardsCollection} />
+          {/* Cards container */}
+          {/* Without Cards */}
+          <NoCardsDisplay
+            cardsQuery={cards}
+            listFieldsQuery={listFields}
+            isReadonly={isReadonly}
+          />
+          {/* With Cards */}
+          <CardsContainer query={cards} isReadonly={isReadonly} />
 
-        {/* Dialogs */}
-        {/* List Field: Create&Update Feature */}
-        <ListFieldDialog />
-        {/* Add Feature */}
-        <AddCardDialog />
-        <AddListDialog />
-        {/* Update Feature */}
-        <UpdateCardDialog />
-        <UpdateListDialog />
-      </DialogsProvider>
+          {/* Dialogs */}
+          {!isReadonly && (
+            <>
+              {/* List Field: Create&Update Feature */}
+              <ListFieldDialog />
+              {/* Add Feature */}
+              <AddCardDialog />
+              <AddListDialog />
+              {/* Update Feature */}
+              <UpdateCardDialog />
+              <UpdateListDialog />
+            </>
+          )}
+        </DialogsProvider>
+      </CardDeletionsProvider>
     </BoardContextProvider>
   );
 }

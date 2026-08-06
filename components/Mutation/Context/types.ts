@@ -16,6 +16,7 @@ export type UpdateCardFormState = {
 } & CardFormState;
 
 export type UpdateListInput = {
+  cardId: string;
   listId: string;
   listValues: {
     listFieldId: string;

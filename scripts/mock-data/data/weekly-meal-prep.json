@@ -1,0 +1,137 @@
+{
+  "title": "Weekly Meal Prep",
+  "fields": [
+    { "key": "meal", "type": "checkbox", "config": {} },
+    { "key": "dish", "type": "image", "config": { "title": "Dish" } },
+    {
+      "key": "servings",
+      "type": "number",
+      "config": {
+        "title": "Servings",
+        "isHasUnit": false,
+        "unit": "",
+        "unitPosition": "back"
+      }
+    },
+    {
+      "key": "prep",
+      "type": "number",
+      "config": {
+        "title": "Prep time",
+        "isHasUnit": true,
+        "unit": "min",
+        "unitPosition": "back"
+      }
+    },
+    { "key": "diet", "type": "tag", "config": { "color": 6 } },
+    {
+      "key": "ingredients",
+      "type": "text",
+      "config": { "title": "Ingredients or note" }
+    }
+  ],
+  "cards": [
+    {
+      "title": "Breakfast",
+      "color": 3,
+      "items": [
+        {
+          "meal": "Overnight oats",
+          "servings": "3",
+          "prep": "10",
+          "diet": [["vegetarian", 6]],
+          "ingredients": "Oats, milk, chia seeds, banana and berries."
+        },
+        {
+          "meal": "Egg and avocado toast",
+          "servings": "2",
+          "prep": "15",
+          "diet": [["high protein", 1]]
+        },
+        {
+          "meal": "Yogurt fruit bowl",
+          "servings": "2",
+          "prep": "5",
+          "diet": [["quick", 3]]
+        }
+      ]
+    },
+    {
+      "title": "Lunch",
+      "color": 6,
+      "items": [
+        {
+          "meal": "Salmon poke bowl",
+          "dish": ["meal-poke-bowl"],
+          "servings": "3",
+          "prep": "25",
+          "diet": [
+            ["high protein", 1],
+            ["meal prep", 6]
+          ],
+          "ingredients": "Salmon, rice, avocado, edamame and cucumber."
+        },
+        {
+          "meal": "Basil chicken rice",
+          "servings": "3",
+          "prep": "30",
+          "diet": [["freezer friendly", 5]]
+        },
+        {
+          "meal": "Chickpea salad wrap",
+          "servings": "2",
+          "prep": "15",
+          "diet": [["vegetarian", 6]]
+        }
+      ]
+    },
+    {
+      "title": "Dinner",
+      "color": 7,
+      "items": [
+        {
+          "meal": "Tomato mushroom pasta",
+          "servings": "3",
+          "prep": "35",
+          "diet": [["vegetarian", 6]]
+        },
+        {
+          "meal": "Tofu green curry",
+          "servings": "4",
+          "prep": "40",
+          "diet": [["plant based", 6]]
+        },
+        {
+          "meal": "Miso salmon",
+          "servings": "2",
+          "prep": "30",
+          "diet": [["high protein", 1]]
+        }
+      ]
+    },
+    {
+      "title": "Snacks",
+      "color": 2,
+      "items": [
+        {
+          "meal": "Banana oat bites",
+          "servings": "8",
+          "prep": "20",
+          "diet": [["batch", 5]]
+        },
+        {
+          "meal": "Apple and peanut butter",
+          "servings": "2",
+          "prep": "5",
+          "diet": [["quick", 3]]
+        },
+        {
+          "meal": "Mixed nuts portions",
+          "servings": "5",
+          "prep": "5",
+          "diet": [["grab and go", 7]]
+        }
+      ]
+    }
+  ]
+}

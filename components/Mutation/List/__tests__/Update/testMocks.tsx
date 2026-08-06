@@ -1,5 +1,6 @@
 import {
   mockCheckboxId,
+  mockCardId,
   mockDateId,
   mockImageId,
   mockImageUrl,
@@ -18,6 +19,7 @@ import {
 export const mockListId = 'listId1';
 
 export const initialUpdateListInput = {
+  cardId: mockCardId,
   listId: mockListId,
   listValues: [
     {
@@ -32,6 +34,7 @@ export const initialUpdateListInput = {
 } satisfies UpdateListInput;
 
 export const secondUpdateListInput = {
+  cardId: mockCardId,
   listId: 'listId2',
   listValues: [
     {
@@ -42,6 +45,7 @@ export const secondUpdateListInput = {
 } satisfies UpdateListInput;
 
 export const emptyUpdateListInput = {
+  cardId: mockCardId,
   listId: mockListId,
   listValues: [
     {
@@ -56,6 +60,7 @@ export const emptyUpdateListInput = {
 } satisfies UpdateListInput;
 
 export const missingListIdInput = {
+  cardId: mockCardId,
   listId: '',
   listValues: [
     {

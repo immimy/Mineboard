@@ -1,5 +1,8 @@
 'use client';
 
+// Use for synchronous, client-only confirmations. For actions that send a
+// network request, use ConfirmActionDialog so form status protects submission.
+
 import {
   Button,
   Description,

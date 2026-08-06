@@ -1,12 +1,6 @@
 import { page, userEvent } from 'vitest/browser';
 import { getAllElements, renderBoard } from './testUtils';
 
-vi.mock('@/utils/actions/board', () => ({
-  createListFields: vi.fn(),
-  updateListFields: vi.fn(),
-}));
-vi.mock('@/utils/actions/card');
-vi.mock('@/utils/actions/list');
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 describe('Add list fields dialog opening', () => {

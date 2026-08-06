@@ -1,16 +1,17 @@
-import { AllBoardsDocument } from '@/gql/__generated__/graphql';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 import { MockLink } from '@apollo/client/testing';
 import { GraphQLError } from 'graphql/error';
 
 const USER_ID = 'userId1';
 const BOARD_ID_1 = 'boardId1';
 const BOARD_ID_2 = 'boardId2';
+const queryConfig = getAllBoardsQueryConfig(USER_ID);
 
 export const successMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocument,
-    variables: { userId: USER_ID },
+    query: AllBoardsQuery,
+    variables: queryConfig.variables,
   },
   result: {
     data: {
@@ -43,8 +44,8 @@ export const successMock: MockLink.MockedResponse = {
 export const noDataMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocument,
-    variables: { userId: USER_ID },
+    query: AllBoardsQuery,
+    variables: queryConfig.variables,
   },
   result: {
     data: {
@@ -60,8 +61,8 @@ export const noDataMock: MockLink.MockedResponse = {
 export const networkErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocument,
-    variables: { userId: USER_ID },
+    query: AllBoardsQuery,
+    variables: queryConfig.variables,
   },
   error: new Error('Network failure'),
 };
@@ -69,8 +70,8 @@ export const networkErrorMock: MockLink.MockedResponse = {
 export const graphqlErrorMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: AllBoardsDocument,
-    variables: { userId: USER_ID },
+    query: AllBoardsQuery,
+    variables: queryConfig.variables,
   },
   result: {
     errors: [new GraphQLError('GraphQL failure')],

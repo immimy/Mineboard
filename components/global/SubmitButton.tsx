@@ -10,6 +10,7 @@ type SubmitButtonProps = {
   className?: string;
   disabled?: boolean;
   formId?: string;
+  ariaLabel?: string;
   text?: string;
 };
 
@@ -18,6 +19,7 @@ function SubmitButton({
   className,
   disabled,
   formId,
+  ariaLabel,
   text,
 }: SubmitButtonProps & PropsWithChildren) {
   const { pending } = useFormStatus();
@@ -26,6 +28,7 @@ function SubmitButton({
       form={formId}
       type='submit'
       disabled={disabled || pending}
+      aria-label={ariaLabel}
       className={clsx(
         'capitalize tracking-tight font-semibold hover:cursor-pointer w-full',
         className,

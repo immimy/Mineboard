@@ -28,7 +28,7 @@ async function DevUserButtonComponent() {
         >
           {/* OWNER */}
           <FormContainer action={signInWithEmail}>
-            <input type='hidden' name='email' value='seed@example.com' />
+            <input type='hidden' name='email' value='demo@example.com' />
             <SubmitButton
               text='Owner'
               className='px-6 py-1.5 hover:bg-background hover:text-foreground'

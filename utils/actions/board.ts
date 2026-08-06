@@ -3,6 +3,7 @@
 import {
   createBoardSchema,
   createListFieldsSchema,
+  deleteBoardSchema,
   updateListFieldsSchema,
   updateBoardTitleSchema,
   validateWithZodSchema,
@@ -15,16 +16,18 @@ import {
   CachedListFieldsQuery,
   customMutation,
   customQuery,
+  DeleteBoardMutation,
   UpdateBoardTitleMutation,
 } from './graphql';
 import { renderError } from './helper';
 import { createClient } from '../database/serverClient';
 import { ListFieldDraft } from '@/types/jsonbSchema';
+import { revalidateDemoHomepage } from './helper';
 
 export const createBoard = async (formData: FormData) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Input validation
@@ -48,6 +51,7 @@ export const createBoard = async (formData: FormData) => {
       throw new Error('Failed to fetch new board, please refresh');
     }
 
+    revalidateDemoHomepage(user);
     return { data: boardDocument, error: null };
   } catch (error) {
     return renderError(error);
@@ -57,7 +61,7 @@ export const createBoard = async (formData: FormData) => {
 export const updateBoardTitle = async (formData: FormData) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Input validation
@@ -78,7 +82,30 @@ export const updateBoardTitle = async (formData: FormData) => {
     const updatedBoard = data?.updateboardsCollection.records[0];
     if (!updatedBoard) throw new Error('Failed to update board title');
 
+    revalidateDemoHomepage(user);
     return { data: updatedBoard, error: null };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const deleteBoard = async (boardId: string) => {
+  const supabase = await createClient();
+  const user = await authenticateUser(supabase);
+
+  try {
+    const result = validateWithZodSchema(deleteBoardSchema, { boardId });
+    const data = await customMutation({
+      mutation: DeleteBoardMutation,
+      variables: { boardId: result.boardId, userId: user.id },
+    });
+
+    if (data?.deleteFromboardsCollection.affectedCount !== 1) {
+      throw new Error('Failed to delete board');
+    }
+
+    revalidateDemoHomepage(user);
+    return { error: null };
   } catch (error) {
     return renderError(error);
   }
@@ -90,7 +117,7 @@ export const createListFields = async (
 ) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Input validation
@@ -118,6 +145,7 @@ export const createListFields = async (
       throw new Error('Failed to fetch list fields, please refresh');
     }
 
+    revalidateDemoHomepage(user);
     return { data: listFieldsDocument, error: null };
   } catch (error) {
     return renderError(error);
@@ -130,7 +158,7 @@ export const updateListFields = async (
 ) => {
   const supabase = await createClient();
   // Authenticated user only
-  await authenticateUser(supabase);
+  const user = await authenticateUser(supabase);
 
   try {
     // Get current database fields to derive removals on the server boundary.
@@ -184,6 +212,7 @@ export const updateListFields = async (
       throw new Error('Failed to fetch board lists, please refresh');
     }
 
+    revalidateDemoHomepage(user);
     return {
       data: {
         listFields: listFieldsDocument,

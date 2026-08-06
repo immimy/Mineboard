@@ -1,4 +1,4 @@
-import { BoardTitleDocument } from '@/gql/__generated__/graphql';
+import { BoardTitleQuery, getBoardTitleQueryConfig } from '@/gql/queries';
 import { gql } from '@apollo/client';
 
 export const mockBoardId = 'boardId1';
@@ -13,8 +13,8 @@ export const boardTitleFragment = gql`
 `;
 
 export const boardTitleQueryOptions = {
-  query: BoardTitleDocument,
-  variables: { boardId: mockBoardId },
+  query: BoardTitleQuery,
+  variables: getBoardTitleQueryConfig(mockBoardId).variables,
 };
 
 export const BOARD_TITLE_QUERY_DATA = {

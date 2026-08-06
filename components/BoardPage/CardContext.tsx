@@ -5,7 +5,11 @@ import { createContext, useContext } from 'react';
 
 /** CONTEXT */
 
-type ContextType = { isPreview: boolean; title: string; color: ColorPalette };
+type ContextType = {
+  cardId: string;
+  title: string;
+  color: ColorPalette;
+};
 
 const CardContext = createContext<undefined | ContextType>(undefined);
 
@@ -18,19 +22,19 @@ export const useCardContext = () => {
 /** PROPS */
 
 type CardContextProps = {
-  isPreview: boolean;
+  cardId: string;
   title: string;
   color: ColorPalette;
 } & React.PropsWithChildren;
 
 function CardContextProvider({
   children,
-  isPreview,
+  cardId,
   title,
   color,
 }: CardContextProps) {
   return (
-    <CardContext.Provider value={{ isPreview, title, color }}>
+    <CardContext.Provider value={{ cardId, title, color }}>
       {children}
     </CardContext.Provider>
   );

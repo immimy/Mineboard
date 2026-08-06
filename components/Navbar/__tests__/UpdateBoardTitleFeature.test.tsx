@@ -4,9 +4,11 @@ import AppContextProvider, {
 import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitleContext';
 import DashboardSidebar from '@/components/Sidebar/DashboardSidebar';
 import {
-  AllBoardsDocument,
-  BoardTitleDocument,
-} from '@/gql/__generated__/graphql';
+  AllBoardsQuery,
+  BoardTitleQuery,
+  getAllBoardsQueryConfig,
+  getBoardTitleQueryConfig,
+} from '@/gql/queries';
 import * as boardActions from '@/utils/actions/board';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { useParams, usePathname } from 'next/navigation';
@@ -21,11 +23,13 @@ const mockUserId = 'userId1';
 const mockBoardId = 'boardId1';
 const oldTitle = 'Website redesign';
 const newTitle = 'Career roadmap';
+const boardTitleQueryConfig = getBoardTitleQueryConfig(mockBoardId);
+const allBoardsQueryConfig = getAllBoardsQueryConfig(mockUserId);
 
 const boardTitleMock = {
   request: {
-    query: BoardTitleDocument,
-    variables: { boardId: mockBoardId },
+    query: BoardTitleQuery,
+    variables: boardTitleQueryConfig.variables,
   },
   result: {
     data: {
@@ -49,8 +53,8 @@ const boardTitleMock = {
 
 const allBoardsMock = {
   request: {
-    query: AllBoardsDocument,
-    variables: { userId: mockUserId },
+    query: AllBoardsQuery,
+    variables: allBoardsQueryConfig.variables,
   },
   result: {
     data: {

@@ -17,6 +17,7 @@ import {
 
 type UpdateListDialogState = {
   isOpen: boolean;
+  cardId?: string;
   listId?: string;
   listFields?: ListFieldsCollectionFragment['edges'];
   form: ListForm;
@@ -56,12 +57,14 @@ export function useUpdateListDialogActions() {
 export function UpdateListDialogProvider({ children }: PropsWithChildren) {
   const { dbListFields } = useBoardContext();
   const [isOpen, setIsOpen] = useState(false);
+  const [cardId, setCardId] = useState<string>();
   const [listId, setListId] = useState<string>();
   const [form, setForm] = useState<ListForm>({});
 
   const openUpdateList = useCallback(
     (input: UpdateListInput) => {
       setIsOpen(true);
+      setCardId(input.cardId);
       setListId(input.listId);
       setForm(initFormState(dbListFields, input.listValues));
     },
@@ -70,6 +73,7 @@ export function UpdateListDialogProvider({ children }: PropsWithChildren) {
 
   const closeUpdateList = useCallback(() => {
     setIsOpen(false);
+    setCardId(undefined);
     setListId(undefined);
     setForm({});
   }, []);
@@ -79,8 +83,8 @@ export function UpdateListDialogProvider({ children }: PropsWithChildren) {
   }, []);
 
   const state = useMemo(
-    () => ({ isOpen, listId, listFields: dbListFields, form }),
-    [isOpen, listId, dbListFields, form],
+    () => ({ isOpen, cardId, listId, listFields: dbListFields, form }),
+    [isOpen, cardId, listId, dbListFields, form],
   );
   const actions = useMemo(
     () => ({ openUpdateList, closeUpdateList, updateField }),

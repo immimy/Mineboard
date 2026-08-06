@@ -7,7 +7,9 @@ import {
 } from './singleBoardQuery.mock';
 import { formatDate } from '@/utils/formatter/helper';
 import { page } from 'vitest/browser';
-import { renderBoard } from './testUtils';
+import { renderBoard, renderReadOnlyBoard } from './testUtils';
+import type { SingleBoardQuery } from '@/gql/__generated__/graphql';
+import { toast } from 'react-toastify';
 
 vi.mock('@/components/Mutation/List/AddListDialog', () => ({
   default: () => <div data-testid='mock-add-list-dialog' />,
@@ -42,6 +44,8 @@ const getAllElements = () => {
     list: lists.nth(0),
   };
 };
+
+const successData = (successMock.result as { data: SingleBoardQuery }).data;
 
 // ---------------------------------------------------------------------------
 // Single Board Page
@@ -126,5 +130,28 @@ describe('Singe board page is rendered correctly', () => {
     ).toBeVisible();
     expect(number.getByRole('paragraph').nth(0)).toHaveTextContent(/8/i);
     expect(number.getByRole('paragraph').nth(1)).toHaveTextContent('hrs');
+  });
+
+  it('renders initial demo data as read-only', async () => {
+    await renderReadOnlyBoard(successData);
+
+    await expect
+      .element(page.getByRole('article').filter({ hasText: /test card/i }))
+      .toBeVisible();
+
+    // BoardHeader must not display
+    await expect
+      .element(page.getByTestId('mock-action-menu-container'))
+      .not.toBeInTheDocument();
+    // Mutation dialog must not display
+    await expect
+      .element(page.getByTestId('mock-update-card-dialog'))
+      .not.toBeInTheDocument();
+
+    // No mutation actions are allowed
+    await page.getByRole('button', { name: /update test card/i }).click();
+    expect(toast.info).toHaveBeenCalledWith(
+      'This is a read-only demo. Sign in to test Mineboard yourself.',
+    );
   });
 });

@@ -100,6 +100,17 @@ export const MutatedListFragment = graphql(/* GraphQL */ `
   }
 `);
 
+export const DeleteListMutation = graphql(/* GraphQL */ `
+  mutation DeleteList($cardId: UUID!, $listId: UUID!) {
+    deleteFromlistsCollection(
+      filter: { card_id: { eq: $cardId }, id: { eq: $listId } }
+      atMost: 1
+    ) {
+      affectedCount
+    }
+  }
+`);
+
 /** Card */
 
 export const CachedCardQuery = graphql(/* GraphQL */ `
@@ -133,6 +144,21 @@ export const UpdateCardMutation = graphql(/* GraphQL */ `
   }
 `);
 
+export const DeleteCardsMutation = graphql(/* GraphQL */ `
+  mutation DeleteCards(
+    $boardId: UUID!
+    $cardIds: [UUID!]!
+    $expectedCount: Int!
+  ) {
+    deleteFromcardsCollection(
+      filter: { board_id: { eq: $boardId }, id: { in: $cardIds } }
+      atMost: $expectedCount
+    ) {
+      affectedCount
+    }
+  }
+`);
+
 /** Board */
 
 export const CachedBoardQuery = graphql(/* GraphQL */ `
@@ -160,6 +186,17 @@ export const UpdateBoardTitleMutation = graphql(/* GraphQL */ `
         id
         title
       }
+    }
+  }
+`);
+
+export const DeleteBoardMutation = graphql(/* GraphQL */ `
+  mutation DeleteBoard($boardId: UUID!, $userId: UUID!) {
+    deleteFromboardsCollection(
+      filter: { id: { eq: $boardId }, user_id: { eq: $userId } }
+      atMost: 1
+    ) {
+      affectedCount
     }
   }
 `);

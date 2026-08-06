@@ -1,33 +1,18 @@
 'use client';
 
-import { graphql } from '@/gql/__generated__';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 import Board from './Board';
 import { useQuery } from '@apollo/client/react';
 import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
 import Error from '../global/Error';
 
-export const AllBoardsQuery = graphql(/* GraphQL */ `
-  query AllBoards($userId: UUID!) {
-    boardsCollection(
-      filter: { user_id: { eq: $userId } }
-      orderBy: { created_at: DescNullsLast }
-    ) {
-      edges {
-        node {
-          id
-        }
-        ...Board
-      }
-    }
-  }
-`);
-
 type BoardsContainerProps = { userId: string };
 
 function BoardsContainer({ userId }: BoardsContainerProps) {
+  const queryConfig = getAllBoardsQueryConfig(userId);
   const { loading, error, data } = useQuery(AllBoardsQuery, {
-    variables: { userId },
+    variables: queryConfig.variables,
   });
 
   if (loading) return <LoadingContainer />;

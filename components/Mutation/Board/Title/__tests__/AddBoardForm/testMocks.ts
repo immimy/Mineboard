@@ -1,8 +1,8 @@
 import {
-  AllBoardsDocument,
   AllBoardsQuery as AllBoardsQueryType,
   CachedBoardQuery,
 } from '@/gql/__generated__/graphql';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 
 export const mockUserId = 'userId1';
 export const mockExistingBoardId = 'boardId1';
@@ -35,10 +35,11 @@ export const createdBoardEdge = makeBoardEdge(
   'Career roadmap',
 );
 
-export const allBoardsQueryVariables = { userId: mockUserId };
+export const allBoardsQueryVariables =
+  getAllBoardsQueryConfig(mockUserId).variables;
 
 export const allBoardsQueryOptions = {
-  query: AllBoardsDocument,
+  query: AllBoardsQuery,
   variables: allBoardsQueryVariables,
 };
 

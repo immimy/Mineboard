@@ -1,10 +1,10 @@
 'use client';
 
 import {
-  AllBoardsDocument,
-  AllBoardsQuery,
+  AllBoardsQuery as AllBoardsQueryData,
   AllBoardsQueryVariables,
 } from '@/gql/__generated__/graphql';
+import { AllBoardsQuery, getAllBoardsQueryConfig } from '@/gql/queries';
 import { PlusIcon } from '@/icons/icons';
 import { createBoard } from '@/utils/actions/board';
 import { useApolloClient } from '@apollo/client/react';
@@ -102,10 +102,11 @@ function AddBoardTitle({
         return toast.error('Failed to fetch new board, please refresh');
 
       // Update `AllBoardsQuery` by prepending new board to the collection
-      client.cache.updateQuery<AllBoardsQuery, AllBoardsQueryVariables>(
+      const queryConfig = getAllBoardsQueryConfig(userId);
+      client.cache.updateQuery<AllBoardsQueryData, AllBoardsQueryVariables>(
         {
-          query: AllBoardsDocument,
-          variables: { userId },
+          query: AllBoardsQuery,
+          variables: queryConfig.variables,
         },
         (queryData) => {
           if (!queryData?.boardsCollection) return queryData;

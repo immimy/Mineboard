@@ -27,6 +27,7 @@ type ListDialogProps = {
   onImageUpload?: (publicId: string) => void;
   onClose: () => void;
   action: ActionFunction;
+  deleteAction?: ActionFunction;
 };
 
 function ListDialog({
@@ -41,6 +42,7 @@ function ListDialog({
   onImageUpload,
   onClose,
   action,
+  deleteAction,
 }: ListDialogProps) {
   return (
     <Dialog open={open} onClose={onClose} className='relative z-50'>
@@ -94,6 +96,15 @@ function ListDialog({
               />
             </div>
           </FormContainer>
+
+          {/* LIST DELETION */}
+          {deleteAction && (
+            <FormContainer action={deleteAction}>
+              <SubmitButton className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'>
+                Delete List
+              </SubmitButton>
+            </FormContainer>
+          )}
         </DialogPanel>
       </div>
     </Dialog>

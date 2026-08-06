@@ -11,8 +11,8 @@ import {
   ListValuesFragmentDoc,
   MutatedListFragment,
   MutatedListFragmentDoc,
-  SingleBoardDocument,
 } from '@/gql/__generated__/graphql';
+import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 import {
   mockBoardId,
   mockCardId,
@@ -138,8 +138,8 @@ const updatedBoardLists: CachedBoardListsQuery = {
 export const boardWithThreeListFieldsMock: MockLink.MockedResponse = {
   delay: 10,
   request: {
-    query: SingleBoardDocument,
-    variables: { boardId: mockBoardId },
+    query: SingleBoardQuery,
+    variables: getSingleBoardQueryConfig(mockBoardId).variables,
   },
   result: {
     data: {
