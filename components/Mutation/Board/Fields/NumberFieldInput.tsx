@@ -4,7 +4,7 @@ import { RadioInput, SwitchInput, TextInput } from '@/components/form';
 import { NumberField } from '@/types/jsonbSchema';
 
 type NumberFieldInputProps = {
-  field: NumberField;
+  field: NumberField & { position: number };
   onChange: (config: NumberField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -28,7 +28,7 @@ function NumberFieldInput({
 
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     >

@@ -4,9 +4,6 @@ import {
   CachedListFieldsQuery,
   CachedListQuery,
   Field_Type,
-  ListFragment,
-  ListFragmentDoc,
-  ListsCollectionFragment,
   ListValuesFragment,
   ListValuesFragmentDoc,
   MutatedListFragment,
@@ -94,26 +91,32 @@ const updatedTextValueNode = makeFragmentData(
   ListValuesFragmentDoc,
 );
 
-const updatedExistingListEdge = makeFragmentData(
-  {
-    __typename: 'listsEdge',
-    node: {
-      __typename: 'lists',
-      id: existingListId,
-      position: 0,
-      list_valuesCollection: {
-        __typename: 'list_valuesConnection',
-        edges: [
-          {
-            __typename: 'list_valuesEdge',
-            node: updatedTextValueNode,
+type CachedBoardListEdge = NonNullable<
+  NonNullable<
+    CachedBoardListsQuery['cardsCollection']
+  >['edges'][number]['node']['listsCollection']
+>['edges'][number];
+
+const updatedExistingListEdge = {
+  __typename: 'listsEdge',
+  node: {
+    __typename: 'lists',
+    id: existingListId,
+    position: 0,
+    list_valuesCollection: {
+      __typename: 'list_valuesConnection',
+      edges: [
+        {
+          __typename: 'list_valuesEdge',
+          node: {
+            __typename: 'list_values',
+            ...updatedTextValueNode,
           },
-        ],
-      },
+        },
+      ],
     },
-  } as ListFragment,
-  ListFragmentDoc,
-) as ListsCollectionFragment['edges'][number];
+  },
+} satisfies CachedBoardListEdge;
 
 const updatedBoardLists: CachedBoardListsQuery = {
   __typename: 'Query',

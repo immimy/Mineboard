@@ -21,7 +21,25 @@ import {
 } from '@/gql/__generated__/graphql';
 import { useMemo, useState } from 'react';
 import ConfirmAlertDialog from '@/components/global/ConfirmAlertDialog';
+import {
+  DragDropProvider,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+} from '@dnd-kit/react';
+import { isSortable } from '@dnd-kit/react/sortable';
 
+// Drag sensor configuration
+const dragSensors = [
+  PointerSensor.configure({
+    activatorElements(source) {
+      return [source.handle];
+    },
+  }),
+  KeyboardSensor,
+];
+
+// Confirmation alert
 type PendingConfirmation = {
   message: string;
   onConfirm: () => void;
@@ -37,6 +55,7 @@ function FieldsForm() {
     addField,
     updateField,
     updateFieldType,
+    reorderField,
     removeField,
     resetFields,
   } = useListFieldFormContext();
@@ -105,6 +124,16 @@ function FieldsForm() {
         },
       });
     };
+  };
+
+  // Re-order field on drag end
+  const handleFieldDragEnd = ({ canceled, operation }: DragEndEvent) => {
+    const source = operation.source;
+    if (canceled || !isSortable(source)) return;
+    if (source.type !== 'list-field' || source.initialIndex === source.index)
+      return;
+
+    reorderField(String(source.id), source.index);
   };
 
   // Form submission: create or update list fields
@@ -198,17 +227,22 @@ function FieldsForm() {
           </div>
         ) : (
           <FormContainer action={handleSave}>
-            <div className='grid gap-1.5'>
-              {fields.map((field) => (
-                <FieldInput
-                  key={field.id}
-                  field={field}
-                  onConfigChange={updateField}
-                  onTypeChange={handleTypeChange(field.id, field.type)}
-                  onRemove={() => handleRemoveField(field.id)}
-                />
-              ))}
-            </div>
+            <DragDropProvider
+              sensors={dragSensors}
+              onDragEnd={handleFieldDragEnd}
+            >
+              <div className='grid gap-1.5'>
+                {fields.map((field) => (
+                  <FieldInput
+                    key={field.id}
+                    field={field}
+                    onConfigChange={updateField}
+                    onTypeChange={handleTypeChange(field.id, field.type)}
+                    onRemove={() => handleRemoveField(field.id)}
+                  />
+                ))}
+              </div>
+            </DragDropProvider>
             <SubmitButton
               text='Save'
               className='mt-4 mb-6 bg-accent rounded shadow-sm py-1 min-h-8 text-foreground dark:text-background/80'

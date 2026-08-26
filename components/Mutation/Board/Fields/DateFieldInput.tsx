@@ -4,7 +4,7 @@ import { DateField } from '@/types/jsonbSchema';
 import { SwitchInput, TextInput } from '@/components/form';
 
 type DateFieldInputProps = {
-  field: DateField;
+  field: DateField & { position: number };
   onChange: (config: DateField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -20,7 +20,7 @@ function DateFieldInput({
 
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     >

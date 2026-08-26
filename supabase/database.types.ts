@@ -230,6 +230,14 @@ export type Database = {
         }[]
       }
       is_safe_jsonb: { Args: { data: Json }; Returns: boolean }
+      save_board_layout: {
+        Args: {
+          p_board_id: string
+          p_card_ids: string[]
+          p_list_placements: Json
+        }
+        Returns: string
+      }
       update_list: {
         Args: {
           p_delete_values?: string[]

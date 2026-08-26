@@ -130,6 +130,10 @@ Path alias: `@/*` maps to the project root.
 - Existing coverage focuses on dashboard/board states, add board/card/list/list-field flows, auth callback behavior, route protection, sidebar navigation, navbar auth/theme controls, and form edge cases.
 - Prefer behavior/result assertions for create flows over direct Apollo cache inspection unless the cache behavior is the feature being tested.
 - When adding or updating tests, inspect only nearby tests and run the smallest relevant test command; do not run the full test suite unless needed.
+- For split suites, keep query/action fixtures and reusable mock data or implementations in `testMocks`, and keep shared rendering, locators, repeated user actions, and assertions in `testUtils`.
+- Keep each required `vi.mock()` declaration directly in the test entry file that imports the code under test; do not place that registration only in an imported `testMocks` module. Vitest transforms and hoists mocks in the file where it finds `vi.mock()`, so a helper module's registration does not transform the entry file's imports and can leave the production export unmocked or produce a different spy instance. Keep the corresponding `vi.mocked()` reference in that entry file when assertions must observe the same spy used by the production import. See Vitest's [module-mocking transformation](https://vitest.dev/guide/mocking/modules.html#how-it-works).
+- Name split test files after the behavior they verify so their purpose is clear without opening the file.
+- Keep each test file near 300 ms of accumulated test execution where practical. If grouped scenarios exceed that target, split them by behavior to enable file-level parallelism. A single real browser interaction may exceed 300 ms on its own; keep that scenario isolated instead of weakening it or replacing the real integration with a mock solely to meet the timing target.
 
 ## Gotchas
 

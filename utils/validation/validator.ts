@@ -325,6 +325,12 @@ export const deleteBoardSchema = z.object({
   boardId: z.uuid(),
 });
 
+export const saveBoardLayoutSchema = z.object({
+  boardId: z.uuid(),
+  cardIds: z.array(z.uuid()),
+  listIdsByCard: z.record(z.uuid(), z.array(z.uuid())),
+});
+
 // ─── Image cleanup schema ────────────────────────────────────────────
 
 const MAX_IMAGE_CLEANUP_PUBLIC_IDS = 50;

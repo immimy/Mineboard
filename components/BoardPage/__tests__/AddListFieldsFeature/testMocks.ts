@@ -4,7 +4,6 @@ import {
   CachedListFieldsQuery,
   CachedListQuery,
   Field_Type,
-  ListsCollectionFragmentDoc,
   MutatedListFragment,
   MutatedListFragmentDoc,
 } from '@/gql/__generated__/graphql';
@@ -108,13 +107,7 @@ const createdCardEdge = {
     color: ColorPalette.third,
     listsCollection: {
       __typename: 'listsConnection',
-      ...makeFragmentData(
-        {
-          __typename: 'listsConnection',
-          edges: [],
-        },
-        ListsCollectionFragmentDoc,
-      ),
+      edges: [],
     },
   },
 } satisfies NonNullable<CachedCardQuery['cardsCollection']>['edges'][number];

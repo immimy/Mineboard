@@ -18,6 +18,7 @@ type ContextType = {
   addField: (type: Field_Type) => void;
   updateField: (field: ListFieldForm) => void;
   updateFieldType: (fieldId: string, type: Field_Type) => void;
+  reorderField: (fieldId: string, nextIndex: number) => void;
   removeField: (fieldId: string) => void;
   resetFields: () => void;
 };
@@ -73,6 +74,24 @@ function ListFieldFormProvider({
     );
   }, []);
 
+  const reorderField = useCallback((fieldId: string, nextIndex: number) => {
+    setFields((currentFields) => {
+      const currentIndex = currentFields.findIndex(
+        (field) => field.id === fieldId,
+      );
+      if (currentIndex < 0 || currentIndex === nextIndex) return currentFields;
+
+      const reorderedFields = [...currentFields];
+      const [field] = reorderedFields.splice(currentIndex, 1);
+      reorderedFields.splice(nextIndex, 0, field);
+
+      return reorderedFields.map((nextField, position) => ({
+        ...nextField,
+        position,
+      }));
+    });
+  }, []);
+
   const removeField = useCallback((fieldId: string) => {
     setFields((currentFields) =>
       currentFields
@@ -92,6 +111,7 @@ function ListFieldFormProvider({
       addField,
       updateField,
       updateFieldType,
+      reorderField,
       removeField,
       resetFields,
     }),
@@ -100,6 +120,7 @@ function ListFieldFormProvider({
       fields,
       isDirty,
       removeField,
+      reorderField,
       resetFields,
       updateField,
       updateFieldType,

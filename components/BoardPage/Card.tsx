@@ -3,14 +3,19 @@
 import CardContextProvider from './CardContext';
 import { ColorPalette } from '@/types/jsonbSchema';
 import AddListOpenButton from '@/components/Mutation/List/AddListOpenButton';
-import { FragmentType, graphql, useFragment } from '@/gql/__generated__';
+import {
+  FragmentType,
+  graphql,
+  useFragment as readFragment,
+} from '@/gql/__generated__';
 import ListsContainer from './ListsContainer';
-import { CheckmarkIcon, GripVIcon, PencilISquareIcon } from '@/icons/icons';
+import { GripVIcon, PencilISquareIcon } from '@/icons/icons';
 import { toast } from 'react-toastify';
 import IconButton from '../Mutation/IconButton';
 import { useUpdateCardDialogActions } from '../Mutation/Context/UpdateCardDialogContext';
-import { useCardDeletionsContext } from './CardDeletionsContext';
 import clsx from 'clsx';
+import type { ListQuery } from '@/utils/dragdrop/types';
+import { useCardSortContext } from './SortableCard';
 
 const CardFragment = graphql(/* GraphQL */ `
   fragment Card on cardsEdge {
@@ -20,7 +25,12 @@ const CardFragment = graphql(/* GraphQL */ `
       position
       color
       listsCollection(orderBy: [{ position: AscNullsLast }]) {
-        ...ListsCollection
+        edges {
+          node {
+            id
+          }
+          ...List
+        }
       }
     }
   }
@@ -28,6 +38,7 @@ const CardFragment = graphql(/* GraphQL */ `
 
 type CardProps = {
   query: FragmentType<typeof CardFragment>;
+  listQueries: ListQuery[];
   isPreview?: boolean;
   isReadonly?: boolean;
 };
@@ -39,113 +50,78 @@ function getDynamicCSS(color: number) {
   };
 }
 
-function Card({ query, isPreview = false, isReadonly = false }: CardProps) {
+function Card({
+  query,
+  listQueries,
+  isPreview = false,
+  isReadonly = false,
+}: CardProps) {
   const { openUpdateCard } = useUpdateCardDialogActions();
+  const { dragHandleRef, isSortEnabled } = useCardSortContext();
 
-  const card = useFragment(CardFragment, query).node;
-  const { id: cardId, title, position } = card;
+  const card = readFragment(CardFragment, query).node;
+  const { id: cardId, title } = card;
   const color = card.color as ColorPalette;
   const dynamicCSS = getDynamicCSS(color);
 
   return (
-    <SelectedAsDeletion cardId={cardId}>
-      <article
-        onClickCapture={(e) => {
-          if (!isPreview && !isReadonly) return;
+    <article
+      onClickCapture={(e) => {
+        if (!isPreview && !isReadonly) return;
 
-          if (isReadonly)
-            toast.info(
-              'This is a read-only demo. Sign in to test Mineboard yourself.',
-            );
+        if (isReadonly)
+          toast.info(
+            'This is a read-only demo. Sign in to test Mineboard yourself.',
+          );
 
-          e.stopPropagation();
-        }}
-        className={clsx(
-          `p-4 shadow min-h-30 rounded-xl border-t-4 ${dynamicCSS.articleCSS} text-foreground`,
-        )}
-        style={{
-          order: position,
-        }}
-      >
-        {/* HEADER */}
-        <header className='mb-3 flex items-center gap-1'>
-          {/* BUTTON: Grip to drag card */}
-          <IconButton
-            Icon={GripVIcon}
-            label={`Drag ${title}`}
-            title=''
-            onClick={() => toast.info('Grip card action')}
-            className='shrink-0 hover:cursor-grab active:cursor-grabbing'
+        e.stopPropagation();
+      }}
+      className={clsx(
+        `p-4 shadow min-h-30 rounded-xl border-t-4 ${dynamicCSS.articleCSS} text-foreground`,
+      )}
+    >
+      {/* HEADER */}
+      <header className='mb-3 flex items-center gap-1'>
+        {/* BUTTON: Grip to drag card */}
+        <IconButton
+          ref={dragHandleRef}
+          Icon={GripVIcon}
+          label={`Drag ${title}`}
+          title=''
+          onClick={undefined}
+          size='size-11'
+          className='shrink-0 touch-none hover:cursor-grab active:cursor-grabbing'
+        />
+
+        {/* Card Title */}
+        <div className='min-w-0 flex-1 flex items-center gap-x-2 py-2'>
+          <span
+            className={`size-2.5 shrink-0 rounded-full ${dynamicCSS.headerCSS}`}
           />
+          <h6 className='truncate font-bold'>{title}</h6>
+        </div>
 
-          {/* Card Title */}
-          <div className='min-w-0 flex-1 flex items-center gap-x-2 py-2'>
-            <span
-              className={`size-2.5 shrink-0 rounded-full ${dynamicCSS.headerCSS}`}
-            />
-            <h6 className='truncate font-bold'>{title}</h6>
-          </div>
+        {/* BUTTON: open UpdateCardDialog */}
+        <div className='shrink-0 -mr-2 -mt-6 flex items-center'>
+          <IconButton
+            Icon={PencilISquareIcon}
+            label={`Update ${title}`}
+            onClick={() => openUpdateCard({ cardId, title, color })}
+          />
+        </div>
+      </header>
 
-          {/* BUTTON: open UpdateCardDialog */}
-          <div className='shrink-0 -mr-2 -mt-6 flex items-center'>
-            <IconButton
-              Icon={PencilISquareIcon}
-              label={`Update ${title}`}
-              onClick={() => openUpdateCard({ cardId, title, color })}
-            />
-          </div>
-        </header>
+      {/* LISTS */}
+      <CardContextProvider cardId={cardId} title={title} color={color}>
+        <ListsContainer
+          listQueries={listQueries}
+          isSortEnabled={isSortEnabled}
+        />
+      </CardContextProvider>
 
-        {/* LISTS */}
-        <CardContextProvider cardId={cardId} title={title} color={color}>
-          <ListsContainer query={card.listsCollection} />
-        </CardContextProvider>
-
-        {/* BUTTON: open AddListDialog */}
-        <AddListOpenButton cardId={cardId} />
-      </article>
-    </SelectedAsDeletion>
+      {/* BUTTON: open AddListDialog */}
+      <AddListOpenButton cardId={cardId} />
+    </article>
   );
 }
 export default Card;
-
-/**
- * Multiple card deletions wrapper
- */
-
-type SelectedAsDeletionProps = { cardId: string } & React.PropsWithChildren;
-
-function SelectedAsDeletion({ children, cardId }: SelectedAsDeletionProps) {
-  const { isDeleteMode, deletedCards, updateDeletedCards } =
-    useCardDeletionsContext();
-  const isSelected = deletedCards.has(cardId);
-
-  return (
-    <div
-      onClickCapture={(e) => {
-        if (isDeleteMode) {
-          updateDeletedCards(cardId);
-          e.stopPropagation();
-          return;
-        }
-      }}
-      className={clsx(
-        isDeleteMode &&
-          'relative before:absolute before:inset-0 before:bg-muted/55 before:z-1 before:border-t-4 before:border-muted-foreground/30 before:rounded-xl',
-      )}
-    >
-      {/* CHECKED ICON: Is selected to the deletion? */}
-      {isDeleteMode && (
-        <span className='absolute top-3 right-3 grid place-items-center z-10 rounded-full p-2 bg-input/70 border border-border drop-shadow-sm dark:drop-shadow-border'>
-          <CheckmarkIcon
-            className={clsx(
-              'stroke-successful/80 size-5',
-              isSelected ? 'opacity-100' : 'opacity-0',
-            )}
-          />
-        </span>
-      )}
-      {children}
-    </div>
-  );
-}

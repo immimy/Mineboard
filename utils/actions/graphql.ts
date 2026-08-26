@@ -78,7 +78,12 @@ export const CachedBoardListsQuery = graphql(/* GraphQL */ `
         node {
           id
           listsCollection(orderBy: [{ position: AscNullsLast }]) {
-            ...ListsCollection @unmask
+            edges {
+              node {
+                id
+              }
+              ...List @unmask
+            }
           }
         }
       }

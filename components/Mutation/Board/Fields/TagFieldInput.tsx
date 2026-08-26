@@ -4,7 +4,7 @@ import FieldInputWrapper from './FieldInputWrapper';
 import { TagField } from '@/types/jsonbSchema';
 
 type TagFieldInputProps = {
-  field: TagField;
+  field: TagField & { position: number };
   onChange: (config: TagField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -18,7 +18,7 @@ function TagFieldInput({
 }: TagFieldInputProps) {
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     >

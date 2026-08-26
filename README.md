@@ -16,14 +16,6 @@ The project is designed with production-minded foundations: type-safe GraphQL op
 - Image uploads through Cloudinary with cleanup workflows in active development.
 - Class-based light and dark themes.
 
-## Future plans
-
-- [ ] Add drag-and-drop ordering for boards, cards, and lists.
-- [ ] Add drag-and-drop lists between cards.
-- [ ] Add realtime synchronization across sessions.
-- [ ] Add notifications.
-- [ ] Add reminders.
-
 ## Notable engineering decisions
 
 ### Type-safe GraphQL reads

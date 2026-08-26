@@ -3,21 +3,20 @@ import { makeFragmentData } from '@/gql/__generated__';
 import {
   CardFragmentDoc,
   ListFragmentDoc,
-  ListsCollectionFragmentDoc,
   ListValuesFragmentDoc,
   type CardFragment,
   type ListFragment,
-  type ListsCollectionFragment,
   type ListValuesFragment,
 } from '@/gql/__generated__/graphql';
 import { ColorPalette, type ListFieldDraft } from '@/types/jsonbSchema';
+import type { ListQuery } from '@/utils/dragdrop/types';
 import { type ComponentProps } from 'react';
 import { createPreviewData } from '../Fields/utils';
 import { useListFieldFormContext } from './ListFieldFormContext';
 
 function FieldsPreview() {
   const { fields } = useListFieldFormContext();
-  const previewCardQuery = createPreviewCardQuery(fields);
+  const { cardQuery, listQueries } = createPreviewCardData(fields);
 
   return (
     <section
@@ -36,7 +35,7 @@ function FieldsPreview() {
 
       {/* List preview */}
       <div className='mt-4'>
-        <Card query={previewCardQuery} isPreview />
+        <Card query={cardQuery} listQueries={listQueries} isPreview />
       </div>
     </section>
   );
@@ -44,10 +43,13 @@ function FieldsPreview() {
 
 export default FieldsPreview;
 
-type CardQuery = ComponentProps<typeof Card>['query'];
+type PreviewCardData = {
+  cardQuery: ComponentProps<typeof Card>['query'];
+  listQueries: ComponentProps<typeof Card>['listQueries'];
+};
 
-// Create preview card query helper
-function createPreviewCardQuery(fields: ListFieldDraft[]): CardQuery {
+// Create preview card data helper
+function createPreviewCardData(fields: ListFieldDraft[]): PreviewCardData {
   // List items collection
   const listValuesCollection = {
     edges: fields.map((field, index) => {
@@ -80,20 +82,14 @@ function createPreviewCardQuery(fields: ListFieldDraft[]): CardQuery {
     },
   } as ListFragment;
 
-  const listEdge = makeFragmentData(
-    listEdgeData,
-    ListFragmentDoc,
-  ) as ListsCollectionFragment['edges'][number];
+  const listEdge = makeFragmentData(listEdgeData, ListFragmentDoc) as ListQuery;
 
-  const listsCollection = makeFragmentData(
-    {
-      edges: [listEdge],
-    } as ListsCollectionFragment,
-    ListsCollectionFragmentDoc,
-  );
+  const listsCollection = {
+    edges: [listEdge],
+  } as NonNullable<CardFragment['node']['listsCollection']>;
 
   // Card Query
-  return makeFragmentData(
+  const cardQuery = makeFragmentData(
     {
       node: {
         title: 'Preview card',
@@ -105,4 +101,6 @@ function createPreviewCardQuery(fields: ListFieldDraft[]): CardQuery {
     } as CardFragment,
     CardFragmentDoc,
   );
+
+  return { cardQuery, listQueries: [listEdge] };
 }

@@ -9,3 +9,10 @@
 - Failed/weak fix: deferring `closeAddCard()` with `setTimeout()` can reduce the timing issue, but it is not guaranteed. The warning can still appear occasionally because the underlying uncontrolled Headless UI `RadioGroup` may still call internal `flushSync` during React's submit/render work.
 - Chosen fix: make the color `RadioGroup` controlled instead of uncontrolled.
 - Reason: a controlled `RadioGroup` avoids Headless UI's uncontrolled internal state update path, which is the path that can call `flushSync`.
+
+## Dnd-kit Keyboard Reorder Browser Test
+
+- Symptom: `{Space}{ArrowRight}{Space}` left Card A in its original position instead of moving it after Cards B.
+- Location: `components/BoardPage/__tests__/DragDrop/KeyboardReordering.test.tsx`.
+- Cause: dnd-kit's keyboard sensor selects sortable targets spatially in the arrow's direction; it does not treat arrow presses as moves through the `cardIds` array. Below the 768px `md` breakpoint, the cards form one vertical column, so Cards B and C are below Card A rather than to its right.
+- Chosen fix: choose `ArrowDown` below Tailwind's 768px `md` breakpoint and `ArrowRight` at or above it, then move Card A one adjacent position with `{Space}{direction}{Space}`.

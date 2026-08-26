@@ -2,7 +2,7 @@
 
 import { authenticateUser } from './auth';
 import { createClient } from '../database/serverClient';
-import { renderError } from './helper';
+import { renderError, revalidateDemoHomepage } from './helper';
 import {
   validateWithZodSchema,
   createCardSchema,
@@ -16,7 +16,6 @@ import {
   DeleteCardsMutation,
   UpdateCardMutation,
 } from './graphql';
-import { revalidateDemoHomepage } from './helper';
 
 export const createCard = async (formData: FormData) => {
   const supabase = await createClient();

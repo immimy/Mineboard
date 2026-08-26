@@ -2,11 +2,6 @@
   "name": "mineboard",
   "version": "0.1.0",
   "private": true,
-  "overrides": {
-    "lodash": "4.18.1",
-    "vite": "8.0.16",
-    "postcss": "8.5.10"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,6 +13,7 @@
     "test:node": "vitest --config vitest.node.config.mts",
     "test": "vitest --config vitest.config.mts && vitest --config vitest.node.config.mts",
     "codegen": "graphql-codegen --config codegen.ts --watch",
+    "database-type": "supabase gen types typescript --local --schema public > supabase/database.types.ts",
     "dev:db-reset": "supabase db reset && npm run dev:codegen-enabler && npm run dev:vault-setup && npm run dev:cloudinaryCleanup && npm run mock-data:dev",
     "dev:cloudinaryCleanup": "node --env-file=.env.local scripts/image-cleanup/devImagesCleanup.mjs",
     "dev:codegen-enabler": "supabase db query --local --file supabase/snippets/grant_public_to_anon.sql",
@@ -28,6 +24,8 @@
   "dependencies": {
     "@apollo/client": "^4.1.6",
     "@apollo/client-integration-nextjs": "^0.14.4",
+    "@dnd-kit/helpers": "^0.5.0",
+    "@dnd-kit/react": "^0.5.0",
     "@headlessui/react": "^2.2.9",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.98.0",

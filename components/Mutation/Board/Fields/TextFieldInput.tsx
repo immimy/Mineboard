@@ -4,7 +4,7 @@ import FieldInputWrapper from './FieldInputWrapper';
 import { TextField } from '@/types/jsonbSchema';
 
 type TextFieldInputProps = {
-  field: TextField;
+  field: TextField & { position: number };
   onChange: (config: TextField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -18,7 +18,7 @@ function TextFieldInput({
 }: TextFieldInputProps) {
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     >

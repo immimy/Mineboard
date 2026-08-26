@@ -21,3 +21,12 @@ export type ActionMenuId =
   | 'custom-list-fields'
   | 'delete-board'
   | 'multiple-card-deletions';
+
+// Drag and drop
+export type DragControls = {
+  ref: (element: Element | null) => void;
+  handleRef: (element: Element | null) => void;
+  isDragging: boolean;
+  isDropTarget: boolean;
+  index: number;
+};

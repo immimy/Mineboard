@@ -3,11 +3,7 @@ import {
   mockListFields,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 import * as BoardContext from '@/components/BoardPage/BoardContext';
-import { makeFragmentData } from '@/gql/__generated__';
-import {
-  CachedCardQuery,
-  ListsCollectionFragmentDoc,
-} from '@/gql/__generated__/graphql';
+import { CachedCardQuery } from '@/gql/__generated__/graphql';
 import { ColorPalette } from '@/types/jsonbSchema';
 
 export const mockedUseBoardContext = () => {
@@ -27,13 +23,7 @@ const createdCardEdge = {
     color: ColorPalette.third,
     listsCollection: {
       __typename: 'listsConnection',
-      ...makeFragmentData(
-        {
-          __typename: 'listsConnection',
-          edges: [],
-        },
-        ListsCollectionFragmentDoc,
-      ),
+      edges: [],
     },
   },
 } satisfies NonNullable<CachedCardQuery['cardsCollection']>['edges'][number];

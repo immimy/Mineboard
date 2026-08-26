@@ -7,7 +7,6 @@ import {
   CardsCollectionFragmentDoc,
   CardFragmentDoc,
   type CardsCollectionFragment,
-  ListsCollectionFragmentDoc,
   type SingleBoardQuery,
 } from '@/gql/__generated__/graphql';
 import {
@@ -38,13 +37,7 @@ export function createCardDeletionsCache() {
   const cache = new InMemoryCache();
   const emptyLists = {
     __typename: 'listsConnection' as const,
-    ...makeFragmentData(
-      {
-        __typename: 'listsConnection',
-        edges: [],
-      },
-      ListsCollectionFragmentDoc,
-    ),
+    edges: [],
   };
   const cardsCollection = makeFragmentData(
     {

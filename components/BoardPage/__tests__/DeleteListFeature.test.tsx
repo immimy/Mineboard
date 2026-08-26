@@ -15,7 +15,7 @@ const getAllElements = () => ({
     .getByRole('article', { includeHidden: true })
     .getByText('Start with Atomic Habits', { exact: true }),
   updateButton: page.getByRole('button', {
-    name: /update list of test card 0/i,
+    name: /update list 1 of test card/i,
   }),
   dialog: page.getByRole('dialog', { name: /update list/i }),
   deleteButton: page.getByRole('button', { name: /delete list/i }),

@@ -4,7 +4,7 @@ import FieldInputWrapper from './FieldInputWrapper';
 import { ImageField } from '@/types/jsonbSchema';
 
 type ImageFieldInputProps = {
-  field: ImageField;
+  field: ImageField & { position: number };
   onChange: (config: ImageField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -18,7 +18,7 @@ function ImageFieldInput({
 }: ImageFieldInputProps) {
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     >

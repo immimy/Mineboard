@@ -12,34 +12,57 @@ import {
   MenuItem,
   MenuItems,
 } from '@headlessui/react';
-import { Children, ComponentPropsWithoutRef, useId, useState } from 'react';
+import { Children, useId, useState } from 'react';
 import { fieldTypeOptions } from '@/types/jsonbSchema';
 import clsx from 'clsx';
+import { useSortable } from '@dnd-kit/react/sortable';
+import { ListFieldForm } from '@/types/app';
+import IconButton from '@/components/Mutation/IconButton';
 
 type FieldInputWrapperProps = {
-  type: Field_Type;
+  field: Pick<ListFieldForm, 'id' | 'position' | 'type'>;
   onTypeChange: (type: Field_Type) => void;
   onRemove: () => void;
 } & React.PropsWithChildren;
 
 function FieldInputWrapper({
   children,
-  type,
+  field,
   onTypeChange,
   onRemove,
 }: FieldInputWrapperProps) {
+  const { id, position, type } = field;
   const detailsId = useId();
   const [isOpen, setIsOpen] = useState(true);
   const hasContent = Children.count(children) > 0;
+  const { ref, handleRef, isDragging, isDropTarget } = useSortable({
+    id,
+    index: position,
+    group: 'list-fields',
+    type: 'list-field',
+    accept: 'list-field',
+  });
 
   return (
-    <article className='rounded border border-border bg-background shadow-xs'>
+    <article
+      ref={ref}
+      className={clsx(
+        'rounded border border-border bg-background shadow-xs transition-[opacity,transform,box-shadow] duration-200',
+        isDragging && 'scale-[0.99] opacity-40',
+        isDropTarget && 'ring-2 ring-accent/80',
+      )}
+    >
       {/* Header */}
       <div className='grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 bg-muted/40 px-2 py-1.5'>
         {/* Grip button for dragging the component */}
-        <IconButton aria-label={`Drag ${type} field`}>
-          <GripVIcon />
-        </IconButton>
+        <IconButton
+          ref={handleRef}
+          Icon={GripVIcon}
+          label={`Drag ${type} field`}
+          onClick={undefined}
+          size='size-11'
+          className='touch-none hover:cursor-grab active:cursor-grabbing'
+        />
 
         <div className='flex min-w-0 items-center gap-2'>
           {/* Type of field heading */}
@@ -75,51 +98,34 @@ function FieldInputWrapper({
 
         <div className='flex items-center gap-1'>
           {/* Expand/Collapse trigger button */}
-          {hasContent ? (
+          {hasContent && (
             <IconButton
               aria-controls={detailsId}
               aria-expanded={isOpen}
-              aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${type} field details`}
+              Icon={isOpen ? CaretUpFillIcon : CaretDownFillIcon}
+              label={`${isOpen ? 'Collapse' : 'Expand'} ${type} field details`}
               onClick={() => setIsOpen((currentValue) => !currentValue)}
-            >
-              {isOpen ? <CaretDownFillIcon /> : <CaretUpFillIcon />}
-            </IconButton>
-          ) : null}
+              size='size-11'
+            />
+          )}
           {/* Remove field button */}
-          <IconButton aria-label={`Remove ${type} field`} onClick={onRemove}>
-            <TrashIcon />
-          </IconButton>
+          <IconButton
+            Icon={TrashIcon}
+            label={`Remove ${type} field`}
+            onClick={onRemove}
+            size='size-11'
+          />
         </div>
       </div>
 
       {/* Content */}
-      {hasContent && isOpen ? (
+      {hasContent && isOpen && (
         <div id={detailsId} className='grid gap-4 p-4'>
           {children}
         </div>
-      ) : null}
+      )}
     </article>
   );
 }
 
 export default FieldInputWrapper;
-
-function IconButton({
-  children,
-  className,
-  type = 'button',
-  ...props
-}: ComponentPropsWithoutRef<typeof Button>) {
-  return (
-    <Button
-      type={type}
-      {...props}
-      className={clsx(
-        'grid size-11 shrink-0 place-items-center rounded border border-transparent text-muted-foreground outline-none transition hover:bg-muted hover:text-foreground data-open:bg-muted data-open:text-foreground data-focus:ring-2 data-focus:ring-accent/70',
-        className,
-      )}
-    >
-      {children}
-    </Button>
-  );
-}

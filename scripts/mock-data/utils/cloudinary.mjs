@@ -25,7 +25,7 @@ export async function uploadImages({ environment, imageAssets, ownerId }) {
     const result = await cloudinary.uploader.upload(asset.url, {
       resource_type: 'image',
       asset_folder: cloudinaryFolder,
-      public_id: `${cloudinaryFolder}/${assetKey}`,
+      public_id: `${cloudinaryFolder}/${assetKey}-${Date.now()}`,
       overwrite: false,
       tags: cloudinaryTags,
       context: {

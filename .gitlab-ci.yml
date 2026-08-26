@@ -1,7 +1,7 @@
 workflow:
   rules:
-    # Preventing pipeline from push event with commit message that begin or end with "draft"
-    - if: '$CI_COMMIT_MESSAGE =~ /^(.?draft)|(draft.?)$/'
+    # Prevent push pipelines when the commit title contains "draft" or "wip"
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TITLE =~ /\b(draft|wip)\b/i'
       when: never
     # Preventing pipeline from MR
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -76,7 +76,7 @@ build_prod:
 
 unit_tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.60.0-noble
+  image: mcr.microsoft.com/playwright:v1.62.1-noble
   script:
     - npm ci
     - npm test

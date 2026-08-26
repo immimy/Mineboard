@@ -1,30 +1,32 @@
 'use client';
 
-import { FragmentType, graphql, useFragment } from '@/gql/__generated__';
+import type { ListQuery } from '@/utils/dragdrop/types';
 import List from './List';
-
-const ListsCollectionFragment = graphql(/* GraphQL */ `
-  fragment ListsCollection on listsConnection {
-    edges {
-      node {
-        id
-      }
-      ...List
-    }
-  }
-`);
+import SortableList from './SortableList';
 
 type ListsContainerProps = {
-  query?: FragmentType<typeof ListsCollectionFragment> | null;
+  listQueries: ListQuery[];
+  isSortEnabled?: boolean;
 };
 
-function ListsContainer({ query }: ListsContainerProps) {
-  const lists = useFragment(ListsCollectionFragment, query);
+function ListsContainer({
+  listQueries,
+  isSortEnabled = false,
+}: ListsContainerProps) {
   return (
-    <ul className='mb-3 flex flex-col gap-3'>
-      {lists?.edges?.map((edge) => {
-        return <List key={edge.node.id} query={edge} />;
-      })}
+    <ul className='mb-3 flex min-h-3 flex-col gap-3'>
+      {listQueries.map((edge, index) =>
+        isSortEnabled ? (
+          <SortableList
+            key={edge.node.id}
+            id={edge.node.id}
+            index={index}
+            query={edge}
+          />
+        ) : (
+          <List key={edge.node.id} query={edge} />
+        ),
+      )}
     </ul>
   );
 }

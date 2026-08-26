@@ -22,9 +22,8 @@ import {
   DeleteListMutation,
   ListValuesQuery,
 } from './graphql';
-import { renderError } from './helper';
+import { renderError, revalidateDemoHomepage } from './helper';
 import { ListValueInput } from '../validation/validator';
-import { revalidateDemoHomepage } from './helper';
 
 export const createList = async (
   boardId: string,

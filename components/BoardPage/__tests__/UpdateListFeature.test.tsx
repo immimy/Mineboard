@@ -20,7 +20,7 @@ const getAllElements = () => {
   return {
     card,
     dialogButton: page.getByRole('button', {
-      name: /update list of test card 0/i,
+      name: /update list 1 of test card/i,
     }),
     heading: page.getByRole('heading', {
       level: 2,

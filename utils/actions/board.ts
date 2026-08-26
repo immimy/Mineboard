@@ -4,6 +4,7 @@ import {
   createBoardSchema,
   createListFieldsSchema,
   deleteBoardSchema,
+  saveBoardLayoutSchema,
   updateListFieldsSchema,
   updateBoardTitleSchema,
   validateWithZodSchema,
@@ -19,10 +20,10 @@ import {
   DeleteBoardMutation,
   UpdateBoardTitleMutation,
 } from './graphql';
-import { renderError } from './helper';
+import { renderError, revalidateDemoHomepage } from './helper';
 import { createClient } from '../database/serverClient';
 import { ListFieldDraft } from '@/types/jsonbSchema';
-import { revalidateDemoHomepage } from './helper';
+import type { BoardLayout } from '../dragdrop/types';
 
 export const createBoard = async (formData: FormData) => {
   const supabase = await createClient();
@@ -222,5 +223,38 @@ export const updateListFields = async (
     };
   } catch (error) {
     return renderError(error);
+  }
+};
+
+// Re-ordering card or list
+export const saveBoardLayout = async (boardId: string, layout: BoardLayout) => {
+  const supabase = await createClient();
+  const user = await authenticateUser(supabase);
+
+  try {
+    const result = validateWithZodSchema(saveBoardLayoutSchema, {
+      boardId,
+      ...layout,
+    });
+    const listPlacements = Object.entries(result.listIdsByCard).flatMap(
+      ([cardId, listIds]) =>
+        listIds.map((id, position) => ({
+          id,
+          card_id: cardId,
+          position,
+        })),
+    );
+
+    const { error } = await supabase.rpc('save_board_layout', {
+      p_board_id: result.boardId,
+      p_card_ids: result.cardIds,
+      p_list_placements: listPlacements,
+    });
+    if (error) throw new Error(error.message);
+
+    revalidateDemoHomepage(user);
+    return { error: null };
+  } catch (error) {
+    return renderError(error, 'Failed to save board layout');
   }
 };

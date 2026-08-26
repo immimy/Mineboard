@@ -3,7 +3,7 @@ import FieldInputWrapper from './FieldInputWrapper';
 import { CheckboxField } from '@/types/jsonbSchema';
 
 type CheckboxFieldInputProps = {
-  field: CheckboxField;
+  field: CheckboxField & { position: number };
   onChange: (config: CheckboxField['config']) => void;
   onRemove: () => void;
   onTypeChange: (type: Field_Type) => void;
@@ -16,7 +16,7 @@ function CheckboxFieldInput({
 }: CheckboxFieldInputProps) {
   return (
     <FieldInputWrapper
-      type={field.type}
+      field={field}
       onRemove={onRemove}
       onTypeChange={onTypeChange}
     />
