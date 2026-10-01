@@ -3,10 +3,12 @@ import { addTypenameSelectionDocumentTransform } from '@graphql-codegen/client-p
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema:
+  schema: [
     process.env.VERCEL_ENV === 'production'
       ? `${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL}/graphql/v1`
       : 'http://localhost:54321/graphql/v1',
+    './gql/client-directives.graphql',
+  ],
   // Define the path that all graphql queries live
   documents: [
     '{app,components,gql,utils}/**/*.{ts,tsx}',

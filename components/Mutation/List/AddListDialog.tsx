@@ -1,6 +1,7 @@
 'use client';
 
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
+import { useLayoutMutationSync } from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
 import {
   useAddListDialogActions,
   useAddListDialogState,
@@ -22,6 +23,7 @@ import { useRef } from 'react';
 
 function AddListDialog() {
   const client = useApolloClient();
+  const { runMutation } = useLayoutMutationSync();
   const savingRef = useRef(false);
 
   const { boardId, userId } = useBoardContext();
@@ -61,52 +63,66 @@ function AddListDialog() {
     try {
       savingRef.current = true;
 
-      // Server: Create list with values
-      const { data, error } = await createList(boardId, cardId, form);
-      if (error || !data) return { error };
+      const result = await runMutation(boardId, async () => {
+        try {
+          // Server: Create list with values
+          const { data, error } = await createList(boardId, cardId, form);
+          if (error || !data) return { error };
 
-      // Apollo cache update
-      const listNode = data.listsCollection?.edges[0].node;
-      const list = readFragment(MutatedListFragmentDoc, listNode);
-      if (!list) return { error: 'Failed to fetch new list, please refresh' };
+          // Apollo cache update
+          const listNode = data.listsCollection?.edges[0].node;
+          const list = readFragment(MutatedListFragmentDoc, listNode);
+          if (!list)
+            return { error: 'Failed to fetch new list, please refresh' };
 
-      // 1. Write fragment reference
-      const listRef = client.cache.writeFragment({
-        fragmentName: 'MutatedList',
-        fragment: MutatedListFragmentDoc,
-        data: list,
+          // 1. Write fragment reference
+          const listRef = client.cache.writeFragment({
+            fragmentName: 'MutatedList',
+            fragment: MutatedListFragmentDoc,
+            data: list,
+          });
+
+          // 2. Modify normalized cache
+          client.cache.modify({
+            id: client.cache.identify({
+              __typename: 'cards',
+              id: cardId,
+            }),
+            fields: {
+              listsCollection(
+                existingConnection = {
+                  __typename: 'listsConnection',
+                  edges: [],
+                },
+              ) {
+                const nextEdge = {
+                  __typename: 'listsEdge',
+                  node: listRef,
+                };
+                return {
+                  ...existingConnection,
+                  edges: [...existingConnection.edges, nextEdge],
+                };
+              },
+            },
+          });
+
+          // Remove the list from Apollo's __META entry so GC can clean up orphaned cache data.
+          if (listRef && client.cache instanceof InMemoryCache)
+            client.cache.release(listRef.__ref);
+
+          return { error: null };
+        } catch (error) {
+          return renderError(error, 'Failed to add list');
+        }
       });
 
-      // 2. Modify normalized cache
-      client.cache.modify({
-        id: client.cache.identify({
-          __typename: 'cards',
-          id: cardId,
-        }),
-        fields: {
-          listsCollection(
-            existingConnection = { __typename: 'listsConnection', edges: [] },
-          ) {
-            const nextEdge = {
-              __typename: 'listsEdge',
-              node: listRef,
-            };
-            return {
-              ...existingConnection,
-              edges: [...existingConnection.edges, nextEdge],
-            };
-          },
-        },
-      });
-
-      // Remove the list from Apollo's __META entry so GC can clean up orphaned cache data.
-      if (listRef && client.cache instanceof InMemoryCache)
-        client.cache.release(listRef.__ref);
+      if (result.error) return result;
 
       // Image status update & Image cleanup
       handleSuccessfulSave();
 
-      return { error: null };
+      return result;
     } catch (error) {
       return renderError(error, 'Failed to add list');
     } finally {

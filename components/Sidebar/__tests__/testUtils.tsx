@@ -1,6 +1,7 @@
 import AppContextProvider, {
   useAppContext,
 } from '@/components/global/AppContext';
+import DashboardUserProvider from '@/components/DashboardPage/DashboardUserContext';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -38,12 +39,14 @@ export const renderDashboardSidebar = (
 ) => {
   return render(
     <MockedProvider mocks={mocks}>
-      <AppContextProvider>
-        <PreventNavigationBoundary>
-          <OpenSidebarButton />
-          <DashboardSidebar userId={mockUserId} />
-        </PreventNavigationBoundary>
-      </AppContextProvider>
+      <DashboardUserProvider userId={mockUserId}>
+        <AppContextProvider>
+          <PreventNavigationBoundary>
+            <OpenSidebarButton />
+            <DashboardSidebar />
+          </PreventNavigationBoundary>
+        </AppContextProvider>
+      </DashboardUserProvider>
     </MockedProvider>,
   );
 };

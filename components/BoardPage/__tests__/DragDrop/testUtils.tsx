@@ -1,23 +1,29 @@
+import { MockedProvider } from '@apollo/client/testing/react';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import BoardContextProvider from '../../BoardContext';
-import CardDeletionsProvider from '../../CardDeletionsContext';
-import CardsContainer from '../../CardsContainer';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
+import CardDeletionsProvider from '@/components/BoardPage/Card/CardDeletionsContext';
+import CardsContainer from '@/components/BoardPage/Card/CardsContainer';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { createCardsQuery } from './testMocks';
+import LayoutMutationSyncProvider from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
 
-const BOARD_LAYOUT_SAVE_DEBOUNCE_MS = 1000;
+const BOARD_LAYOUT_SAVE_DEBOUNCE_MS = 1500;
 
 export const renderBoard = () =>
   render(
-    <BoardContextProvider boardId='board-id'>
-      <CardDeletionsProvider>
-        <DialogsProvider>
-          <div data-testid='outside-board'>Outside board</div>
-          <CardsContainer query={createCardsQuery()} />
-        </DialogsProvider>
-      </CardDeletionsProvider>
-    </BoardContextProvider>,
+    <MockedProvider>
+      <LayoutMutationSyncProvider>
+        <BoardContextProvider boardId='board-id'>
+          <CardDeletionsProvider>
+            <DialogsProvider>
+              <div data-testid='outside-board'>Outside board</div>
+              <CardsContainer query={createCardsQuery()} />
+            </DialogsProvider>
+          </CardDeletionsProvider>
+        </BoardContextProvider>
+      </LayoutMutationSyncProvider>
+    </MockedProvider>,
   );
 
 export const getAllElements = () => {

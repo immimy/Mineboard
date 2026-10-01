@@ -1,4 +1,5 @@
-import BoardContextProvider from '@/components/BoardPage/BoardContext';
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
 import FieldListFormProvider from '@/components/Mutation/Board/ListField/ListFieldFormContext';
 import FieldsForm from '@/components/Mutation/Board/ListField/FieldsForm';
@@ -13,7 +14,7 @@ import { MockedProvider } from '@apollo/client/testing/react';
 import { Button } from '@headlessui/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import CardDeletionsProvider from '@/components/BoardPage/CardDeletionsContext';
+import CardDeletionsProvider from '@/components/BoardPage/Card/CardDeletionsContext';
 
 type RenderListFieldOptions = {
   cache?: ApolloCache;
@@ -35,20 +36,22 @@ function OpenListFieldDialogButton() {
 
 export const renderListFieldForm = ({ cache }: RenderListFieldOptions = {}) => {
   return render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider boardId={mockBoardId}>
-        <CardDeletionsProvider>
-          <DialogsProvider>
-            <FieldListFormProvider>
-              <div className='grid grid-cols-2'>
-                <FieldsForm />
-                <FieldsPreview />
-              </div>
-            </FieldListFormProvider>
-          </DialogsProvider>
-        </CardDeletionsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider boardId={mockBoardId}>
+          <CardDeletionsProvider>
+            <DialogsProvider>
+              <FieldListFormProvider>
+                <div className='grid grid-cols-2'>
+                  <FieldsForm />
+                  <FieldsPreview />
+                </div>
+              </FieldListFormProvider>
+            </DialogsProvider>
+          </CardDeletionsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };
 
@@ -57,19 +60,21 @@ export const renderListFieldDialog = ({
   queryListFields = null,
 }: RenderListFieldDialogOptions = {}) => {
   return render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider
-        boardId={mockBoardId}
-        queryListFields={queryListFields}
-      >
-        <CardDeletionsProvider>
-          <DialogsProvider>
-            <OpenListFieldDialogButton />
-            <ListFieldDialog />
-          </DialogsProvider>
-        </CardDeletionsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider
+          boardId={mockBoardId}
+          queryListFields={queryListFields}
+        >
+          <CardDeletionsProvider>
+            <DialogsProvider>
+              <OpenListFieldDialogButton />
+              <ListFieldDialog />
+            </DialogsProvider>
+          </CardDeletionsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };
 

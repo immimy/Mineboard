@@ -10,6 +10,11 @@ import {
   waitForDndToSettle,
 } from './testUtils';
 
+vi.mock(import('@/components/BoardPage/Card/CollapsibleCard'), async () => {
+  const { ExpandedCardMock } = await import('./testMocks');
+  return { default: ExpandedCardMock };
+});
+
 const saveBoardLayoutMock = vi.mocked(saveBoardLayout);
 const TAILWIND_MD_BREAKPOINT_PX = 768;
 

@@ -17,7 +17,7 @@ type Documents = {
     "\n  fragment ListFieldsCollection on list_fieldsConnection {\n    edges {\n      node {\n        id\n        type\n        config\n        position\n      }\n    }\n  }\n": typeof types.ListFieldsCollectionFragmentDoc,
     "\n  fragment Card on cardsEdge {\n    node {\n      id\n      title\n      position\n      color\n      listsCollection(orderBy: [{ position: AscNullsLast }]) {\n        edges {\n          node {\n            id\n          }\n          ...List\n        }\n      }\n    }\n  }\n": typeof types.CardFragmentDoc,
     "\n  fragment CardsCollection on cardsConnection {\n    edges {\n      node {\n        id\n      }\n      ...Card\n    }\n  }\n": typeof types.CardsCollectionFragmentDoc,
-    "\n  fragment List on listsEdge {\n    node {\n      id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n": typeof types.ListFragmentDoc,
+    "\n  fragment List on listsEdge {\n    node {\n      id\n      card_id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n": typeof types.ListFragmentDoc,
     "\n  fragment ListValues on list_values {\n    id\n    value\n    list_fields {\n      id\n      type\n      config\n      position\n    }\n  }\n": typeof types.ListValuesFragmentDoc,
     "\n  fragment Board on boardsEdge {\n    node {\n      id\n      title\n    }\n  }\n": typeof types.BoardFragmentDoc,
     "\n  fragment UpdateBoardTitleTestBoard on boards {\n    id\n    title\n  }\n": typeof types.UpdateBoardTitleTestBoardFragmentDoc,
@@ -28,7 +28,7 @@ type Documents = {
     "\n  query ListValues($listId: UUID!) {\n    list_valuesCollection(filter: { list_id: { eq: $listId } }) {\n      edges {\n        node {\n          id\n          list_field_id\n          value\n        }\n      }\n    }\n  }\n": typeof types.ListValuesDocument,
     "\n  query CachedList($listId: UUID!) {\n    listsCollection(filter: { id: { eq: $listId } }) {\n      edges {\n        node {\n          ...MutatedList\n        }\n      }\n    }\n  }\n": typeof types.CachedListDocument,
     "\n  query CachedBoardLists($boardId: UUID!) {\n    cardsCollection(\n      filter: { board_id: { eq: $boardId } }\n      orderBy: [{ position: AscNullsLast }]\n    ) {\n      edges {\n        node {\n          id\n          listsCollection(orderBy: [{ position: AscNullsLast }]) {\n            edges {\n              node {\n                id\n              }\n              ...List @unmask\n            }\n          }\n        }\n      }\n    }\n  }\n": typeof types.CachedBoardListsDocument,
-    "\n  fragment MutatedList on lists {\n    id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n": typeof types.MutatedListFragmentDoc,
+    "\n  fragment MutatedList on lists {\n    id\n    card_id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n": typeof types.MutatedListFragmentDoc,
     "\n  mutation DeleteList($cardId: UUID!, $listId: UUID!) {\n    deleteFromlistsCollection(\n      filter: { card_id: { eq: $cardId }, id: { eq: $listId } }\n      atMost: 1\n    ) {\n      affectedCount\n    }\n  }\n": typeof types.DeleteListDocument,
     "\n  query CachedCard($cardId: UUID!) {\n    cardsCollection(filter: { id: { eq: $cardId } }) {\n      edges {\n        ...Card @unmask\n      }\n    }\n  }\n": typeof types.CachedCardDocument,
     "\n  mutation UpdateCard(\n    $cardId: UUID!\n    $title: String!\n    $color: Opaque!\n    $updatedAt: Datetime!\n  ) {\n    updatecardsCollection(\n      filter: { id: { eq: $cardId } }\n      set: { title: $title, color: $color, updated_at: $updatedAt }\n      atMost: 1\n    ) {\n      records {\n        id\n        title\n        color\n      }\n    }\n  }\n": typeof types.UpdateCardDocument,
@@ -43,7 +43,7 @@ const documents: Documents = {
     "\n  fragment ListFieldsCollection on list_fieldsConnection {\n    edges {\n      node {\n        id\n        type\n        config\n        position\n      }\n    }\n  }\n": types.ListFieldsCollectionFragmentDoc,
     "\n  fragment Card on cardsEdge {\n    node {\n      id\n      title\n      position\n      color\n      listsCollection(orderBy: [{ position: AscNullsLast }]) {\n        edges {\n          node {\n            id\n          }\n          ...List\n        }\n      }\n    }\n  }\n": types.CardFragmentDoc,
     "\n  fragment CardsCollection on cardsConnection {\n    edges {\n      node {\n        id\n      }\n      ...Card\n    }\n  }\n": types.CardsCollectionFragmentDoc,
-    "\n  fragment List on listsEdge {\n    node {\n      id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n": types.ListFragmentDoc,
+    "\n  fragment List on listsEdge {\n    node {\n      id\n      card_id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n": types.ListFragmentDoc,
     "\n  fragment ListValues on list_values {\n    id\n    value\n    list_fields {\n      id\n      type\n      config\n      position\n    }\n  }\n": types.ListValuesFragmentDoc,
     "\n  fragment Board on boardsEdge {\n    node {\n      id\n      title\n    }\n  }\n": types.BoardFragmentDoc,
     "\n  fragment UpdateBoardTitleTestBoard on boards {\n    id\n    title\n  }\n": types.UpdateBoardTitleTestBoardFragmentDoc,
@@ -54,7 +54,7 @@ const documents: Documents = {
     "\n  query ListValues($listId: UUID!) {\n    list_valuesCollection(filter: { list_id: { eq: $listId } }) {\n      edges {\n        node {\n          id\n          list_field_id\n          value\n        }\n      }\n    }\n  }\n": types.ListValuesDocument,
     "\n  query CachedList($listId: UUID!) {\n    listsCollection(filter: { id: { eq: $listId } }) {\n      edges {\n        node {\n          ...MutatedList\n        }\n      }\n    }\n  }\n": types.CachedListDocument,
     "\n  query CachedBoardLists($boardId: UUID!) {\n    cardsCollection(\n      filter: { board_id: { eq: $boardId } }\n      orderBy: [{ position: AscNullsLast }]\n    ) {\n      edges {\n        node {\n          id\n          listsCollection(orderBy: [{ position: AscNullsLast }]) {\n            edges {\n              node {\n                id\n              }\n              ...List @unmask\n            }\n          }\n        }\n      }\n    }\n  }\n": types.CachedBoardListsDocument,
-    "\n  fragment MutatedList on lists {\n    id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n": types.MutatedListFragmentDoc,
+    "\n  fragment MutatedList on lists {\n    id\n    card_id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n": types.MutatedListFragmentDoc,
     "\n  mutation DeleteList($cardId: UUID!, $listId: UUID!) {\n    deleteFromlistsCollection(\n      filter: { card_id: { eq: $cardId }, id: { eq: $listId } }\n      atMost: 1\n    ) {\n      affectedCount\n    }\n  }\n": types.DeleteListDocument,
     "\n  query CachedCard($cardId: UUID!) {\n    cardsCollection(filter: { id: { eq: $cardId } }) {\n      edges {\n        ...Card @unmask\n      }\n    }\n  }\n": types.CachedCardDocument,
     "\n  mutation UpdateCard(\n    $cardId: UUID!\n    $title: String!\n    $color: Opaque!\n    $updatedAt: Datetime!\n  ) {\n    updatecardsCollection(\n      filter: { id: { eq: $cardId } }\n      set: { title: $title, color: $color, updated_at: $updatedAt }\n      atMost: 1\n    ) {\n      records {\n        id\n        title\n        color\n      }\n    }\n  }\n": types.UpdateCardDocument,
@@ -95,7 +95,7 @@ export function graphql(source: "\n  fragment CardsCollection on cardsConnection
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment List on listsEdge {\n    node {\n      id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment List on listsEdge {\n    node {\n      id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment List on listsEdge {\n    node {\n      id\n      card_id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment List on listsEdge {\n    node {\n      id\n      card_id\n      position\n      list_valuesCollection {\n        edges {\n          node {\n            ...ListValues\n          }\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -139,7 +139,7 @@ export function graphql(source: "\n  query CachedBoardLists($boardId: UUID!) {\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment MutatedList on lists {\n    id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment MutatedList on lists {\n    id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment MutatedList on lists {\n    id\n    card_id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment MutatedList on lists {\n    id\n    card_id\n    position\n    list_valuesCollection {\n      edges {\n        node {\n          ...ListValues @unmask\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

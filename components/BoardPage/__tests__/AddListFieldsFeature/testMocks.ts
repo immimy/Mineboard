@@ -153,6 +153,7 @@ const createdListNode = makeFragmentData(
   {
     __typename: 'lists',
     id: createdListId,
+    card_id: createdCardId,
     position: 0,
     list_valuesCollection: createdListValuesCollection,
   },

@@ -102,6 +102,7 @@ const updatedExistingListEdge = {
   node: {
     __typename: 'lists',
     id: existingListId,
+    card_id: mockCardId,
     position: 0,
     list_valuesCollection: {
       __typename: 'list_valuesConnection',
@@ -180,6 +181,7 @@ export const boardWithThreeListFieldsMock: MockLink.MockedResponse = {
                     node: {
                       __typename: 'lists',
                       id: existingListId,
+                      card_id: mockCardId,
                       position: 0,
                       list_valuesCollection: {
                         __typename: 'list_valuesConnection',
@@ -318,6 +320,7 @@ const createdUpdatedListNode = makeFragmentData(
   {
     __typename: 'lists',
     id: createdUpdatedListId,
+    card_id: mockCardId,
     position: 1,
     list_valuesCollection: createdUpdatedListValuesCollection,
   },

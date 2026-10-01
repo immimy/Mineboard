@@ -1,6 +1,6 @@
 'use client';
 
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
 import { initFormState } from '@/components/Mutation/List/utils';
 import type { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import type { ListForm } from '@/types/app';

@@ -17,6 +17,8 @@ export default defineConfig({
     browser: {
       provider: playwright(),
       enabled: true,
+      // Avoid the default port 63315, which Windows can reserve.
+      api: { host: '127.0.0.1', port: 5175 },
       instances: [{ browser: 'chromium' }],
     },
     reporters: ['junit', 'default'],

@@ -1,0 +1,6 @@
+schema:
+  - 'http://localhost:54321/graphql/v1'
+  - './gql/client-directives.graphql'
+documents:
+  - '{app,components,gql,utils}/**/*.{ts,tsx}'
+  - '!gql/__generated__/**'

@@ -1,10 +1,11 @@
 import {
   mockBoardId,
+  mockCardId,
   mockDateId,
   mockListFields,
   mockTextId,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import * as BoardContext from '@/components/BoardPage/BoardContext';
+import * as BoardContext from '@/components/BoardPage/Board/BoardContext';
 import { makeFragmentData } from '@/gql/__generated__';
 import {
   CachedListQuery,
@@ -61,6 +62,7 @@ const createdListNode = makeFragmentData(
   {
     __typename: 'lists',
     id: 'newList',
+    card_id: mockCardId,
     position: 1,
     list_valuesCollection: createdListValuesCollection,
   },

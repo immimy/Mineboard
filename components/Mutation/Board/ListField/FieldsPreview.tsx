@@ -1,4 +1,4 @@
-import Card from '@/components/BoardPage/Card';
+import Card from '@/components/BoardPage/Card/Card';
 import { makeFragmentData } from '@/gql/__generated__';
 import {
   CardFragmentDoc,

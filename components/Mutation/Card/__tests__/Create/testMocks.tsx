@@ -2,7 +2,7 @@ import {
   mockBoardId,
   mockListFields,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import * as BoardContext from '@/components/BoardPage/BoardContext';
+import * as BoardContext from '@/components/BoardPage/Board/BoardContext';
 import { CachedCardQuery } from '@/gql/__generated__/graphql';
 import { ColorPalette } from '@/types/jsonbSchema';
 

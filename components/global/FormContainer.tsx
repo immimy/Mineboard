@@ -21,6 +21,7 @@ type FormContainerProps = {
   onChange?: ChangeEventHandler;
   id?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 function FormContainer({
@@ -29,6 +30,7 @@ function FormContainer({
   onChange,
   id,
   className,
+  disabled = false,
 }: FormContainerProps) {
   const [state, formAction] = useActionState(action, initialState);
   useEffect(() => {
@@ -37,13 +39,16 @@ function FormContainer({
   }, [state]);
   return (
     <form id={id} action={formAction} onChange={onChange} className={className}>
-      <PendingFieldset>{children}</PendingFieldset>
+      <PendingFieldset disabled={disabled}>{children}</PendingFieldset>
     </form>
   );
 }
 export default FormContainer;
 
-function PendingFieldset({ children }: PropsWithChildren) {
+function PendingFieldset({
+  children,
+  disabled,
+}: PropsWithChildren<{ disabled: boolean }>) {
   const { pending } = useFormStatus();
-  return <Fieldset disabled={pending}>{children}</Fieldset>;
+  return <Fieldset disabled={disabled || pending}>{children}</Fieldset>;
 }

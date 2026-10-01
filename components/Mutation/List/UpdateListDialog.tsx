@@ -6,7 +6,9 @@ import {
   type Reference,
   type StoreObject,
 } from '@apollo/client';
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
+import { useLayoutMutationSync } from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
+import { renderError } from '@/components/global/utils';
 import {
   useUpdateListDialogActions,
   useUpdateListDialogState,
@@ -26,11 +28,11 @@ import { useRef } from 'react';
 
 function UpdateListDialog() {
   const client = useApolloClient();
+  const { runMutation } = useLayoutMutationSync();
   const savingRef = useRef(false);
 
   const { boardId, userId } = useBoardContext();
-  const { isOpen, cardId, listId, listFields, form } =
-    useUpdateListDialogState();
+  const { isOpen, listId, listFields, form } = useUpdateListDialogState();
   const { closeUpdateList, updateField } = useUpdateListDialogActions();
   const { trackUpload, discardSession, completeSession } =
     useImageUploadSession();
@@ -61,31 +63,41 @@ function UpdateListDialog() {
     try {
       savingRef.current = true;
 
-      const { data, error } = await updateList(boardId, listId, form);
-      if (error || !data) return { error };
+      const result = await runMutation(boardId, async () => {
+        try {
+          const { data, error } = await updateList(boardId, listId, form);
+          if (error || !data) return { error };
 
-      const listNode = data.listsCollection?.edges[0].node;
-      const list = readFragment(MutatedListFragmentDoc, listNode);
-      if (!list)
-        return { error: 'Failed to fetch updated list, please refresh' };
+          const listNode = data.listsCollection?.edges[0].node;
+          const list = readFragment(MutatedListFragmentDoc, listNode);
+          if (!list)
+            return { error: 'Failed to fetch updated list, please refresh' };
 
-      const listRef = client.cache.writeFragment({
-        id: client.cache.identify({
-          __typename: 'lists',
-          id: list.id,
-        }),
-        fragmentName: 'MutatedList',
-        fragment: MutatedListFragmentDoc,
-        data: list,
+          const listRef = client.cache.writeFragment({
+            id: client.cache.identify({
+              __typename: 'lists',
+              id: list.id,
+            }),
+            fragmentName: 'MutatedList',
+            fragment: MutatedListFragmentDoc,
+            data: list,
+          });
+
+          // Remove the list from Apollo's __META entry so GC can clean up orphaned cache data.
+          if (listRef && client.cache instanceof InMemoryCache)
+            client.cache.release(listRef.__ref);
+
+          return { error: null };
+        } catch (error) {
+          return renderError(error, 'Failed to update list');
+        }
       });
 
-      // Remove the list from Apollo's __META entry so GC can clean up orphaned cache data.
-      if (listRef && client.cache instanceof InMemoryCache)
-        client.cache.release(listRef.__ref);
+      if (result.error) return result;
 
       handleSuccessfulSave();
 
-      return { error: null };
+      return result;
     } finally {
       savingRef.current = false;
     }
@@ -93,45 +105,67 @@ function UpdateListDialog() {
 
   // Delete list action
   const handleDelete: ActionFunction = async () => {
-    if (!cardId || !listId) return { error: 'List is not selected' };
+    if (!listId) return { error: 'List is not selected' };
 
-    const { error } = await deleteList(cardId, listId);
-    if (error) return { error };
+    const result = await runMutation(boardId, async () => {
+      try {
+        // A pending cross-card move may change which card owns this list.
+        // Read the latest cardId from the cache after the move finishes, then
+        // use it for both the deletion and the cache update.
+        const list = client.cache.readFragment({
+          id: client.cache.identify({ __typename: 'lists', id: listId }),
+          fragment: MutatedListFragmentDoc,
+          fragmentName: 'MutatedList',
+        });
+        const cardId = list?.card_id;
+        if (!cardId)
+          return { error: 'List is no longer available. Please refresh.' };
 
-    client.cache.batch({
-      update(cache) {
-        // Remove list from listsCollection of `cards:id` entity.
-        cache.modify({
-          id: cache.identify({ __typename: 'cards', id: cardId }),
-          fields: {
-            listsCollection(existing, { readField }) {
-              if (!existing?.edges) return existing;
+        const { error } = await deleteList(cardId, listId);
+        if (error) return { error };
 
-              return {
-                ...existing,
-                edges: existing.edges.filter(
-                  (edge: { node: Reference | StoreObject }) =>
-                    readField('id', edge.node) !== listId,
-                ),
-              };
-            },
+        client.cache.batch({
+          update(cache) {
+            // Remove list from listsCollection of `cards:id` entity.
+            cache.modify({
+              id: cache.identify({ __typename: 'cards', id: cardId }),
+              fields: {
+                listsCollection(existing, { readField }) {
+                  if (!existing?.edges) return existing;
+
+                  return {
+                    ...existing,
+                    edges: existing.edges.filter(
+                      (edge: { node: Reference | StoreObject }) =>
+                        readField('id', edge.node) !== listId,
+                    ),
+                  };
+                },
+              },
+            });
+
+            // Evict `lists:id` entity in the same transaction.
+            cache.evict({
+              id: cache.identify({ __typename: 'lists', id: listId }),
+            });
           },
         });
+        client.cache.gc();
 
-        // Evict `lists:id` entity in the same transaction.
-        cache.evict({
-          id: cache.identify({ __typename: 'lists', id: listId }),
-        });
-      },
+        return { error: null };
+      } catch (error) {
+        return renderError(error, 'Failed to delete list');
+      }
     });
-    client.cache.gc();
+
+    if (result.error) return result;
 
     // Cleanup Cloudinary images if exist
     const discardedIds = discardSession();
     closeUpdateList();
     requestImageCleanup({ case: 'cancelled', discardedIds });
 
-    return { error: null };
+    return result;
   };
 
   return (

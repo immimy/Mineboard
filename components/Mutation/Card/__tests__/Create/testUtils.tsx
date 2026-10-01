@@ -1,15 +1,16 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import {
   mockBoardId,
   mockListFields,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import AddCardActionButton from '@/components/BoardPage/ActionButtons/AddCardActionButton';
-import BoardContextProvider from '@/components/BoardPage/BoardContext';
+import AddCardActionButton from '@/components/BoardPage/ActionMenu/AddCardActionButton';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import type { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import AddCardDialog from '../../AddCardDialog';
+import AddCardDialog from '@/components/Mutation/Card/AddCardDialog';
 
 export const getAllElements = () => ({
   addCardDialogButton: page.getByRole('button', { name: /add new card/i }),
@@ -43,16 +44,18 @@ export const renderAddCardDialog = (
   queryListFields = mockListFields as ListFields,
 ) => {
   return render(
-    <MockedProvider>
-      <BoardContextProvider
-        boardId={mockBoardId}
-        queryListFields={queryListFields}
-      >
-        <DialogsProvider>
-          <AddCardActionButton />
-          <AddCardDialog />
-        </DialogsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider>
+        <BoardContextProvider
+          boardId={mockBoardId}
+          queryListFields={queryListFields}
+        >
+          <DialogsProvider>
+            <AddCardActionButton />
+            <AddCardDialog />
+          </DialogsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };

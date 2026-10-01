@@ -1,6 +1,6 @@
 'use client';
 
-import BoardContainer from '@/components/BoardPage/BoardContainer';
+import BoardContainer from '@/components/BoardPage/Board/BoardContainer';
 import NoDataFound from '@/components/global/NoDataFound';
 import { type DemoHomepageQuery } from '@/gql/__generated__/graphql';
 import { useState } from 'react';

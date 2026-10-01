@@ -4,7 +4,7 @@ import {
   useListFieldDialogActions,
   useListFieldDialogState,
 } from '@/components/Mutation/Context/ListFieldDialogContext';
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
 import { XIcon } from '@/icons/icons';
 import {
   Button,
@@ -54,12 +54,15 @@ type ListFieldDialogContentProps = {
 
 function ListFieldDialogContent({ isOpen }: ListFieldDialogContentProps) {
   const { closeListFieldDialog } = useListFieldDialogActions();
-  const { isDirty } = useListFieldFormContext();
+  const { isDirty, isSubmitting, isSubmittingRef } = useListFieldFormContext();
 
   // Unsaved alert
   const [isUnsavedAlertOpen, setIsUnsavedAlertOpen] = useState(false);
 
   const handleCloseDialog = () => {
+    // Disable dismissal while submitting form
+    if (isSubmittingRef.current || isSubmitting) return;
+    // Dismiss dialog immediately if there is no change
     if (!isDirty) {
       closeListFieldDialog();
       return;
@@ -80,6 +83,7 @@ function ListFieldDialogContent({ isOpen }: ListFieldDialogContentProps) {
             type='button'
             aria-label='Close list fields dialog'
             onClick={handleCloseDialog}
+            disabled={isSubmitting}
             className='absolute right-4 -top-5 z-10 -translate-y-1/2 translate-x-1/2 hover:cursor-pointer stroke-2 stroke-foreground hover:stroke-destructive/80'
           >
             <XIcon className='size-6' />

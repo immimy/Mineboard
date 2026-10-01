@@ -1,26 +1,11 @@
-import AppContextProvider from '@/components/global/AppContext';
-import BoardContainer from '@/components/BoardPage/BoardContainer';
-import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
+import { renderBoard as renderBoardContainer } from '../testUtils';
 import { MockLink } from '@apollo/client/testing';
-import { MockedProvider } from '@apollo/client/testing/react';
 import { page, userEvent } from 'vitest/browser';
-import { render } from 'vitest-browser-react';
 import { emptyBoardMock } from './testMocks';
-import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitleContext';
 
 export const renderBoard = (
   mocks: MockLink.MockedResponse[] = [emptyBoardMock],
-) => {
-  return render(
-    <MockedProvider mocks={mocks}>
-      <AppContextProvider>
-        <BoardTitleProvider>
-          <BoardContainer boardId={mockBoardId} />
-        </BoardTitleProvider>
-      </AppContextProvider>
-    </MockedProvider>,
-  );
-};
+) => renderBoardContainer(mocks);
 
 export const getAllElements = () => ({
   loading: page.getByLabelText('loading'),

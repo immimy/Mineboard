@@ -1,8 +1,9 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import {
   mockBoardId,
   mockListFields,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import BoardContextProvider from '@/components/BoardPage/BoardContext';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { useUpdateListDialogActions } from '@/components/Mutation/Context/UpdateListDialogContext';
 import type { UpdateListInput } from '@/components/Mutation/Context/types';
@@ -11,7 +12,7 @@ import { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { InMemoryCache } from '@apollo/client';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import UpdateListDialog from '../../UpdateListDialog';
+import UpdateListDialog from '@/components/Mutation/List/UpdateListDialog';
 import { initialUpdateListInput } from './testMocks';
 
 export const getAllElements = () => {
@@ -50,23 +51,25 @@ export function renderUpdateListDialog({
   initialInput = initialUpdateListInput,
 }: RenderOptions = {}) {
   return render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider
-        boardId={mockBoardId}
-        queryListFields={
-          mockListFields as {
-            ' $fragmentRefs'?: {
-              ListFieldsCollectionFragment: ListFieldsCollectionFragment;
-            };
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider
+          boardId={mockBoardId}
+          queryListFields={
+            mockListFields as {
+              ' $fragmentRefs'?: {
+                ListFieldsCollectionFragment: ListFieldsCollectionFragment;
+              };
+            }
           }
-        }
-      >
-        <DialogsProvider>
-          <UpdateListButton input={initialInput} />
-          <UpdateListDialog />
-        </DialogsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+        >
+          <DialogsProvider>
+            <UpdateListButton input={initialInput} />
+            <UpdateListDialog />
+          </DialogsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 }
 

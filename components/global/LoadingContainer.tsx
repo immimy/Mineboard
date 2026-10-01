@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 function LoadingContainer() {
   return (
-    <div className='mt-8 md:mt-16'>
+    <div className='py-8 md:py-16'>
       <Loading />
     </div>
   );

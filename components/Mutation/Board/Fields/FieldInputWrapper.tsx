@@ -18,6 +18,7 @@ import clsx from 'clsx';
 import { useSortable } from '@dnd-kit/react/sortable';
 import { ListFieldForm } from '@/types/app';
 import IconButton from '@/components/Mutation/IconButton';
+import { useFormStatus } from 'react-dom';
 
 type FieldInputWrapperProps = {
   field: Pick<ListFieldForm, 'id' | 'position' | 'type'>;
@@ -31,6 +32,7 @@ function FieldInputWrapper({
   onTypeChange,
   onRemove,
 }: FieldInputWrapperProps) {
+  const { pending } = useFormStatus();
   const { id, position, type } = field;
   const detailsId = useId();
   const [isOpen, setIsOpen] = useState(true);
@@ -41,6 +43,7 @@ function FieldInputWrapper({
     group: 'list-fields',
     type: 'list-field',
     accept: 'list-field',
+    disabled: pending,
   });
 
   return (

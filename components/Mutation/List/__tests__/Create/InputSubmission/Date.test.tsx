@@ -10,14 +10,13 @@ import {
   renderAddListDialog,
 } from '../testUtils';
 import * as listActions from '@/utils/actions/list';
-import { userEvent } from 'vitest/browser';
 
 // ───────────────────────────────────────────────────────────
 // Mocks
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/BoardPage/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/Board/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 // ───────────────────────────────────────────────────────────
@@ -44,7 +43,7 @@ describe('AddListDialog form submission', () => {
     const { dateList, saveButton } = getAllElements();
     const dateInput = dateList.getByLabelText(/deadline/i);
 
-    await userEvent.type(dateInput, '05012026');
+    await dateInput.fill('2026-05-01');
     await saveButton.click();
 
     await vi.waitFor(() => {

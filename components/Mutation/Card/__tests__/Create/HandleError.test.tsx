@@ -8,7 +8,7 @@ import {
 } from './testUtils';
 
 vi.mock('@/utils/actions/card');
-vi.mock('@/components/BoardPage/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/Board/BoardContext', { spy: true });
 
 beforeAll(() => {
   mockedUseBoardContext();

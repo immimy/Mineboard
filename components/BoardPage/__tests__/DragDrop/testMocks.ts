@@ -11,6 +11,22 @@ import {
   type ListValuesFragment,
 } from '@/gql/__generated__/graphql';
 import type { BoardLayout, CardQuery, ListQuery } from '@/utils/dragdrop/types';
+import { createElement, useId, type ComponentProps } from 'react';
+import type CollapsibleCard from '@/components/BoardPage/Card/CollapsibleCard';
+
+// Mocks `CollapsibleCard` to be always expanded.
+// These tests exercise sorting and saving with every list visible.
+export function ExpandedCardMock({
+  children,
+}: ComponentProps<typeof CollapsibleCard>) {
+  const contentId = useId();
+
+  return createElement(
+    'div',
+    { className: 'relative min-h-(--card-min-height)' },
+    children({ ref: null, contentId, isContentInert: false }),
+  );
+}
 
 type TestCard = {
   id: string;
@@ -46,6 +62,7 @@ export const serverLayout: BoardLayout = {
 
 const createListQuery = (
   id: string,
+  cardId: string,
   position: number,
   label: string,
 ): ListQuery => {
@@ -67,6 +84,7 @@ const createListQuery = (
     node: {
       __typename: 'lists',
       id,
+      card_id: cardId,
       position,
       list_valuesCollection: {
         __typename: 'list_valuesConnection',
@@ -95,7 +113,7 @@ const createCardQuery = (
   position: number,
 ): CardQuery => {
   const listQueries = lists.map(({ id: listId, label }, listPosition) =>
-    createListQuery(listId, listPosition, label),
+    createListQuery(listId, id, listPosition, label),
   );
 
   const card = {

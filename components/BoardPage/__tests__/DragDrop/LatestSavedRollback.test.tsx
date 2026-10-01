@@ -11,6 +11,11 @@ import {
 
 vi.mock('@/utils/actions/board', { spy: true });
 
+vi.mock(import('@/components/BoardPage/Card/CollapsibleCard'), async () => {
+  const { ExpandedCardMock } = await import('./testMocks');
+  return { default: ExpandedCardMock };
+});
+
 const saveBoardLayoutMock = vi.mocked(saveBoardLayout);
 
 describe('Latest saved layout rollback', () => {
@@ -35,10 +40,13 @@ describe('Latest saved layout rollback', () => {
 
     await vi.waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        'Failed to save the latest board layout. The last saved order was restored.',
+        'Failed to save the latest "board-id" board layout.',
       );
     });
     expect(saveBoardLayoutMock).toHaveBeenCalledTimes(2);
     await expectCardOrder(['Card B', 'Card C', 'Card A']);
+    expect(toast.info).toHaveBeenCalledWith(
+      'Restored layout to the last stable one.',
+    );
   });
 });

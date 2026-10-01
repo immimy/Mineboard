@@ -1,109 +1,81 @@
 # Mineboard
 
-Mineboard is a kanban-style workspace where users create boards, add cards, define typed fields for a board, and attach structured values to each card.
+Mineboard is a kanban-style board app. Each board has cards and a set of reusable, typed fields; each card contains lists whose values follow those fields. The public home page shows a read-only demo workspace, while signed-in users manage their own boards in the dashboard.
 
-The project is designed with production-minded foundations: type-safe GraphQL operations, user-scoped authorization, validated server actions, deliberate Apollo cache updates, broad browser/server testing, and a GitLab delivery pipeline.
+## What works today
 
-## Current capabilities
+- Sign in with Google through Supabase Auth and PKCE; dashboard and board routes are protected.
+- Create, rename, and delete boards. Create, edit, and delete cards and lists, including selecting multiple cards for deletion.
+- Define and edit a board's fields, then enter text, number, date, image, checkbox, and tag values in its lists.
+- Reorder cards and lists with pointer or keyboard controls, and move lists between cards. Layout changes are saved to PostgreSQL.
+- Upload images to Cloudinary. The app stores their `public_id` values; scheduled cleanup functions handle unused uploads and images queued for deletion.
+- Switch between light and dark themes.
 
-- Google authentication through Supabase OAuth and PKCE.
-- Protected dashboard and board routes.
-- Create and update boards and board titles.
-- Create and update cards and lists.
-- Define reusable list fields for a board.
-- Text, number, date, image, checkbox, and tag field values.
-- Apollo Client cache updates after successful mutations.
-- Image uploads through Cloudinary with cleanup workflows in active development.
-- Class-based light and dark themes.
+## How it is built
 
-## Notable engineering decisions
+- **Frontend:** Next.js 16 App Router, React 19, TypeScript 5, Tailwind CSS 4, and Headless UI.
+- **Data:** Supabase PostgreSQL and Auth, row-level security, Supabase GraphQL, Apollo Client 4, and generated GraphQL types.
+- **Forms and media:** React Hook Form, Zod 4, Cloudinary, and Embla Carousel.
+- **Sorting and tests:** dnd-kit; Vitest browser tests in Chromium through Playwright, plus a separate Node test suite.
 
-### Type-safe GraphQL reads
+Apollo Client owns server data in the interactive app. GraphQL handles reads and straightforward updates/deletes. Server Actions use Supabase RPCs for create flows and writes that must update related or ordered rows together, including board layout saves. Successful actions update the Apollo cache so the UI reflects the result without a full route refresh.
 
-Supabase GraphQL is consumed through Apollo Client. GraphQL Code Generator creates typed operations and fragment helpers from colocated queries, so components work with generated contracts instead of handwritten response types.
+The public demo reads a designated demo user's data through a server-side admin client. It is read-only; dashboard queries and mutations use the signed-in user's access and database policies.
 
-### Purpose-specific writes
+### Delivery
 
-Simple reads use GraphQL. Create and integrity-sensitive multi-row flows use Supabase RPCs with invoker security, allowing PostgreSQL transactions and row-level security to protect the complete operation.
-
-### Apollo cache ownership
-
-Apollo Client is the only server-state manager. After a server action returns the created or updated record, client components update normalized cache entries or query results directly rather than forcing a full route refresh.
-
-### Structured custom fields
-
-Boards define field metadata while cards store matching JSONB values. Zod validates and narrows text, number, date, image, checkbox, and tag variants at application boundaries.
-
-### Testing strategy
-
-Vitest runs two suites:
-
-- Browser tests render React components in Chromium through Playwright.
-- Node tests cover server-only behavior such as authentication callbacks and route protection.
-
-The current suite covers dashboard and board states, create/update flows, form edge cases, cache behavior, navigation, authentication, and theme controls.
-
-### Delivery pipeline
-
-GitLab CI builds the application with Vercel tooling, runs browser and node tests, publishes JUnit reports, and prepares preview or production deployments based on the branch. Scheduled jobs rebuild the shared CI image. Deployment remains an explicit project-owner action.
-
-## Stack
-
-- Next.js 16 App Router, React 19, and TypeScript
-- Tailwind CSS 4 and Headless UI
-- Apollo Client and Supabase GraphQL
-- GraphQL Code Generator
-- Supabase PostgreSQL, Auth, RLS, and RPCs
-- React Hook Form and Zod
-- Vitest Browser Mode and Playwright
-- Cloudinary
-- GitLab CI and Vercel
-
-## Project structure
-
-```text
-app/          App Router pages, layouts, providers, and route handlers
-components/   Board, dashboard, mutation, navigation, and form UI
-gql/          Apollo configuration and generated GraphQL output
-supabase/     Local configuration, migrations, functions, and seed data
-utils/        Server actions, database clients, validation, and formatting
-mocks/        Browser and node test doubles
-types/        Shared application and JSONB types
-```
+GitLab CI builds with Vercel tooling, runs both test suites, and publishes JUnit reports. Passing branch pipelines deploy previews; the default branch deploys to production and applies Supabase functions and migrations. A scheduled job rebuilds the CI image.
 
 ## Run locally
 
-Install dependencies and start the local Supabase services required by the project, then run Next.js:
+You need Node.js/npm, a local Supabase instance, and a Cloudinary account if you want image uploads. Install dependencies, start Supabase, and create `.env.local` with these settings:
+
+| Setting                                                                                        | Used for                                                          |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_PROJECT_URL`                                                             | Supabase API URL; local default is `http://127.0.0.1:54321`       |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`                                                         | Browser/server Supabase client                                    |
+| `SUPABASE_SECRET_KEY`                                                                          | Server-only read of public demo data                              |
+| `DEMO_HOMEPAGE_IDENTIFIER`                                                                     | UUID of the user whose boards appear on `/`                       |
+| `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`, `NEXT_PUBLIC_CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Image display, upload signing, and cleanup                        |
+| `NEXT_PUBLIC_CLOUDINARY_PRESET`, `ALLOWED_CLOUDINARY_PRESET`                                   | Upload preset used by the widget and allowed by the signing route |
+
+Keep secret keys in local environment files, never in Git. The public demo needs boards belonging to `DEMO_HOMEPAGE_IDENTIFIER` to show content. `supabase/seed.sql` creates authentication fixtures; `scripts/mock-data/seed.mjs` creates demo boards and images separately. The `mock-data:dev` and `dev:db-reset` scripts replace local demo data and can delete development Cloudinary assets, so review them before using them. Google sign-in also requires configuring a Google provider and redirect URLs in Supabase.
 
 ```bash
 npm install
+npx supabase start
 npm run dev
 ```
 
-Database migrations and generated types must stay paired, and migrations should only be applied to a development project you control.
+Open `http://localhost:3000`. The app's Supabase URL and key must point to the same instance you started.
 
-Useful commands:
+## Development commands
 
 ```bash
-npm run validate
-npm test
-npm run test:browser
-npm run test:node
-npm run build
-npx supabase gen types typescript --local --schema public > supabase/database.types.ts
+npm run lint          # ESLint
+npm run typecheck     # TypeScript
+npm run validate      # lint + typecheck
+npm run test:browser  # Chromium component tests
+npm run test:node     # server-side tests
+npm test              # both suites
+npm run build         # production build
 ```
 
-`npm run codegen` is watch mode and requires a reachable Supabase GraphQL schema.
+`npm run codegen` watches GraphQL operations and requires the local GraphQL endpoint. Stop it when generated files are updated. After applying a schema or RPC migration locally, regenerate `supabase/database.types.ts` with `npm run database-type`; do not edit generated types by hand.
 
-## Authentication workflow
+## Project map
 
-1. The user selects **Sign in with Google**.
-2. A server action calls `supabase.auth.signInWithOAuth()`.
-3. Supabase returns the Google OAuth URL and redirects the browser.
-4. Google returns the authorization code to `/api/auth`.
-5. The route handler exchanges the code for a session using PKCE.
-6. Supabase stores the session in cookies and redirects to `/dashboard`.
-7. The project proxy refreshes and verifies the session on protected requests.
+```text
+app/          Routes, layouts, global styles, and API endpoints
+components/   Dashboard, board, forms, navigation, and shared UI
+gql/          Apollo configuration, operations, and generated GraphQL output
+hooks/        Board drag, layout saving, and UI behavior
+supabase/     Local config, migrations, seed fixtures, and cleanup functions
+utils/        Server Actions, database clients, validation, and helpers
+mocks/        Browser and Node test doubles
+scripts/      Demo data and development image cleanup
+types/        Shared app and JSONB value types
+```
 
 ## Theme color maintenance
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
 import type { CardFormState } from '@/components/Mutation/Card/CardDialog';
 import { INITIAL_CARD_FORM } from './types';
 import {

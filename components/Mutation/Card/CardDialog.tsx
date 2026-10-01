@@ -14,6 +14,7 @@ import { ColorInput, TextInput } from '@/components/form';
 import { ActionFunction } from '@/types/app';
 import { ColorPalette } from '@/types/jsonbSchema';
 import { Dispatch, SetStateAction } from 'react';
+import useDialogSubmission from '@/hooks/useDialogSubmission';
 
 export type CardFormState = { title: string; color: ColorPalette };
 
@@ -40,8 +41,16 @@ function CardDialog<TForm extends CardFormState>({
   action,
   deleteAction,
 }: CardDialogProps<TForm>) {
+  const { isSubmitting, isSubmittingRef, withSubmission } =
+    useDialogSubmission();
+
+  const handleClose = () => {
+    if (isSubmittingRef.current || isSubmitting) return;
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} className='relative z-50'>
+    <Dialog open={open} onClose={handleClose} className='relative z-50'>
       <DialogBackdrop className='fixed inset-0 bg-neutral-foreground/30 dark:bg-neutral/30' />
 
       <div className='fixed inset-0 w-screen overflow-auto p-4'>
@@ -60,7 +69,8 @@ function CardDialog<TForm extends CardFormState>({
           <FormContainer
             id={formId}
             className='mt-4 grid gap-3'
-            action={action}
+            action={withSubmission(action)}
+            disabled={isSubmitting}
           >
             {/* INPUTS */}
             <TextInput
@@ -87,12 +97,13 @@ function CardDialog<TForm extends CardFormState>({
               <Button
                 type='button'
                 className='rounded border border-border px-3 py-1 font-semibold hover:cursor-pointer hover:bg-destructive/50 hover:text-shadow-2xs'
-                onClick={onClose}
+                onClick={handleClose}
               >
                 Cancel
               </Button>
               <SubmitButton
                 text='Save'
+                disabled={isSubmitting}
                 className='max-w-fit rounded border border-border px-3 py-1 hover:cursor-pointer hover:bg-successful/50 hover:text-shadow-2xs'
               />
             </div>
@@ -100,8 +111,14 @@ function CardDialog<TForm extends CardFormState>({
 
           {/* CARD DELETION */}
           {deleteAction && (
-            <FormContainer action={deleteAction}>
-              <SubmitButton className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'>
+            <FormContainer
+              action={withSubmission(deleteAction)}
+              disabled={isSubmitting}
+            >
+              <SubmitButton
+                disabled={isSubmitting}
+                className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'
+              >
                 Delete Card
               </SubmitButton>
             </FormContainer>

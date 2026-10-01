@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    '**/.*/', // Ignore dot-prefixed folders at any depth
+    '**/.*', // Ignore dot-prefixed files at any depth
     // Default ignores of eslint-config-next:
     '.next/**',
     'out/**',

@@ -1,3 +1,4 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import AppContextProvider from '@/components/global/AppContext';
 import AddCardDialog from '@/components/Mutation/Card/AddCardDialog';
 import ListFieldDialog from '@/components/Mutation/Board/ListField/ListFieldDialog';
@@ -8,11 +9,11 @@ import { MockedProvider } from '@apollo/client/testing/react';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { vi } from 'vitest';
-import ActionMenuContainer from '../../ActionMenuContainer';
-import BoardContextProvider from '../../BoardContext';
+import ActionMenuContainer from '@/components/BoardPage/ActionMenu/ActionMenuContainer';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { mockBoardId, mockListFields } from '../singleBoardQuery.mock';
-import CardDeletionsProvider from '../../CardDeletionsContext';
+import CardDeletionsProvider from '@/components/BoardPage/Card/CardDeletionsContext';
 import type { InMemoryCache } from '@apollo/client';
 
 vi.mock('@/utils/actions/card');
@@ -38,32 +39,34 @@ export const renderActionMenu = (
   } = {},
 ) => {
   return render(
-    <MockedProvider cache={cache}>
-      <AppContextProvider>
-        <BoardTitleProvider>
-          <BoardContextProvider
-            boardId={mockBoardId}
-            userId={userId}
-            queryListFields={queryListFields}
-          >
-            <CardDeletionsProvider>
-              <DialogsProvider>
-                {/* Action Menu */}
-                <ActionMenuContainer />
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <AppContextProvider>
+          <BoardTitleProvider>
+            <BoardContextProvider
+              boardId={mockBoardId}
+              userId={userId}
+              queryListFields={queryListFields}
+            >
+              <CardDeletionsProvider>
+                <DialogsProvider>
+                  {/* Action Menu */}
+                  <ActionMenuContainer />
 
-                {/* Other Components */}
-                <UpdateBoardTitle
-                  boardId={mockBoardId}
-                  title={mockBoardTitle}
-                />
-                <ListFieldDialog />
-                <AddCardDialog />
-              </DialogsProvider>
-            </CardDeletionsProvider>
-          </BoardContextProvider>
-        </BoardTitleProvider>
-      </AppContextProvider>
-    </MockedProvider>,
+                  {/* Other Components */}
+                  <UpdateBoardTitle
+                    boardId={mockBoardId}
+                    title={mockBoardTitle}
+                  />
+                  <ListFieldDialog />
+                  <AddCardDialog />
+                </DialogsProvider>
+              </CardDeletionsProvider>
+            </BoardContextProvider>
+          </BoardTitleProvider>
+        </AppContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };
 

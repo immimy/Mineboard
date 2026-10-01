@@ -94,6 +94,7 @@ export const CachedBoardListsQuery = graphql(/* GraphQL */ `
 export const MutatedListFragment = graphql(/* GraphQL */ `
   fragment MutatedList on lists {
     id
+    card_id
     position
     list_valuesCollection {
       edges {

@@ -52,6 +52,7 @@ export const demoHomepageQuery: DemoHomepageQuery = {
                         node: {
                           __typename: 'lists',
                           id: '40000000-0000-4000-8000-000000000001',
+                          card_id: '30000000-0000-4000-8000-000000000001',
                           position: 0,
                           list_valuesCollection: {
                             __typename: 'list_valuesConnection',

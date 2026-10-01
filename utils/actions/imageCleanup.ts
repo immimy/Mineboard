@@ -123,7 +123,7 @@ export async function imageCleanup(input: unknown) {
     });
 
     return { error: null };
-  } catch (error) {
+  } catch {
     // console.error('Cloudinary image cleanup operation failed', error);
     return { error: null };
   }

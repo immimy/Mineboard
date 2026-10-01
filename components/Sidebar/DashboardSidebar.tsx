@@ -14,10 +14,10 @@ import { useQuery } from '@apollo/client/react';
 import { Button } from '@headlessui/react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useDashboardUserId } from '../DashboardPage/DashboardUserContext';
 
-type DashboardSidebarProps = { userId: string };
-
-function DashboardSidebar({ userId }: DashboardSidebarProps) {
+function DashboardSidebar() {
+  const userId = useDashboardUserId();
   const { isSidebarOpen, closeSidebar } = useAppContext();
 
   const [pendingBoards, setPendingBoards] = useState<PendingBoard[]>([]);

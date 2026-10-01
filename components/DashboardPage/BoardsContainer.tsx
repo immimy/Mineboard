@@ -6,10 +6,10 @@ import { useQuery } from '@apollo/client/react';
 import LoadingContainer from '../global/LoadingContainer';
 import NoDataFound from '../global/NoDataFound';
 import Error from '../global/Error';
+import { useDashboardUserId } from './DashboardUserContext';
 
-type BoardsContainerProps = { userId: string };
-
-function BoardsContainer({ userId }: BoardsContainerProps) {
+function BoardsContainer() {
+  const userId = useDashboardUserId();
   const queryConfig = getAllBoardsQueryConfig(userId);
   const { loading, error, data } = useQuery(AllBoardsQuery, {
     variables: queryConfig.variables,

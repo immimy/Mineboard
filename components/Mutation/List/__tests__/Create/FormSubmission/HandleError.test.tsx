@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 // ───────────────────────────────────────────────────────────
 
 vi.mock('@/utils/actions/list');
-vi.mock('@/components/BoardPage/BoardContext', { spy: true });
+vi.mock('@/components/BoardPage/Board/BoardContext', { spy: true });
 vi.mock('@/components/Mutation/List/ListInputs/ImageInput');
 
 // ───────────────────────────────────────────────────────────

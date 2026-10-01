@@ -1,6 +1,7 @@
 import AppContextProvider, {
   useAppContext,
 } from '@/components/global/AppContext';
+import DashboardUserProvider from '@/components/DashboardPage/DashboardUserContext';
 import { BoardTitleProvider } from '@/components/Mutation/Board/Title/BoardTitleContext';
 import DashboardSidebar from '@/components/Sidebar/DashboardSidebar';
 import {
@@ -104,15 +105,17 @@ function PreventNavigationBoundary({ children }: PropsWithChildren) {
 const renderUpdateBoardTitleFeature = () => {
   return render(
     <MockedProvider mocks={[boardTitleMock, allBoardsMock]}>
-      <AppContextProvider>
-        <BoardTitleProvider>
-          <PreventNavigationBoundary>
-            <OpenSidebarButton />
-            <BoardBadge />
-            <DashboardSidebar userId={mockUserId} />
-          </PreventNavigationBoundary>
-        </BoardTitleProvider>
-      </AppContextProvider>
+      <DashboardUserProvider userId={mockUserId}>
+        <AppContextProvider>
+          <BoardTitleProvider>
+            <PreventNavigationBoundary>
+              <OpenSidebarButton />
+              <BoardBadge />
+              <DashboardSidebar />
+            </PreventNavigationBoundary>
+          </BoardTitleProvider>
+        </AppContextProvider>
+      </DashboardUserProvider>
     </MockedProvider>,
   );
 };

@@ -9,6 +9,11 @@ import {
 import { saveBoardLayout } from '@/utils/actions/board';
 import { serverLayout } from './testMocks';
 
+vi.mock(import('@/components/BoardPage/Card/CollapsibleCard'), async () => {
+  const { ExpandedCardMock } = await import('./testMocks');
+  return { default: ExpandedCardMock };
+});
+
 const saveBoardLayoutMock = vi.mocked(saveBoardLayout);
 
 describe('List reordering', () => {

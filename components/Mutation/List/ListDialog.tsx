@@ -14,6 +14,7 @@ import { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { ActionFunction, ListForm } from '@/types/app';
 import { ListFieldInput } from '@/types/jsonbSchema';
 import RenderListInput from './ListInputs';
+import useDialogSubmission from '@/hooks/useDialogSubmission';
 
 type ListDialogProps = {
   formId: string;
@@ -44,8 +45,16 @@ function ListDialog({
   action,
   deleteAction,
 }: ListDialogProps) {
+  const { isSubmitting, isSubmittingRef, withSubmission } =
+    useDialogSubmission();
+
+  const handleClose = () => {
+    if (isSubmittingRef.current || isSubmitting) return;
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} className='relative z-50'>
+    <Dialog open={open} onClose={handleClose} className='relative z-50'>
       <DialogBackdrop className='fixed inset-0 bg-neutral-foreground/30 dark:bg-neutral/30' />
 
       <div className='fixed inset-0 w-screen overflow-auto p-4'>
@@ -61,7 +70,11 @@ function ListDialog({
           </Description>
 
           {/* LIST FORM */}
-          <FormContainer id={formId} action={action}>
+          <FormContainer
+            id={formId}
+            action={withSubmission(action)}
+            disabled={isSubmitting}
+          >
             {/* INPUTS */}
             <ul className='mt-4 grid gap-3 md:p-3'>
               {listFields?.map((edge) => {
@@ -73,7 +86,10 @@ function ListDialog({
                     field={field}
                     form={form[field.id]}
                     ownerId={ownerId}
-                    handleFieldChange={onFieldChange}
+                    handleFieldChange={(fieldId, value) => {
+                      if (!isSubmittingRef.current)
+                        onFieldChange(fieldId, value);
+                    }}
                     handleImageUpload={onImageUpload}
                   />
                 );
@@ -85,12 +101,13 @@ function ListDialog({
               <Button
                 type='button'
                 className='rounded border border-border px-3 py-1 font-semibold hover:cursor-pointer hover:bg-destructive/50 hover:text-shadow-2xs'
-                onClick={onClose}
+                onClick={handleClose}
               >
                 Cancel
               </Button>
               <SubmitButton
                 text='Save'
+                disabled={isSubmitting}
                 formId={formId}
                 className='max-w-fit rounded border border-border px-3 py-1 hover:cursor-pointer hover:bg-successful/50 hover:text-shadow-2xs'
               />
@@ -99,8 +116,14 @@ function ListDialog({
 
           {/* LIST DELETION */}
           {deleteAction && (
-            <FormContainer action={deleteAction}>
-              <SubmitButton className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'>
+            <FormContainer
+              action={withSubmission(deleteAction)}
+              disabled={isSubmitting}
+            >
+              <SubmitButton
+                disabled={isSubmitting}
+                className='mt-4 py-1 w-full rounded hover:cursor-pointer hover:bg-border/30 text-destructive font-medium tracking-wider min-h-8'
+              >
                 Delete List
               </SubmitButton>
             </FormContainer>

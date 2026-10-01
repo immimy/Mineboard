@@ -12,6 +12,11 @@ import type { BoardLayout } from '@/utils/dragdrop/types';
 
 vi.mock('@/utils/actions/board', { spy: true });
 
+vi.mock(import('@/components/BoardPage/Card/CollapsibleCard'), async () => {
+  const { ExpandedCardMock } = await import('./testMocks');
+  return { default: ExpandedCardMock };
+});
+
 const saveBoardLayoutMock = vi.mocked(saveBoardLayout);
 
 describe('Drag save queue', () => {

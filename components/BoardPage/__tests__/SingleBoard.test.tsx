@@ -26,7 +26,7 @@ vi.mock('@/components/Mutation/List/UpdateListDialog', () => ({
 vi.mock('@/components/Mutation/Board/ListField/ListFieldDialog', () => ({
   default: () => <div data-testid='mock-add-list-field-dialog' />,
 }));
-vi.mock('@/components/BoardPage/ActionMenuContainer', () => ({
+vi.mock('@/components/BoardPage/ActionMenu/ActionMenuContainer', () => ({
   default: () => <div data-testid='mock-action-menu-container' />,
 }));
 

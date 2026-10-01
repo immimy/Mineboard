@@ -3,6 +3,7 @@
 import { createFieldDraft } from '@/components/Mutation/Board/Fields/utils';
 import { Field_Type } from '@/gql/__generated__/graphql';
 import { ListFieldForm } from '@/types/app';
+import useDialogSubmission from '@/hooks/useDialogSubmission';
 import {
   createContext,
   PropsWithChildren,
@@ -12,7 +13,7 @@ import {
   useState,
 } from 'react';
 
-type ContextType = {
+type ContextType = ReturnType<typeof useDialogSubmission> & {
   fields: ListFieldForm[];
   isDirty: boolean;
   addField: (type: Field_Type) => void;
@@ -43,6 +44,9 @@ function ListFieldFormProvider({
   children,
   initialFields = [],
 }: ListFieldFormProviderProps) {
+  const { isSubmitting, isSubmittingRef, withSubmission } =
+    useDialogSubmission();
+
   const [fields, setFields] = useState<ListFieldForm[]>([...initialFields]);
   const isDirty = useMemo(
     () => JSON.stringify(fields) !== JSON.stringify(initialFields),
@@ -106,6 +110,7 @@ function ListFieldFormProvider({
 
   const value = useMemo(
     () => ({
+      // Form handle
       fields,
       isDirty,
       addField,
@@ -114,6 +119,10 @@ function ListFieldFormProvider({
       reorderField,
       removeField,
       resetFields,
+      // Tracks dialog submission
+      isSubmitting,
+      isSubmittingRef,
+      withSubmission,
     }),
     [
       addField,
@@ -124,6 +133,9 @@ function ListFieldFormProvider({
       resetFields,
       updateField,
       updateFieldType,
+      isSubmitting,
+      isSubmittingRef,
+      withSubmission,
     ],
   );
 

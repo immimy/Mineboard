@@ -1,5 +1,6 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import { mockBoardId } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import BoardContextProvider from '@/components/BoardPage/BoardContext';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { useUpdateCardDialogActions } from '@/components/Mutation/Context/UpdateCardDialogContext';
 import type { UpdateCardFormState } from '@/components/Mutation/Context/types';
@@ -7,7 +8,7 @@ import type { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import UpdateCardDialog from '../../UpdateCardDialog';
+import UpdateCardDialog from '@/components/Mutation/Card/UpdateCardDialog';
 import { initialUpdateCardForm } from './testMocks';
 
 export const getAllElements = () => ({
@@ -47,13 +48,15 @@ export const renderUpdateCardDialog = ({
   initialForm = initialUpdateCardForm,
 }: RenderOptions = {}) => {
   return render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider boardId={mockBoardId}>
-        <DialogsProvider>
-          <UpdateCardButton form={initialForm} />
-          <UpdateCardDialog />
-        </DialogsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider boardId={mockBoardId}>
+          <DialogsProvider>
+            <UpdateCardButton form={initialForm} />
+            <UpdateCardDialog />
+          </DialogsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };

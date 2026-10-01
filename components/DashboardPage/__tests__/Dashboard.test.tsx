@@ -1,25 +1,10 @@
-import { render } from 'vitest-browser-react';
-import BoardsContainer from '../BoardsContainer';
-import { page } from 'vitest/browser';
-import { MockedProvider } from '@apollo/client/testing/react';
 import {
   graphqlErrorMock,
-  mockUserId,
   networkErrorMock,
   noDataMock,
   successMock,
 } from './allBoardsQuery.mock';
-
-const getAllElements = () => {
-  return {
-    loading: page.getByLabelText('loading'),
-    error: page.getByText(/an error occurred/i),
-    noData: page.getByText(/no data found/i),
-    boardItem1: page.getByText(/website redesign/i),
-    boardItem2: page.getByText(/personal to-do/i),
-    boardLinks: page.getByRole('link'),
-  };
-};
+import { getAllElements, renderDashboard } from './testUtils';
 
 // ---------------------------------------------------------------------------
 // Dashboard Page
@@ -27,11 +12,7 @@ const getAllElements = () => {
 
 describe('Dashboard page is rendered correctly', () => {
   it('render an error when network error occurs', async () => {
-    await render(
-      <MockedProvider mocks={[networkErrorMock]}>
-        <BoardsContainer userId={mockUserId} />
-      </MockedProvider>,
-    );
+    await renderDashboard([networkErrorMock]);
     const { loading, error } = getAllElements();
     // Wait for loading to resolve,
     await expect.element(loading).not.toBeInTheDocument();
@@ -40,33 +21,21 @@ describe('Dashboard page is rendered correctly', () => {
   });
 
   it('render an error when GraphQL error occurs', async () => {
-    await render(
-      <MockedProvider mocks={[graphqlErrorMock]}>
-        <BoardsContainer userId={mockUserId} />
-      </MockedProvider>,
-    );
+    await renderDashboard([graphqlErrorMock]);
     const { loading, error } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
     await expect.element(error).toBeInTheDocument();
   });
 
   it('render no data found when returned data is empty', async () => {
-    await render(
-      <MockedProvider mocks={[noDataMock]}>
-        <BoardsContainer userId={mockUserId} />
-      </MockedProvider>,
-    );
+    await renderDashboard([noDataMock]);
     const { loading, noData } = getAllElements();
     await expect.element(loading).not.toBeInTheDocument();
     await expect.element(noData).toBeInTheDocument();
   });
 
   it('render board items correctly', async () => {
-    await render(
-      <MockedProvider mocks={[successMock]}>
-        <BoardsContainer userId={mockUserId} />
-      </MockedProvider>,
-    );
+    await renderDashboard([successMock]);
     const { loading, boardItem1, boardItem2 } = getAllElements();
     // 1. Loading spinner should appear immediately.
     await expect.element(loading).toBeInTheDocument();
@@ -78,11 +47,7 @@ describe('Dashboard page is rendered correctly', () => {
   });
 
   it('links to the correct board page', async () => {
-    await render(
-      <MockedProvider mocks={[successMock]}>
-        <BoardsContainer userId={mockUserId} />
-      </MockedProvider>,
-    );
+    await renderDashboard([successMock]);
     const { loading, boardLinks } = getAllElements();
     // Wait for loading to resolve,
     await expect.element(loading).not.toBeInTheDocument();

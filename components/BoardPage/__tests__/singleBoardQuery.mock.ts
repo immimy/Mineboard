@@ -150,6 +150,7 @@ export const successMock: MockLink.MockedResponse = {
                     node: {
                       __typename: 'lists',
                       id: LIST_ID,
+                      card_id: CARD_ID,
                       position: 0,
 
                       // ── List Values (all six field types) ───────────────────

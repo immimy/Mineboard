@@ -1,13 +1,15 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import { MockedProvider } from '@apollo/client/testing/react';
 import * as cardActions from '@/utils/actions/card';
 import { toast } from 'react-toastify';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
-import BoardContextProvider from '../BoardContext';
-import CardDeletions from '../CardDeletions';
+import BoardContextProvider from '../Board/BoardContext';
+import CardDeletions from '../Card/CardDeletions';
 import CardDeletionsProvider, {
-  useCardDeletionsContext,
-} from '../CardDeletionsContext';
+  useCardDeletionActions,
+  useCardDeletionMode,
+} from '../Card/CardDeletionsContext';
 import { mockBoardId } from './singleBoardQuery.mock';
 import {
   createCardDeletionsCache,
@@ -18,8 +20,8 @@ import {
 } from './testMocks';
 
 function CardDeletionHarness() {
-  const { isDeleteMode, setDeleteMode, updateDeletedCards } =
-    useCardDeletionsContext();
+  const isDeleteMode = useCardDeletionMode();
+  const { setDeleteMode, updateDeletedCards } = useCardDeletionActions();
 
   return (
     <>
@@ -45,13 +47,15 @@ function CardDeletionHarness() {
 
 const renderCardDeletions = (cache = createCardDeletionsCache()) => {
   render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider boardId={mockBoardId}>
-        <CardDeletionsProvider>
-          <CardDeletionHarness />
-        </CardDeletionsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider boardId={mockBoardId}>
+          <CardDeletionsProvider>
+            <CardDeletionHarness />
+          </CardDeletionsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
   return cache;
 };

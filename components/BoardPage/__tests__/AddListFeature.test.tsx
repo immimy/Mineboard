@@ -79,7 +79,7 @@ describe('Add list feature', () => {
 
     // Fill out the form
     // 1. Date
-    await userEvent.type(dateInput, '12242026');
+    await dateInput.fill('2026-12-24');
     // 2. Text
     await textInput.fill('Decorate Christmas tree');
     // Submit form

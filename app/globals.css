@@ -36,6 +36,8 @@
 @source inline("border-t-card-{{1..9..1}}");
 @source inline("bg-card-light-{{1..9..1}}/40");
 @source inline("dark:bg-card-light-{{1..9..1}}/80");
+@source inline("from-card-light-{{1..9..1}}");
+@source inline("via-card-light-{{1..9..1}}/90");
 /* Checkbox field */
 @source inline("data-checked:bg-card-{{1..9..1}}");
 @source inline("stroke-card-light-{{1..9..1}}");

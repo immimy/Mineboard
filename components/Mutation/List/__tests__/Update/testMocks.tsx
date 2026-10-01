@@ -85,6 +85,7 @@ export const UPDATE_LIST_SUCCESS: { data: CachedListQuery; error: null } = {
               {
                 __typename: 'lists',
                 id: mockListId,
+                card_id: mockCardId,
                 position: 0,
                 list_valuesCollection: {
                   __typename: 'list_valuesConnection',

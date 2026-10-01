@@ -1,16 +1,17 @@
+import IdleLayoutSyncProvider from '@/mocks/browser/components/IdleLayoutSyncProvider';
 import {
   mockBoardId,
   mockCardId,
   mockListFields,
 } from '@/components/BoardPage/__tests__/singleBoardQuery.mock';
-import BoardContextProvider from '@/components/BoardPage/BoardContext';
+import BoardContextProvider from '@/components/BoardPage/Board/BoardContext';
 import DialogsProvider from '@/components/Mutation/Context/DialogsProvider';
 import { ListFieldsCollectionFragment } from '@/gql/__generated__/graphql';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import AddListOpenButton from '../../AddListOpenButton';
-import AddListDialog from '../../AddListDialog';
+import AddListOpenButton from '@/components/Mutation/List/AddListOpenButton';
+import AddListDialog from '@/components/Mutation/List/AddListDialog';
 import { ApolloCache } from '@apollo/client';
 
 export const getAllElements = () => {
@@ -36,22 +37,24 @@ export const openAddListDialog = async () => {
 
 export const renderAddListDialog = (cache?: ApolloCache) => {
   return render(
-    <MockedProvider cache={cache}>
-      <BoardContextProvider
-        boardId={mockBoardId}
-        queryListFields={
-          mockListFields as {
-            ' $fragmentRefs'?: {
-              ListFieldsCollectionFragment: ListFieldsCollectionFragment;
-            };
+    <IdleLayoutSyncProvider boardId={mockBoardId}>
+      <MockedProvider cache={cache}>
+        <BoardContextProvider
+          boardId={mockBoardId}
+          queryListFields={
+            mockListFields as {
+              ' $fragmentRefs'?: {
+                ListFieldsCollectionFragment: ListFieldsCollectionFragment;
+              };
+            }
           }
-        }
-      >
-        <DialogsProvider>
-          <AddListOpenButton cardId={mockCardId} />
-          <AddListDialog />
-        </DialogsProvider>
-      </BoardContextProvider>
-    </MockedProvider>,
+        >
+          <DialogsProvider>
+            <AddListOpenButton cardId={mockCardId} />
+            <AddListDialog />
+          </DialogsProvider>
+        </BoardContextProvider>
+      </MockedProvider>
+    </IdleLayoutSyncProvider>,
   );
 };

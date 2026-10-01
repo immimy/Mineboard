@@ -91,6 +91,7 @@ Regenerate `supabase/database.types.ts` after applying a migration locally that 
 - Tokens, dark mode, custom variants, and safelisted dynamic classes live in `app/globals.css`.
 - Dynamic card/tag classes such as `bg-card-${color}` require matching `@source inline(...)` safelist entries in `app/globals.css`.
 - Prefer canonical Tailwind data variants like `data-checked:`, `group-data-checked:`, `data-selected:`, and `data-focus:` over arbitrary variants when the shorthand available.
+- Prefer Tailwind CSS custom-property shorthand such as `min-h-(--card-min-height)` over arbitrary values such as `min-h-[var(--card-min-height)]`.
 - Build components on Headless UI primitives before falling back to native elements.
 - Build reusable form inputs on Headless UI primitives such as `Field`, `Label`, `Description`, `Input`, `RadioGroup`, and `Radio`.
 - When creating a new Headless UI component, check nearby components for repeated className patterns. Extract a small template component in the same file only when reuse is clear.
@@ -148,4 +149,5 @@ Path alias: `@/*` maps to the project root.
 
 - For architecture, performance, database design, or long-term tradeoffs, work step by step, surface assumptions, and recommend a direction.
 - Keep changes scoped to the requested area and mention unrelated improvements separately.
-- Create separate commits per logical change with suffix `(draft)` unless the user explicitly says the feature is done.
+- Do not run `git add` or `git commit` unless the user directly asks for that specific action. By default, leave changes unstaged so the user can review and commit them.
+- When the user explicitly requests a commit, create separate commits per logical change with suffix `(draft)` unless the user says the feature is done.

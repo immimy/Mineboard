@@ -13,6 +13,8 @@ import {
 } from './testMocks';
 import { getAllElements, openActionMenu, renderActionMenu } from './testUtils';
 
+vi.mock('@/utils/actions/board');
+
 describe('ActionMenu — Delete board action', () => {
   it('cancels without deleting the board', async () => {
     await renderActionMenu();

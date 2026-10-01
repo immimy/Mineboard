@@ -1,7 +1,8 @@
 'use client';
 
 import { useApolloClient } from '@apollo/client/react';
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
+import { useLayoutMutationSync } from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
 import {
   useAddCardDialogActions,
   useAddCardDialogState,
@@ -20,6 +21,7 @@ import { renderError } from '@/components/global/utils';
 
 function AddCardDialog() {
   const client = useApolloClient();
+  const { runMutation } = useLayoutMutationSync();
 
   // Consume context
   const { boardId } = useBoardContext();
@@ -33,51 +35,60 @@ function AddCardDialog() {
 
   // Create card form action
   const handleSave: ActionFunction = async (_, formData) => {
-    try {
-      // Set board id to form data
-      formData.set('boardId', boardId);
+    const result = await runMutation(boardId, async () => {
+      try {
+        // Set board id to form data
+        formData.set('boardId', boardId);
 
-      // Server: Create card
-      const { data, error } = await createCard(formData);
-      if (error || !data) return { error };
+        // Server: Create card
+        const { data, error } = await createCard(formData);
+        if (error || !data) return { error };
 
-      const card = data.cardsCollection?.edges[0];
-      if (!card) return { error: 'Created card was not returned' };
+        const card = data.cardsCollection?.edges[0];
+        if (!card) return { error: 'Created card was not returned' };
 
-      // Update `SingleBoardQuery` by appending new card to the collection
-      const queryConfig = getSingleBoardQueryConfig(boardId);
-      client.cache.updateQuery<SingleBoardQueryData, SingleBoardQueryVariables>(
-        {
-          query: SingleBoardQuery,
-          variables: queryConfig.variables,
-        },
-        (queryData) => {
-          if (!queryData?.cardsCollection) return queryData;
+        // Update `SingleBoardQuery` by appending new card to the collection
+        const queryConfig = getSingleBoardQueryConfig(boardId);
+        client.cache.updateQuery<
+          SingleBoardQueryData,
+          SingleBoardQueryVariables
+        >(
+          {
+            query: SingleBoardQuery,
+            variables: queryConfig.variables,
+          },
+          (queryData) => {
+            if (!queryData?.cardsCollection) return queryData;
 
-          const existingEdges =
-            readFragment(CardsCollectionFragmentDoc, queryData.cardsCollection)
-              .edges ?? [];
+            const existingEdges =
+              readFragment(
+                CardsCollectionFragmentDoc,
+                queryData.cardsCollection,
+              ).edges ?? [];
 
-          const cardExists = existingEdges.some(
-            (edge) => edge.node.id === card.node.id,
-          );
-          if (cardExists) return queryData;
+            const cardExists = existingEdges.some(
+              (edge) => edge.node.id === card.node.id,
+            );
+            if (cardExists) return queryData;
 
-          return {
-            ...queryData,
-            cardsCollection: {
-              ...queryData.cardsCollection,
-              edges: [...existingEdges, card],
-            },
-          };
-        },
-      );
+            return {
+              ...queryData,
+              cardsCollection: {
+                ...queryData.cardsCollection,
+                edges: [...existingEdges, card],
+              },
+            };
+          },
+        );
 
-      handleCloseDialog();
-      return { error: null };
-    } catch (error) {
-      return renderError(error, 'Failed to add card');
-    }
+        return { error: null };
+      } catch (error) {
+        return renderError(error, 'Failed to add card');
+      }
+    });
+
+    if (!result.error) handleCloseDialog();
+    return result;
   };
 
   return (

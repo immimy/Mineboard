@@ -6,6 +6,11 @@ import {
 } from './testUtils';
 import { saveBoardLayout } from '@/utils/actions/board';
 
+vi.mock(import('@/components/BoardPage/Card/CollapsibleCard'), async () => {
+  const { ExpandedCardMock } = await import('./testMocks');
+  return { default: ExpandedCardMock };
+});
+
 const saveBoardLayoutMock = vi.mocked(saveBoardLayout);
 
 describe('Invalid list drop', () => {

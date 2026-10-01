@@ -10,7 +10,8 @@ import { deleteCards } from '@/utils/actions/card';
 import { ActionFunction } from '@/types/app';
 import CardDialog from './CardDialog';
 import { renderError } from '@/components/global/utils';
-import { useBoardContext } from '@/components/BoardPage/BoardContext';
+import { useBoardContext } from '@/components/BoardPage/Board/BoardContext';
+import { useLayoutMutationSync } from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
 import {
   CardsCollectionFragmentDoc,
   type SingleBoardQuery as SingleBoardQueryData,
@@ -21,6 +22,7 @@ import { getSingleBoardQueryConfig, SingleBoardQuery } from '@/gql/queries';
 
 function UpdateCardDialog() {
   const client = useApolloClient();
+  const { runMutation } = useLayoutMutationSync();
 
   const { boardId } = useBoardContext();
   const { isOpen, form } = useUpdateCardDialogState();
@@ -32,87 +34,94 @@ function UpdateCardDialog() {
 
   // Update card action
   const handleSave: ActionFunction = async (_, formData) => {
-    try {
-      if (!form.cardId) return { error: 'Card is not selected' };
+    if (!form.cardId) return { error: 'Card is not selected' };
 
-      formData.set('cardId', form.cardId);
+    const result = await runMutation(boardId, async () => {
+      try {
+        formData.set('cardId', form.cardId);
 
-      const { error } = await updateCard(formData);
-      if (error) return { error };
+        const { error } = await updateCard(formData);
+        if (error) return { error };
 
-      client.cache.modify({
-        id: client.cache.identify({
-          __typename: 'cards',
-          id: form.cardId,
-        }),
-        fields: {
-          title() {
-            return form.title.trim();
+        client.cache.modify({
+          id: client.cache.identify({
+            __typename: 'cards',
+            id: form.cardId,
+          }),
+          fields: {
+            title() {
+              return form.title.trim();
+            },
+            color() {
+              return form.color;
+            },
           },
-          color() {
-            return form.color;
-          },
-        },
-      });
+        });
 
-      handleCloseDialog();
+        return { error: null };
+      } catch (error) {
+        return renderError(error, 'Failed to update card');
+      }
+    });
 
-      return { error: null };
-    } catch (error) {
-      return renderError(error, 'Failed to update card');
-    }
+    if (!result.error) handleCloseDialog();
+    return result;
   };
 
   // Delete card action
   const handleDelete: ActionFunction = async () => {
-    try {
-      if (!form.cardId) return { error: 'Card is not selected' };
+    if (!form.cardId) return { error: 'Card is not selected' };
 
-      const { error } = await deleteCards(boardId, [form.cardId]);
-      if (error) return { error };
+    const result = await runMutation(boardId, async () => {
+      try {
+        const { error } = await deleteCards(boardId, [form.cardId]);
+        if (error) return { error };
 
-      client.cache.batch({
-        update(cache) {
-          const queryConfig = getSingleBoardQueryConfig(boardId);
+        client.cache.batch({
+          update(cache) {
+            const queryConfig = getSingleBoardQueryConfig(boardId);
 
-          // Remove card from cardsCollection of `SingleBoardQuery` on ROOT_QUERY
-          cache.updateQuery<SingleBoardQueryData, SingleBoardQueryVariables>(
-            { query: SingleBoardQuery, variables: queryConfig.variables },
-            (queryData) => {
-              if (!queryData?.cardsCollection) return queryData;
-              const existingEdges = readFragment(
-                CardsCollectionFragmentDoc,
-                queryData.cardsCollection,
-              ).edges;
-              return {
-                ...queryData,
-                cardsCollection: {
-                  ...queryData.cardsCollection,
-                  edges: existingEdges.filter(
-                    ({ node }) => node.id !== form.cardId,
-                  ),
-                },
-              };
-            },
-          );
+            // Remove card from cardsCollection of `SingleBoardQuery` on ROOT_QUERY
+            cache.updateQuery<SingleBoardQueryData, SingleBoardQueryVariables>(
+              { query: SingleBoardQuery, variables: queryConfig.variables },
+              (queryData) => {
+                if (!queryData?.cardsCollection) return queryData;
+                const existingEdges = readFragment(
+                  CardsCollectionFragmentDoc,
+                  queryData.cardsCollection,
+                ).edges;
+                return {
+                  ...queryData,
+                  cardsCollection: {
+                    ...queryData.cardsCollection,
+                    edges: existingEdges.filter(
+                      ({ node }) => node.id !== form.cardId,
+                    ),
+                  },
+                };
+              },
+            );
 
-          // Evict `cards:id` entity in the same transaction.
-          cache.evict({
-            id: cache.identify({
-              __typename: 'cards',
-              id: form.cardId,
-            }),
-          });
-        },
-      });
+            // Evict `cards:id` entity in the same transaction.
+            cache.evict({
+              id: cache.identify({
+                __typename: 'cards',
+                id: form.cardId,
+              }),
+            });
+          },
+        });
 
-      client.cache.gc();
-      handleCloseDialog();
+        client.cache.gc();
 
-      return { error: null };
-    } catch (error) {
-      return renderError(error, 'Failed to delete card');
-    }
+        return { error: null };
+      } catch (error) {
+        return renderError(error, 'Failed to delete card');
+      }
+    });
+
+    if (!result.error) handleCloseDialog();
+    return result;
   };
 
   return (

@@ -5,6 +5,7 @@ import { MockedProvider } from '@apollo/client/testing/react';
 import { render } from 'vitest-browser-react';
 import DemoWorkspace from '../DemoWorkspace';
 import { demoHomepageQuery } from './demo.mock';
+import LayoutMutationSyncProvider from '@/components/BoardPage/Board/LayoutMutationSyncProvider';
 
 function OpenSidebarButton() {
   const { openSidebar } = useAppContext();
@@ -27,7 +28,9 @@ export function renderDemoHomepage({
     <MockedProvider>
       <AppContextProvider>
         {withSidebarTrigger && <OpenSidebarButton />}
-        <DemoWorkspace query={demoHomepageQuery} />
+        <LayoutMutationSyncProvider>
+          <DemoWorkspace query={demoHomepageQuery} />
+        </LayoutMutationSyncProvider>
       </AppContextProvider>
     </MockedProvider>,
   );
